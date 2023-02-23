@@ -1,0 +1,1 @@
+I was a bit confused about why did the designer of the Go decides to have array and slices as two separate data types. I thought the functionality of array can be comnbined with slices for less combersome.

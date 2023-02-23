@@ -1,0 +1,1 @@
+I was particular confused about how does GFS maintain the concurrent writes.

@@ -1,0 +1,3 @@
+During a mutation request, when a chunkserver was down, and the replica became stale.
+Even though the master can identify the data is stale once the chunkserver joins and sees the chunk version number is smaller than the other replicas'.
+A client that previously cached the chunk locations, can read from the stale replica before that information is refreshed.

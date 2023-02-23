@@ -1,0 +1,3 @@
+Q: How does VM FT handle network partitions? That is, is it possible that if the primary and the backup end up in different network partitions that the backup will become a primary too and the system will run with two primaries?
+
+A: This situation is called a split-brain problem in the paper. If the backup server stops receiving heartbeats from the primary server due to network partitions, this might indicate that the primary has failed. VM FT avoids this case by requiring the VM to executes an atomic test-and-set operation on shared storage before it can 'go alive'(or another word become the primary VM).
