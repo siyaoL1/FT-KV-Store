@@ -1,0 +1,1 @@
+I'm a bit confused about how does RAFT makes sure that the newly elected leader has the most up todate consistent log entries recorded. Since if not then it will be really bad in the case that the other properly recorded logs might be partially discarded.
