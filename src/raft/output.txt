@@ -1,0 +1,4 @@
+Test (2A): multiple elections ...
+  ... Passed --   6.6  7  540   48404    0
+PASS
+ok  	6.5840/raft	6.844s
