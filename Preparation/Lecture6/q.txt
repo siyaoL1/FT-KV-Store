@@ -1,0 +1,1 @@
+What if partial snapshot is sent due to some network issue during InstallSnapshot process. Is there checksum process to make sure that the snapshot received is complete?

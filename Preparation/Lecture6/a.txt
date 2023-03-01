@@ -1,0 +1,3 @@
+Q: Could a received InstallSnapshot RPC cause the state machine to go backwards in time? That is, could step 8 in Figure 13 cause the state machine to be reset so that it reflects fewer executed operations? If yes, explain how this could happen. If no, explain why it can't happen.
+
+A: No it will not cause a state machine to go backwards in time, even though some uncommited logs might be overwritten, but the consensus is already achieved through the previous rules discussed in section 5. The InstallSnapshot will not overwrite the logs after the indexes that it covers upto.
