@@ -1,0 +1,2 @@
+The part I liked the most about Go is that the exported terms are capitalized and there's no need to further specify which functions or types are exported.
+The part I didn't like that much is that the slice and array being two different data types.

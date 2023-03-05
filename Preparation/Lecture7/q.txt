@@ -1,0 +1,1 @@
+Why did Go decides to have slice and array being two different data type instead of just one like Python did.

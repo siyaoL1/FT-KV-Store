@@ -61,3 +61,76 @@ Cases
     - Follow the rule:
       - If RPC request or response contains term T > currentTerm: set currentTerm = T, convert to follower 
     - The other servers reset to follower and then grant vote.
+
+
+
+
+
+# 2B
+- After a leader is elected, it starts to receive command to append by Start()
+  - Append the log to the log[]
+  - Start sending the appendentries based on the nextIndex[]
+    - Within a timeout, send the log based on the nextIndex
+      - If get a success then update the matchIndex[]
+      - If get a failure
+      - If timeout, resend the same log
+
+- AppendEntries RPC contains
+  - commited index
+    - so that servers can know when it is safe to apply the log.
+
+Log entry contains:
+- command
+- term nunber
+- index position
+
+Question:
+- When does the client comes to play, where we wants to execute the command, if there's duplicated command do we need to deal with that?
+- When and how to apply?
+- When starting out, there's no log in any of the followers, how are we managing to check the previous log index
+  - assume that there's a 0 term and 0 index for each of the server
+- Can you go over a bit about the general strategy to handle the case when the appendentries return failure due to inconsistency?
+  - The optimization is not required for this lab.
+- Optimization: The rule of reply for the rejection, why do we need the term and also the index 
+- Later on we are having logs being compacted into snapshots right? I'm a bit worried about the indexing after removing some of the 
+
+
+- Is sending one entry good enough?
+- Understand the first test
+- 
+- how to apply? Just send the command through channel?
+
+
+
+Initialization Procedure: (after election)
+- Set nextIndex[] to be leader's last log index + 1
+- Set matchIndex[] to be 0s
+
+Broadcast Procedure:
+- if leader's lastLogIndex >= nextIndex for a follower:
+  - send AppendEntry to the server
+- else
+  - send heartbeat to the server
+- Then wait for the response
+  - if success:
+    - update the nextIndex and matchIndex
+    - if matchIndex of the follower > commitIndex:
+      - if majority of the followers have >= matchIndex:
+        - Update the commit index
+  - if failure:
+    - if reply term is greater than args term (meaning there's log inconsistency)
+      - update the nextIndex -= 1
+    - if reply term is smaller than args term (term of the leader is outdated)
+      - update the term to be reply's term and convert to follower.
+
+Broadcast Handler:
+- If args.term < currentTerm or args.PrevLogIndex with args.PrevLogTerm doesn't exist:
+  - return failure
+- If it is a old index:
+  - delete the existing entry in the index and the one after it.
+- Append the log
+- Update the lastLogIndex and lastLogTerm
+- If leaderCommit > commitIndex:
+  - set commitIndex = min(leaderCommit, lastLogIndex)
+
+Note that the leader can only commit the logs made in its own term.
