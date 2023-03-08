@@ -1,0 +1,1 @@
+If I'm understanding correctly, Raft sacrifices the performance to ensure the safety of the system. Are there some other approaches that supports high performance and in the mean while safe as Raft?
