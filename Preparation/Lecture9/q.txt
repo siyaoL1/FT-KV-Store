@@ -1,0 +1,1 @@
+From the reading assigned, most of the distributed systems are not formally proven correctness. Then how does a team decide that a framework or system is well tested enough to ship as a real product.

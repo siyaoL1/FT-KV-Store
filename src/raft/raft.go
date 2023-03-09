@@ -83,14 +83,18 @@ type Raft struct {
 	lastContactTime time.Time
 
 	// other
-	applyCh      chan ApplyMsg
-	log          []LogEntry
+	applyCh chan ApplyMsg
+	log     []LogEntry
+
+	// Volatile state(note: volatile means subject to rapid or unpredictable change)
 	commitIndex  int
 	lastLogIndex int
-	lastLogTerm  int
-	lastApplied  int
-	nextIndex    []int
-	matchIndex   []int
+	lastLogTerm  int // own
+	lastApplied  int // own
+
+	// Leader state
+	nextIndex  []int
+	matchIndex []int
 
 	// Your data here (2A, 2B, 2C).
 	// Look at the paper's Figure 2 for a description of what
@@ -244,8 +248,10 @@ func (rf *Raft) startElection() {
 	// Before election info update
 	rf.mu.Lock()
 	rf.currentTerm += 1
-	rf.election.votesNumber[rf.currentTerm] = 1
+	rf.status = CANDIDATE
 	rf.election.votedFor = rf.me
+
+	rf.election.votesNumber[rf.currentTerm] = 1
 	rf.lastContactTime = time.Now()
 	rf.mu.Unlock()
 
@@ -428,22 +434,6 @@ func (rf *Raft) broadcastLogs() {
 	}
 }
 
-func (rf *Raft) applyLogs() {
-	rf.mu.Lock()
-	defer rf.mu.Unlock()
-	for rf.commitIndex > rf.lastApplied {
-		msg := ApplyMsg{
-			CommandValid: true,
-			Command:      rf.log[realIndex(rf.lastApplied+1)].Command,
-			CommandIndex: rf.lastApplied + 1,
-		}
-		rf.applyCh <- msg
-		rf.lastApplied += 1
-
-		DPrintf("(Server %v, term: %v) || Applying logs with index: %v ||\n", rf.me, rf.currentTerm, rf.lastApplied+1)
-	}
-}
-
 func min(a, b int) int {
 	if a < b {
 		return a
@@ -501,12 +491,11 @@ func (rf *Raft) Start(command interface{}) (int, int, bool) {
 func (rf *Raft) ticker() {
 	for !rf.killed() {
 		// Your code here (2A)
+		rf.mu.Lock()
+		defer rf.mu.Unlock()
 		switch rf.status {
 		case FOLLOWER: // Follower only waits to receive RPC, if timedout start eleciton
 			if rf.timedOut() {
-				rf.mu.Lock()
-				rf.status = CANDIDATE
-				rf.mu.Unlock()
 				go rf.startElection()
 			}
 
@@ -514,7 +503,6 @@ func (rf *Raft) ticker() {
 			if rf.timedOut() {
 				go rf.startElection()
 			}
-			rf.mu.Lock()
 			if rf.election.votesNumber[rf.currentTerm] > rf.numPeers/2 {
 				DPrintf("(Server %v, term: %v) || Wins Election  ||\n", rf.me, rf.currentTerm)
 				rf.status = LEADER
@@ -524,16 +512,30 @@ func (rf *Raft) ticker() {
 					rf.matchIndex[i] = rf.lastLogIndex + 1
 				}
 			}
-			rf.mu.Unlock()
 
 		case LEADER: // Leader sends out heatbeat to inform other servers
 			go rf.broadcastLogs()
 		}
 
-		// All of the servers need to apply the logs
-		rf.applyLogs()
 		// Wait for 0.1 seconds
-		time.Sleep(100 * time.Millisecond)
+		ms := 100
+		time.Sleep(time.Duration(ms) * time.Millisecond)
+	}
+}
+
+func (rf *Raft) applier() {
+	rf.mu.Lock()
+	defer rf.mu.Unlock()
+	for rf.commitIndex > rf.lastApplied {
+		msg := ApplyMsg{
+			CommandValid: true,
+			Command:      rf.log[realIndex(rf.lastApplied+1)].Command,
+			CommandIndex: rf.lastApplied + 1,
+		}
+		rf.applyCh <- msg
+		rf.lastApplied += 1
+
+		DPrintf("(Server %v, term: %v) || Applying logs with index: %v ||\n", rf.me, rf.currentTerm, rf.lastApplied+1)
 	}
 }
 
@@ -562,7 +564,7 @@ func Make(peers []*labrpc.ClientEnd, me int,
 			votesNumber: map[int]int{}, // TODO: Change this back to int later.
 			votedFor:    -1,
 		},
-		lastContactTime: time.Now(),
+		lastContactTime: time.Now(), // Maybe change to setElectionTime
 		applyCh:         applyCh,
 		log:             make([]LogEntry, 0),
 		commitIndex:     0,
@@ -576,6 +578,7 @@ func Make(peers []*labrpc.ClientEnd, me int,
 	// initialize from state persisted before a crash
 	rf.readPersist(persister.ReadRaftState())
 
+	go rf.applier()
 	// start ticker goroutine to start elections in background
 	go rf.ticker()
 
