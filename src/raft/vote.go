@@ -53,8 +53,8 @@ func (rf *Raft) RequestVote(args *RequestVoteArgs, reply *RequestVoteReply) {
 	reply.VoteGranted = false
 
 	if rf.votedFor == -1 || rf.votedFor == args.CandidateID { // haven't vote or vote for it already
-		if (args.LastLogTerm == rf.lastLogTerm && args.LastLogIndex >= rf.lastLogIndex) ||
-			args.LastLogTerm > rf.lastLogTerm {
+		if (args.LastLogTerm == rf.log.lastLogTerm() && args.LastLogIndex >= rf.log.lastLogIndex()) ||
+			args.LastLogTerm > rf.log.lastLogTerm() {
 			rf.lastContactTime = time.Now()
 			rf.votedFor = args.CandidateID
 			reply.VoteGranted = true
@@ -73,10 +73,10 @@ func (rf *Raft) becomeLeaderL() {
 	rf.status = LEADER
 
 	for i := range rf.nextIndex {
-		rf.nextIndex[i] = rf.lastLogIndex + 1
+		rf.nextIndex[i] = rf.log.lastLogIndex() + 1
 		rf.matchIndex[i] = 0
 	}
-	rf.broadcastLogs()
+	rf.broadcastLogsL(true)
 
 	// old code
 	// if rf.election.votesNumber[rf.currentTerm] > rf.numPeers/2 {
@@ -150,11 +150,12 @@ func (rf *Raft) requestVotes(server int, args *RequestVoteArgs, votes *int) {
 }
 
 func (rf *Raft) requestVotesL() {
+	// There's only one args and vote being shared among all RequstVote RPCs.
 	args := RequestVoteArgs{
 		Term:         rf.currentTerm,
 		CandidateID:  rf.me,
-		LastLogIndex: rf.lastLogIndex,
-		LastLogTerm:  rf.lastLogTerm,
+		LastLogIndex: rf.log.lastLogIndex(),
+		LastLogTerm:  rf.log.lastLogTerm(),
 	}
 	votes := 1
 	// Send each server a RequestVote RPC
