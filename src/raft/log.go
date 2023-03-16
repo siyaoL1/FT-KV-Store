@@ -1,58 +1,60 @@
 package raft
 
-import "fmt"
-
 type Entry struct {
 	Command interface{}
 	Term    int
 }
 
-func (e Entry) String() string {
-	return fmt.Sprintf("T %v", e.Term)
+// func (e Entry) String() string {
+// 	return fmt.Sprintf("T %v", e.Term)
+// }
+
+type LogRecord struct {
+	Log    []Entry
+	Index0 int
 }
 
-type Log struct {
-	log    []Entry
-	index0 int
+// ***********************************
+// ********** Logs Functions **********
+// ***********************************
+
+// Make a Logs struct with one 0 entry at Log
+func mkLogEmpty() LogRecord {
+	return LogRecord{make([]Entry, 1), 0}
 }
 
-// Make a Log struct with one 0 entry at log
-func mkLogEmpty() Log {
-	return Log{make([]Entry, 1), 0}
+func mkLog(Log []Entry, index0 int) LogRecord {
+	return LogRecord{Log, index0}
 }
 
-func mkLog(log []Entry, index0 int) Log {
-	return Log{log, index0}
+func (l LogRecord) lastLogIndex() int {
+	return len(l.Log) - 1
 }
 
-func (l Log) lastLogIndex() int {
-	return len(l.log) - 1
+func (l LogRecord) lastLogTerm() int {
+	return l.Log[len(l.Log)-1].Term
 }
 
-func (l Log) lastLogTerm() int {
-	return l.log[len(l.log)-1].Term
+func (l LogRecord) lastLogEntry() Entry {
+	return l.Log[len(l.Log)-1]
 }
 
-func (l Log) lastLogEntry() Entry {
-	return l.log[len(l.log)-1]
+func (l LogRecord) entry(index int) Entry {
+	return l.Log[index]
 }
 
-func (l Log) entry(index int) Entry {
-	return l.log[index]
+func (l LogRecord) slice(index int) []Entry {
+	return l.Log[index:]
 }
 
-func (l Log) slice(index int) []Entry {
-	return l.log[index:]
+func (l LogRecord) start() int {
+	return l.Index0
 }
 
-func (l Log) start() int {
-	return l.index0
+func (l *LogRecord) cutend(index int) {
+	l.Log = l.Log[:index]
 }
 
-func (l Log) cutend(index int) {
-	l.log = l.log[:index]
-}
-
-func (l Log) append(entry Entry) {
-	l.log = append(l.log, entry)
+func (l *LogRecord) append(entry Entry) {
+	l.Log = append(l.Log, entry)
 }

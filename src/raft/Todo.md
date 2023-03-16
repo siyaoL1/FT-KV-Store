@@ -103,34 +103,46 @@ Question:
 
 
 Initialization Procedure: (after election)
-- Set nextIndex[] to be leader's last log index + 1
-- Set matchIndex[] to be 0s
+[-] Set nextIndex[] to be leader's last log index + 1
+[-] Set matchIndex[] to be 0s
 
 Broadcast Procedure:
-- if leader's lastLogIndex >= nextIndex for a follower:
-  - send AppendEntry to the server
-- else
-  - send heartbeat to the server
-- Then wait for the response
-  - if success:
-    - update the nextIndex and matchIndex
-    - if matchIndex of the follower > commitIndex:
-      - if majority of the followers have >= matchIndex:
-        - Update the commit index
-  - if failure:
-    - if reply term is greater than args term (meaning there's log inconsistency)
-      - update the nextIndex -= 1
-    - if reply term is smaller than args term (term of the leader is outdated)
-      - update the term to be reply's term and convert to follower.
+[-] if leader's lastLogIndex >= nextIndex for a follower:
+  [-] send AppendEntry to the server
+[-] else
+  [-] send heartbeat to the server
+[-] Then wait for the response
+  [-] if success:
+    [-] update the nextIndex and matchIndex
+    [-] if matchIndex of the follower > commitIndex:
+      [-] if majority of the followers have >= matchIndex:
+        [-] Update the commit index
+  [-] if failure:
+    [-] if reply term is greater than args term (meaning there's log inconsistency)
+      [-] update the nextIndex -= 1
+    [-] if reply term is smaller than args term (term of the leader is outdated)
+      [-] update the term to be reply's term and convert to follower.
 
 Broadcast Handler:
-- If args.term < currentTerm or args.PrevLogIndex with args.PrevLogTerm doesn't exist:
-  - return failure
-- If it is a old index:
-  - delete the existing entry in the index and the one after it.
-- Append the log
-- Update the lastLogIndex and lastLogTerm
-- If leaderCommit > commitIndex:
-  - set commitIndex = min(leaderCommit, lastLogIndex)
+[-] If args.term < currentTerm or args.PrevLogIndex with args.PrevLogTerm doesn't exist:
+  [-] return failure
+[-] If it is a old index:
+  [-] delete the existing entry in the index and the one after it.
+[-] Append the log
+[-] Update the lastLogIndex and lastLogTerm
+[-] If leaderCommit > commitIndex:
+  [-] set commitIndex = min(leaderCommit, lastLogIndex)
 
 Note that the leader can only commit the logs made in its own term.
+
+
+
+- How to run race detector on raft
+- Problem of concurrent start test
+
+	e.Encode(rf.currentTerm)
+	e.Encode(rf.votedFor)
+	e.Encode(rf.log)
+	e.Encode(rf.commitIndex)
+	e.Encode(rf.lastApplied)
+- How does case three happen and how to detect it

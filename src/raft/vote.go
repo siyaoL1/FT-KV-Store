@@ -53,16 +53,18 @@ func (rf *Raft) RequestVote(args *RequestVoteArgs, reply *RequestVoteReply) {
 	reply.VoteGranted = false
 
 	if rf.votedFor == -1 || rf.votedFor == args.CandidateID { // haven't vote or vote for it already
-		if (args.LastLogTerm == rf.log.lastLogTerm() && args.LastLogIndex >= rf.log.lastLogIndex()) ||
-			args.LastLogTerm > rf.log.lastLogTerm() {
+		if (args.LastLogTerm == rf.LogRecord.lastLogTerm() && args.LastLogIndex >= rf.LogRecord.lastLogIndex()) ||
+			args.LastLogTerm > rf.LogRecord.lastLogTerm() {
 			rf.lastContactTime = time.Now()
 			rf.votedFor = args.CandidateID
 			reply.VoteGranted = true
 		}
 	}
-	if !reply.VoteGranted {
-		DPrintf("Yooo I don't vote for u, rf.currentTerm: %v, rf.election.votedFor: %v, args.LastLogTerm: %v, args.LastLogIndex: %v\n", rf.currentTerm, rf.votedFor, args.LastLogTerm, args.LastLogIndex)
-	}
+	rf.persist()
+	DPrintf("(Server %v, term: %v) || logs: %v.\n", rf.me, rf.currentTerm, rf.LogRecord.Log)
+	// if !reply.VoteGranted {
+	// 	DPrintf("Yooo I don't vote for u, rf.currentTerm: %v, rf.election.votedFor: %v, args.LastLogTerm: %v, args.LastLogIndex: %v\n", rf.currentTerm, rf.votedFor, args.LastLogTerm, args.LastLogIndex)
+	// }
 }
 
 func (rf *Raft) becomeLeaderL() {
@@ -73,10 +75,10 @@ func (rf *Raft) becomeLeaderL() {
 	rf.status = LEADER
 
 	for i := range rf.nextIndex {
-		rf.nextIndex[i] = rf.log.lastLogIndex() + 1
+		rf.nextIndex[i] = rf.LogRecord.lastLogIndex() + 1
 		rf.matchIndex[i] = 0
 	}
-	rf.broadcastLogsL(true)
+	rf.broadcastLogsL()
 
 	// old code
 	// if rf.election.votesNumber[rf.currentTerm] > rf.numPeers/2 {
@@ -144,6 +146,7 @@ func (rf *Raft) requestVotes(server int, args *RequestVoteArgs, votes *int) {
 		if *votes > rf.numPeers/2 {
 			if rf.currentTerm == args.Term {
 				rf.becomeLeaderL()
+				DPrintf("(Leader %v, term: %v) || logs: %v.\n", rf.me, rf.currentTerm, rf.LogRecord.Log)
 			}
 		}
 	}
@@ -154,8 +157,8 @@ func (rf *Raft) requestVotesL() {
 	args := RequestVoteArgs{
 		Term:         rf.currentTerm,
 		CandidateID:  rf.me,
-		LastLogIndex: rf.log.lastLogIndex(),
-		LastLogTerm:  rf.log.lastLogTerm(),
+		LastLogIndex: rf.LogRecord.lastLogIndex(),
+		LastLogTerm:  rf.LogRecord.lastLogTerm(),
 	}
 	votes := 1
 	// Send each server a RequestVote RPC
@@ -174,7 +177,7 @@ func (rf *Raft) startElectionL() {
 	rf.currentTerm += 1
 	rf.status = CANDIDATE
 	rf.votedFor = rf.me
-	// rf.persist()
+	rf.persist()
 
 	rf.requestVotesL()
 }

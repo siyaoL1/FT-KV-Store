@@ -15,29 +15,49 @@ import (
 // example to show how to declare the arguments
 // and reply for an RPC.
 //
+// type ExampleArgs struct {
+// 	X int
+// }
 
-type ExampleArgs struct {
-	X int
+// type ExampleReply struct {
+// 	Y int
+// }
+
+// Type Definition
+type status int64
+type task int
+type payload struct {
+	MapFile                    string
+	IntermediateFilePrefix     string
+	IntermediateFilePrefixList []string
+	ReduceFilePrefix           string
+	ReduceNumber               int
+	NumReduce                  int
 }
 
-type ExampleReply struct {
-	Y int
-}
+const (
+	IDLE        status = 0
+	IN_PROGRESS status = 1
+	MAP_DONE    status = 2
+	REDUCE_DONE status = 3
+)
 
-// Add your RPC definitions here.
+const (
+	MAP    task = 0
+	REDUCE task = 1
+	WAIT   task = 2
+	DONE   task = 3
+)
+
+// RPC definitions.
 type WorkerArgs struct {
-	MapNumber    int // finished maptask number
-	ReduceNumber int // finished reducetask number
-	Type         int // 0: map task, 1: reduce task
+	Status  status
+	Payload payload
 }
 
-type WorkerReply struct {
-	Type         int    // 0: map task, 1: reduce task, 2: waiting, 3: job finished
-	NMap         int    // number of map task
-	NReduce      int    // number of reduce task
-	MapNumber    int    // map task only
-	ReduceNumber int    // reducetask only
-	Filename     string // maptask only
+type CoordReply struct {
+	Task    task
+	Payload payload
 }
 
 // Cook up a unique-ish UNIX-domain socket name

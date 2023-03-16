@@ -1,6 +1,7 @@
 package mr
 
 import (
+	"fmt"
 	"log"
 	"net"
 	"net/http"
@@ -11,105 +12,151 @@ import (
 )
 
 type Coordinator struct {
-	// Your definitions here.
-	nReduce        int        // number of total reduce tasks
-	nMap           int        // number of total map tasks
-	reducefinished int        // number of reduce task done
-	mapfinished    int        // number of map task done
-	mu             sync.Mutex // lock
-	files          []string
-	reducetype     []int // 0 for not yet started task; 1 for task that is being executed; 2 for task done
-	maptype        []int
+	// Contains shared mutex, map task data, reduce task data
+	RPCMutex                   sync.Mutex
+	NumReduce                  int
+	MapFiles                   []string
+	MapTasks                   map[string]time.Time
+	MapDone                    bool
+	IntermediateFilePrefixList []string
+	ReduceCount                int
+	ReduceTasks                map[int]time.Time // {reduce#, time}
+	ReduceDone                 bool
 }
 
 // Your code here -- RPC handlers for the worker to call.
-
-// an example RPC handler.
-//
-// the RPC argument and reply types are defined in rpc.go.
-func (c *Coordinator) Example(args *ExampleArgs, reply *ExampleReply) error {
-	reply.Y = args.X + 1
-	return nil
-}
-
-// Allocate new task to worker
-func (c *Coordinator) Allocate(args *WorkerArgs, reply *WorkerReply) error {
-	c.mu.Lock()
-	reply.NReduce = c.nReduce
-	reply.NMap = c.nMap
-	if c.mapfinished < c.nMap {
-		cnt := -1
-		for i, status := range c.maptype {
-			if status == 0 {
-				cnt = i
-				break
-			}
-		}
-		if cnt < 0 {
-			reply.Type = 2
-			c.mu.Unlock()
-			return nil
-		}
-		reply.Filename = c.files[cnt]
-		reply.MapNumber = cnt
-		reply.Type = 0
-		c.maptype[cnt] = 1
-		c.mu.Unlock()
-		go func() {
-			time.Sleep(time.Duration(10) * time.Second) // wait 10 seconds
-			c.mu.Lock()
-			if c.maptype[cnt] == 1 {
-				c.maptype[cnt] = 0
-			}
-			c.mu.Unlock()
-		}()
-	} else if c.mapfinished == c.nMap && c.reducefinished < c.nReduce {
-		cnt := -1
-		for i, status := range c.reducetype {
-			if status == 0 {
-				cnt = i
-				break
-			}
-		}
-		if cnt < 0 {
-			reply.Type = 2
-			c.mu.Unlock()
-			return nil
-		}
-		reply.ReduceNumber = cnt
-		reply.Type = 1
-		c.reducetype[cnt] = 1
-		c.mu.Unlock()
-		go func() {
-			time.Sleep(time.Duration(10) * time.Second) // wait 10 seconds
-			c.mu.Lock()
-			if c.reducetype[cnt] == 1 {
-				c.reducetype[cnt] = 0
-			}
-			c.mu.Unlock()
-		}()
-	} else {
-		reply.Type = 2
-		c.mu.Unlock()
+func (c *Coordinator) Message(args *WorkerArgs, reply *CoordReply) error {
+	if args.Status == MAP_DONE {
+		processMapResult(c, args)
+	} else if args.Status == REDUCE_DONE {
+		processReduceResult(c, args)
 	}
 
+	c.RPCMutex.Lock()
+	if !c.MapDone {
+		c.RPCMutex.Unlock()
+		sendMapTask(c, reply)
+	} else if !c.ReduceDone {
+		c.RPCMutex.Unlock()
+		sendReduceTask(c, reply)
+	} else {
+		c.RPCMutex.Unlock()
+		sendDone(c, reply)
+	}
 	return nil
 }
 
-func (c *Coordinator) ReceiveFinishedMap(args *WorkerArgs, reply *WorkerReply) error {
-	c.mu.Lock()
-	c.mapfinished++
-	c.maptype[args.MapNumber] = 2 // log the map task as finished
-	c.mu.Unlock()
-	return nil
+func sendMapTask(c *Coordinator, reply *CoordReply) {
+	DPrintf("In sendMapTask function\n")
+	c.RPCMutex.Lock()
+	defer c.RPCMutex.Unlock()
+
+	// There's still map jobs that are not assigned yet
+	if len(c.MapFiles) > 0 {
+		// Remove the last file in the slice
+		mapFile := c.MapFiles[len(c.MapFiles)-1]
+		c.MapFiles = c.MapFiles[:len(c.MapFiles)-1]
+		// Add the mapfile to the working array and mark the time stamp
+		c.MapTasks[mapFile] = time.Now()
+
+		reply.Task = MAP
+		reply.Payload.MapFile = mapFile
+		reply.Payload.NumReduce = c.NumReduce
+
+		// There's on going tasks that not yet finished
+	} else if !c.MapDone {
+		for mapFile, startTime := range c.MapTasks {
+			if time.Since(startTime).Seconds() > 10 {
+				c.MapTasks[mapFile] = time.Now()
+				reply.Task = MAP
+				reply.Payload.MapFile = mapFile
+				reply.Payload.NumReduce = c.NumReduce
+				return
+			} else {
+				reply.Task = WAIT
+			}
+		}
+	}
 }
 
-func (c *Coordinator) ReceiveFinishedReduce(args *WorkerArgs, reply *WorkerReply) error {
-	c.mu.Lock()
-	c.reducefinished++
-	c.reducetype[args.ReduceNumber] = 2 // log the reduce task as finished
-	c.mu.Unlock()
-	return nil
+func sendReduceTask(c *Coordinator, reply *CoordReply) {
+	DPrintf("In send Reduce Task function\n")
+
+	c.RPCMutex.Lock()
+	defer c.RPCMutex.Unlock()
+
+	// There's still reduce jobs that are not assigned yet
+	DPrintf("Reduce Count is: %d", c.ReduceCount)
+	if c.ReduceCount > 0 {
+		// Decrement reduce count
+		reduceNumber := c.ReduceCount
+		c.ReduceCount -= 1
+		DPrintf("reduceNumber: %d\n", reduceNumber)
+		// Mark the time stamp for the assigned Reduce ID
+		c.ReduceTasks[reduceNumber] = time.Now()
+
+		reply.Task = REDUCE
+		reply.Payload.ReduceNumber = reduceNumber
+		reply.Payload.IntermediateFilePrefixList = c.IntermediateFilePrefixList
+
+	} else if !c.ReduceDone {
+		for reduceNumber, startTime := range c.ReduceTasks {
+			if time.Since(startTime).Seconds() > 10 {
+				c.ReduceTasks[reduceNumber] = time.Now()
+				reply.Task = REDUCE
+				reply.Payload.ReduceNumber = reduceNumber
+				reply.Payload.IntermediateFilePrefixList = c.IntermediateFilePrefixList
+				return
+			} else {
+				reply.Task = WAIT
+			}
+		}
+	}
+}
+
+func sendDone(c *Coordinator, reply *CoordReply) {
+	DPrintf("In sendDone function\n")
+	c.RPCMutex.Lock()
+	reply.Task = DONE
+	c.RPCMutex.Unlock()
+}
+
+// Store the intermediate file path into the reduce tasks array
+func processMapResult(c *Coordinator, args *WorkerArgs) {
+	DPrintf("Processing map results\n")
+	c.RPCMutex.Lock()
+	defer c.RPCMutex.Unlock()
+
+	if _, ok := c.MapTasks[args.Payload.MapFile]; ok {
+		// Remove corresponding map task
+		delete(c.MapTasks, args.Payload.MapFile)
+		// Save intermediate result prefix
+		c.IntermediateFilePrefixList = append(c.IntermediateFilePrefixList, args.Payload.IntermediateFilePrefix)
+		// Check if map are all finished
+		if len(c.MapFiles) == 0 && len(c.MapTasks) == 0 {
+			c.MapDone = true
+		}
+	}
+}
+
+// Process reduce result
+func processReduceResult(c *Coordinator, args *WorkerArgs) {
+	DPrintf("Processing reduce results\n")
+	c.RPCMutex.Lock()
+	defer c.RPCMutex.Unlock()
+
+	if _, ok := c.ReduceTasks[args.Payload.ReduceNumber]; ok {
+		// Remove corresponding reduce task
+		delete(c.ReduceTasks, args.Payload.ReduceNumber)
+		// Remove the intermediate files
+		for _, prefix := range c.IntermediateFilePrefixList {
+			os.Remove(fmt.Sprint(prefix, args.Payload.ReduceNumber-1))
+		}
+		// Check if reduce are all finished
+		if c.ReduceCount == 0 && len(c.ReduceTasks) == 0 {
+			c.ReduceDone = true
+		}
+	}
 }
 
 // start a thread that listens for RPCs from worker.go
@@ -129,26 +176,29 @@ func (c *Coordinator) server() {
 // main/mrcoordinator.go calls Done() periodically to find out
 // if the entire job has finished.
 func (c *Coordinator) Done() bool {
-	ret := false
-
-	// Your code here.
-	ret = c.reducefinished == c.nReduce
-
-	return ret
+	return c.ReduceDone
 }
 
 // create a Coordinator.
 // main/mrcoordinator.go calls this function.
 // nReduce is the number of reduce tasks to use.
 func MakeCoordinator(files []string, nReduce int) *Coordinator {
-	c := Coordinator{}
+	// Init map file array
+	var mapFiles []string
+	mapFiles = append(mapFiles, files...)
+	// Init intermediate file array
 
-	// Your code here.
-	c.nMap = len(files) // 8 for now
-	c.nReduce = nReduce
-	c.files = files
-	c.maptype = make([]int, c.nMap)
-	c.reducetype = make([]int, nReduce)
+	c := Coordinator{
+		RPCMutex:                   sync.Mutex{},
+		NumReduce:                  nReduce,
+		MapFiles:                   mapFiles,
+		MapTasks:                   map[string]time.Time{},
+		MapDone:                    false,
+		IntermediateFilePrefixList: []string{},
+		ReduceCount:                nReduce,
+		ReduceTasks:                map[int]time.Time{},
+		ReduceDone:                 false,
+	}
 
 	c.server()
 	return &c

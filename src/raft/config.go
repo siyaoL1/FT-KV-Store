@@ -167,7 +167,7 @@ func (cfg *config) applier(i int, applyCh chan ApplyMsg) {
 		if m.CommandValid == false {
 			// ignore other types of ApplyMsg
 		} else {
-			// DPrintf("I Received one message from server\n")
+			DPrintf("I Received one message from server\n")
 			cfg.mu.Lock()
 			err_msg, prevok := cfg.checkLogs(i, m)
 			cfg.mu.Unlock()
