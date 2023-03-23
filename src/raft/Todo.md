@@ -146,3 +146,13 @@ Note that the leader can only commit the logs made in its own term.
 	e.Encode(rf.commitIndex)
 	e.Encode(rf.lastApplied)
 - How does case three happen and how to detect it
+
+Questions:
+- What's the purpose of having persist and snapshots together?
+  Persist saves the currentTerm, votedFor, LogRecord, commitIndex, lastApplied to the persistent state so that in case of failure the states are saved and can start from the state left off.
+  In contrast, snapshots is used to compact the logs so that we don't store the all logs all the time. Saves space and also faster backup time.
+
+- Are the snapshot only done for commited index? if so how can we handle the incoming snapshot request?
+- Why doesn't lastApplied needed to be persisted?
+- How are we using snapshot and how to install it?
+- Is the offset used at all?

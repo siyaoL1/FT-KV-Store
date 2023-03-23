@@ -20,13 +20,12 @@ package raft
 import (
 	//	"bytes"
 
-	"bytes"
 	"sync"
 	"sync/atomic"
 	"time"
 
 	//	"6.5840/labgob"
-	"6.5840/labgob"
+
 	"6.5840/labrpc"
 )
 
@@ -63,7 +62,6 @@ type Raft struct {
 	persister       *Persister // Object to hold this peer's persisted state
 	me              int        // this peer's index into peers[]
 	dead            int32      // set by Kill()
-	currentTerm     int
 	status          Status
 	leaderID        int
 	lastContactTime time.Time
@@ -71,8 +69,13 @@ type Raft struct {
 	// other
 	applyCh   chan ApplyMsg
 	applyCond *sync.Cond
-	votedFor  int
-	LogRecord LogRecord
+
+	// Persistent state
+	currentTerm       int
+	votedFor          int
+	LogRecord         LogRecord
+	LastIncludedIndex int
+	LastIncludedTerm  int
 
 	// Volatile state(note: volatile means subject to rapid or unpredictable change)
 	commitIndex int
@@ -99,20 +102,15 @@ func (rf *Raft) GetState() (int, bool) {
 	return rf.currentTerm, rf.status == LEADER
 }
 
-// Clear data stored for a election process
-// func (rf *Raft) clearElectionData() {
-// 	rf.election.votedFor = -1
-// }
-
 // If other server has higher term number, update term and become follower.
 // Note that this function assumes to be called within a locked region
 func (rf *Raft) checkTermNumebrL(otherTerm int) bool {
 	if otherTerm > rf.currentTerm {
-		DPrintf("(Server %v, term: %v) Converted from term %v to term %v, now a follower.\n", rf.me, otherTerm, rf.currentTerm, otherTerm)
+		Debug(dLog, "S%d T%d, Converted from term %v to term %v, now a follower.\n", rf.me, otherTerm, rf.currentTerm, otherTerm)
 		rf.currentTerm = otherTerm
 		rf.status = FOLLOWER
 		rf.votedFor = -1
-		rf.persist()
+		rf.persist(nil)
 		return true
 	}
 	return false
@@ -138,18 +136,17 @@ func (rf *Raft) Start(command interface{}) (int, int, bool) {
 		rf.mu.Lock()
 		rf.LogRecord.append(newLog)
 		rf.matchIndex[rf.me] += 1
-		rf.persist()
+		rf.persist(nil)
 		rf.mu.Unlock()
-		DPrintf("(Leader %v, term: %v) || Start || Received and appended 1 log entry, lastLogIndex: %v.\n", rf.me, rf.currentTerm, rf.LogRecord.lastLogIndex())
-
+		Debug(dLog, "S%d T%d, Leader|| Start || Received and appended 1 log entry, lastLogIndex: %v.\n", rf.me, rf.currentTerm, rf.lastLogIndex())
 	}
 
-	return rf.LogRecord.lastLogIndex(), rf.currentTerm, isLeader
+	return rf.lastLogIndex(), rf.currentTerm, isLeader
 }
 
-// ***********************************
-// ******** Background Check  ********
-// ***********************************
+// ************************************
+// ******** Background Routine ********
+// ************************************
 // Note: When you need to lock part of the code, sometimes it's simpler just to
 // take that part out as a separate function.
 func (rf *Raft) tick() {
@@ -179,13 +176,10 @@ func (rf *Raft) applier() {
 	rf.mu.Lock()
 	defer rf.mu.Unlock()
 
-	// Need to change for 2D
-	rf.lastApplied = 0
-
 	for !rf.killed() {
 		nextApplyIndex := rf.lastApplied + 1
 		if nextApplyIndex <= rf.commitIndex &&
-			nextApplyIndex <= rf.LogRecord.lastLogIndex() {
+			nextApplyIndex <= rf.lastLogIndex() {
 			rf.lastApplied += 1
 			msg := ApplyMsg{
 				CommandValid: true,
@@ -195,9 +189,9 @@ func (rf *Raft) applier() {
 			rf.mu.Unlock()
 			rf.applyCh <- msg
 			rf.mu.Lock()
-			DPrintf("(Server %v, term: %v) || Applying logs with index: %v, command: %v.\n", rf.me, rf.currentTerm, rf.lastApplied, msg.Command)
-			DPrintf("(Server %v, term: %v) || logs: %v.\n", rf.me, rf.currentTerm, rf.LogRecord.Log)
-			rf.persist()
+			Debug(dLog, "S%d T%d, || Applying logs with index: %v, command: %v.\n", rf.me, rf.currentTerm, rf.lastApplied, msg.Command)
+			Debug(dLog, "S%d T%d, || logs: %v.\n", rf.me, rf.currentTerm, rf.LogRecord.Log)
+			rf.persist(nil)
 		} else {
 			rf.applyCond.Wait()
 		}
@@ -222,16 +216,23 @@ func Make(peers []*labrpc.ClientEnd, me int,
 		persister:       persister,
 		me:              me,
 		dead:            0,
-		currentTerm:     0,
 		status:          FOLLOWER,
 		leaderID:        -1,
-		votedFor:        -1,
 		lastContactTime: time.Now(), // Maybe change to setElectionTime
 		applyCh:         applyCh,
-		LogRecord:       mkLogEmpty(),
-		commitIndex:     0,
-		nextIndex:       make([]int, len(peers)),
-		matchIndex:      make([]int, len(peers)),
+
+		// Persistent state on all server
+		currentTerm:       0,
+		votedFor:          -1,
+		LogRecord:         mkLogEmpty(),
+		LastIncludedIndex: 0,
+		LastIncludedTerm:  0,
+		// Volatile state on all servers
+		commitIndex: 0,
+		lastApplied: 0,
+		// Volatile state on leader
+		nextIndex:  make([]int, len(peers)),
+		matchIndex: make([]int, len(peers)),
 	}
 	// Your initialization code here (2A, 2B, 2C).
 	// Conditional variable for apply channel
@@ -239,6 +240,9 @@ func Make(peers []*labrpc.ClientEnd, me int,
 
 	// initialize from state persisted before a crash
 	rf.readPersist(persister.ReadRaftState())
+	// Snapshots contains only commited and applied index
+	rf.commitIndex = rf.LastIncludedIndex
+	rf.lastApplied = rf.LastIncludedIndex
 
 	go rf.applier()
 	// start ticker goroutine to start elections in background
@@ -268,55 +272,4 @@ func (rf *Raft) Kill() {
 func (rf *Raft) killed() bool {
 	z := atomic.LoadInt32(&rf.dead)
 	return z == 1
-}
-
-// ***********************************
-// ********     Persistent 	  ********
-// ***********************************
-
-// save Raft's persistent state to stable storage,
-// where it can later be retrieved after a crash and restart.
-// see paper's Figure 2 for a description of what should be persistent.
-// before you've implemented snapshots, you should pass nil as the
-// second argument to persister.Save().
-// after you've implemented snapshots, pass the current snapshot
-// (or nil if there's not yet a snapshot).
-func (rf *Raft) persist() {
-	// Your code here (2C).
-	// Example:
-	w := new(bytes.Buffer)
-	e := labgob.NewEncoder(w)
-	e.Encode(rf.currentTerm)
-	e.Encode(rf.votedFor)
-	e.Encode(rf.LogRecord)
-	e.Encode(rf.commitIndex)
-	e.Encode(rf.lastApplied)
-	raftstate := w.Bytes()
-	rf.persister.Save(raftstate, nil)
-}
-
-// restore previously persisted state.
-func (rf *Raft) readPersist(data []byte) {
-	if data == nil || len(data) < 1 { // bootstrap without any state?
-		return
-	}
-	// Your code here (2C).
-	// Example:
-	r := bytes.NewBuffer(data)
-	d := labgob.NewDecoder(r)
-
-	d.Decode(&rf.currentTerm)
-	d.Decode(&rf.votedFor)
-	d.Decode(&rf.LogRecord)
-	d.Decode(&rf.commitIndex)
-	d.Decode(&rf.lastApplied)
-}
-
-// the service says it has created a snapshot that has
-// all info up to and including index. this means the
-// service no longer needs the log through (and including)
-// that index. Raft should now trim its log as much as possible.
-func (rf *Raft) Snapshot(index int, snapshot []byte) {
-	// Your code here (2D).
-
 }

@@ -53,17 +53,18 @@ func (rf *Raft) RequestVote(args *RequestVoteArgs, reply *RequestVoteReply) {
 	reply.VoteGranted = false
 
 	if rf.votedFor == -1 || rf.votedFor == args.CandidateID { // haven't vote or vote for it already
-		if (args.LastLogTerm == rf.LogRecord.lastLogTerm() && args.LastLogIndex >= rf.LogRecord.lastLogIndex()) ||
-			args.LastLogTerm > rf.LogRecord.lastLogTerm() {
+		if (args.LastLogTerm == rf.lastLogTerm() && args.LastLogIndex >= rf.lastLogIndex()) ||
+			args.LastLogTerm > rf.lastLogTerm() {
 			rf.lastContactTime = time.Now()
 			rf.votedFor = args.CandidateID
 			reply.VoteGranted = true
 		}
 	}
-	rf.persist()
-	DPrintf("(Server %v, term: %v) || logs: %v.\n", rf.me, rf.currentTerm, rf.LogRecord.Log)
+	rf.persist(nil)
+
+	// Debug(dVote, "S%d T%d, || logs: %v.\n", rf.me, rf.currentTerm, rf.LogRecord.Log)
 	// if !reply.VoteGranted {
-	// 	DPrintf("Yooo I don't vote for u, rf.currentTerm: %v, rf.election.votedFor: %v, args.LastLogTerm: %v, args.LastLogIndex: %v\n", rf.currentTerm, rf.votedFor, args.LastLogTerm, args.LastLogIndex)
+	// 	Debug(dVote, "Yooo I don't vote for u, rf.currentTerm: %v, rf.election.votedFor: %v, args.LastLogTerm: %v, args.LastLogIndex: %v\n", rf.currentTerm, rf.votedFor, args.LastLogTerm, args.LastLogIndex)
 	// }
 }
 
@@ -71,18 +72,18 @@ func (rf *Raft) becomeLeaderL() {
 	if rf.status == LEADER {
 		return
 	}
-	DPrintf("(Server %v, term: %v) Became a leader \n", rf.me, rf.currentTerm)
+	Debug(dVote, "S%d T%d, Became a leader \n", rf.me, rf.currentTerm)
 	rf.status = LEADER
 
 	for i := range rf.nextIndex {
-		rf.nextIndex[i] = rf.LogRecord.lastLogIndex() + 1
+		rf.nextIndex[i] = rf.lastLogIndex() + 1
 		rf.matchIndex[i] = 0
 	}
 	rf.broadcastLogsL()
 
 	// old code
 	// if rf.election.votesNumber[rf.currentTerm] > rf.numPeers/2 {
-	// 	DPrintf("(Server %v, term: %v) || Wins Election  ||\n", rf.me, rf.currentTerm)
+	// 	Debug(dVote, "S%d T%d, || Wins Election  ||\n", rf.me, rf.currentTerm)
 	// 	rf.status = LEADER
 	// 	rf.election.votedFor = -1
 	// 	for i := 0; i < len(rf.nextIndex); i++ {
@@ -120,7 +121,7 @@ func (rf *Raft) becomeLeaderL() {
 // that the caller passes the address of the reply struct with &, not
 // the struct itself.
 func (rf *Raft) sendRequestVote(server int, args *RequestVoteArgs, reply *RequestVoteReply) bool {
-	DPrintf("(Server %v, term: %v) sending RequestVote RPC to %v\n", rf.me, args.Term, server)
+	Debug(dVote, "S%d T%d, sending RequestVote RPC to %v\n", rf.me, args.Term, server)
 	ok := rf.peers[server].Call("Raft.RequestVote", args, reply)
 	return ok
 }
@@ -130,14 +131,14 @@ func (rf *Raft) requestVotes(server int, args *RequestVoteArgs, votes *int) {
 	ok := rf.sendRequestVote(server, args, &reply)
 
 	if !ok {
-		DPrintf("Failed in RequestVote PRC from %v to %v! (term: %v)\n", rf.me, server, args.Term)
+		Debug(dVote, "Failed in RequestVote PRC from %v to %v! (term: %v)\n", rf.me, server, args.Term)
 		return
 	}
 
 	rf.mu.Lock()
 	defer rf.mu.Unlock()
 
-	DPrintf("(Server %v, term: %v) received RequestVote reply from %v, granted: %v\n", rf.me, reply.Term, server, reply.VoteGranted)
+	Debug(dVote, "S%d T%d, received RequestVote reply from %v, granted: %v\n", rf.me, reply.Term, server, reply.VoteGranted)
 
 	rf.checkTermNumebrL(reply.Term)
 	// Count the number of votes
@@ -146,7 +147,7 @@ func (rf *Raft) requestVotes(server int, args *RequestVoteArgs, votes *int) {
 		if *votes > rf.numPeers/2 {
 			if rf.currentTerm == args.Term {
 				rf.becomeLeaderL()
-				DPrintf("(Leader %v, term: %v) || logs: %v.\n", rf.me, rf.currentTerm, rf.LogRecord.Log)
+				Debug(dVote, "S%d T%d, Leader|| logs: %v.\n", rf.me, rf.currentTerm, rf.LogRecord.Log)
 			}
 		}
 	}
@@ -157,8 +158,8 @@ func (rf *Raft) requestVotesL() {
 	args := RequestVoteArgs{
 		Term:         rf.currentTerm,
 		CandidateID:  rf.me,
-		LastLogIndex: rf.LogRecord.lastLogIndex(),
-		LastLogTerm:  rf.LogRecord.lastLogTerm(),
+		LastLogIndex: rf.lastLogIndex(),
+		LastLogTerm:  rf.lastLogTerm(),
 	}
 	votes := 1
 	// Send each server a RequestVote RPC
@@ -171,13 +172,13 @@ func (rf *Raft) requestVotesL() {
 
 // Starts a go routine in the background that sends RequestVote RPC to all servers
 func (rf *Raft) startElectionL() {
-	DPrintf("(Server %v, term: %v) Started election\n", rf.me, rf.currentTerm+1)
+	Debug(dVote, "S%d T%d, Started election\n", rf.me, rf.currentTerm+1)
 
 	// Before election info update
 	rf.currentTerm += 1
 	rf.status = CANDIDATE
 	rf.votedFor = rf.me
-	rf.persist()
+	rf.persist(nil)
 
 	rf.requestVotesL()
 }
@@ -189,10 +190,10 @@ func (rf *Raft) timedOut() bool {
 	random := int64(300)
 	duration := time.Duration(base+(rand.Int63()%random)) * time.Millisecond
 	timeout := time.Since(rf.lastContactTime) > duration
-	// DPrintf("(Server %v, term: %v) election timeout duration is: %v, duration since start is :%v, timed out: %v\n", rf.me, rf.currentTerm, duration, time.Since(rf.lastContactTime), time.Since(rf.lastContactTime) > duration)
+	// Debug(dVote, "S%d T%d, election timeout duration is: %v, duration since start is :%v, timed out: %v\n", rf.me, rf.currentTerm, duration, time.Since(rf.lastContactTime), time.Since(rf.lastContactTime) > duration)
 
 	if timeout {
-		DPrintf("(Server %v, term: %v) timed out\n", rf.me, rf.currentTerm)
+		Debug(dVote, "S%d T%d, timed out\n", rf.me, rf.currentTerm)
 	}
 	return timeout
 }

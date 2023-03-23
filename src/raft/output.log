@@ -1,0 +1,1030 @@
+000006 INFO S0 disconnect
+000018 INFO S1 disconnect
+000019 INFO S2 disconnect
+000019 INFO S0 connected
+000019 INFO S1 connected
+000019 INFO S2 connected
+Test (2D): install snapshots (disconnect) ...
+007080 VOTE S0 T0, timed out
+007095 VOTE S0 T1, Started election
+007077 VOTE S2 T0, timed out
+007095 VOTE S2 T1, Started election
+007081 VOTE S1 T0, timed out
+007100 VOTE S1 T1, Started election
+007121 VOTE S2 T1, sending RequestVote RPC to 1
+007121 VOTE S2 T1, sending RequestVote RPC to 0
+007127 VOTE S1 T1, sending RequestVote RPC to 2
+007130 VOTE S1 T1, sending RequestVote RPC to 0
+007131 VOTE S0 T1, sending RequestVote RPC to 1
+007128 VOTE S0 T1, sending RequestVote RPC to 2
+007175 VOTE S1 T1, received RequestVote reply from 2, granted: false
+007177 VOTE S2 T1, received RequestVote reply from 0, granted: false
+007178 VOTE S0 T1, received RequestVote reply from 2, granted: false
+007179 VOTE S1 T1, received RequestVote reply from 0, granted: false
+007179 VOTE S0 T1, received RequestVote reply from 1, granted: false
+007180 VOTE S2 T1, received RequestVote reply from 1, granted: false
+014186 VOTE S1 T1, timed out
+014188 VOTE S1 T2, Started election
+014186 VOTE S2 T1, timed out
+014189 VOTE S2 T2, Started election
+014191 VOTE S1 T2, sending RequestVote RPC to 2
+014192 VOTE S1 T2, sending RequestVote RPC to 0
+014191 VOTE S2 T2, sending RequestVote RPC to 1
+014191 VOTE S2 T2, sending RequestVote RPC to 0
+014201 VOTE S1 T2, received RequestVote reply from 2, granted: false
+014203 LOG1 S0 T2, Converted from term 1 to term 2, now a follower.
+014206 VOTE S1 T2, received RequestVote reply from 0, granted: true
+014206 VOTE S1 T2, Became a leader 
+014207 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 0, PrevLogTerm:0, LeaderCommit: 0 
+014207 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 0, PrevLogIndex: 0, PrevLogTerm:0, LeaderCommit: 0 
+014238 VOTE S2 T2, received RequestVote reply from 0, granted: false
+014207 VOTE S1 T2, Leader|| logs: [{<nil> 0}].
+014240 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+014241 LOG1 logIndex: 0, recordIndex:0
+014241 LOG1 S2 T2, || Receive || Received AppendEntry RPC ||
+014241 LOG1 logIndex: 0, recordIndex:0
+014248 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 2 with success: true 
+014249 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+014257 VOTE S2 T2, received RequestVote reply from 1, granted: false
+014700 LOG1 S1 T2, Leader|| Start || Received and appended 1 log entry, lastLogIndex: 1.
+015205 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 1, PrevLogIndex: 0, PrevLogTerm:0, LeaderCommit: 0 
+015214 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 1, PrevLogIndex: 0, PrevLogTerm:0, LeaderCommit: 0 
+015217 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+015218 LOG1 logIndex: 0, recordIndex:0
+015218 LOG1 S0 T2, || Append || Appended 1 log entry, lastLogIndex: 1.
+015218 LOG1 logIndex: 1, recordIndex:1
+015218 LOG1 S2 T2, || Receive || Received AppendEntry RPC ||
+015219 LOG1 logIndex: 0, recordIndex:0
+015219 LOG1 S2 T2, || Append || Appended 1 log entry, lastLogIndex: 1.
+015219 LOG1 logIndex: 1, recordIndex:1
+015221 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+015221 LOG1 S1 T2, Leader|| Update || Updated server 0 with nextIndex: 2, matchIndex: 1 
+015221 LOG1 logIndex: 1, recordIndex:1
+015222 LOG1 S1 T2, Leader|| Updated || Updated commitIndex from 0 to 1.||
+015222 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 2 with success: true 
+015222 LOG1 S1 T2, Leader|| Update || Updated server 2 with nextIndex: 2, matchIndex: 1 
+015224 LOG1 logIndex: 1, recordIndex:1
+015225 LOG1 S1 T2, || Applying logs with index: 1, command: 4595421112717539338.
+015225 LOG1 S1 T2, || logs: [{<nil> 0} {4595421112717539338 2}].
+016201 LOG1 logIndex: 1, recordIndex:1
+016204 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 1, PrevLogTerm:2, LeaderCommit: 1 
+016204 LOG1 logIndex: 1, recordIndex:1
+016205 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 0, PrevLogIndex: 1, PrevLogTerm:2, LeaderCommit: 1 
+016209 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+016209 LOG1 S2 T2, || Receive || Received AppendEntry RPC ||
+016210 LOG1 logIndex: 1, recordIndex:1
+016210 LOG1 S2 T2, || Commit || Commit to 1
+016209 LOG1 logIndex: 1, recordIndex:1
+016212 LOG1 S0 T2, || Commit || Commit to 1
+016213 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 2 with success: true 
+016213 LOG1 logIndex: 1, recordIndex:1
+016214 LOG1 S2 T2, || Applying logs with index: 1, command: 4595421112717539338.
+016214 LOG1 S2 T2, || logs: [{<nil> 0} {4595421112717539338 2}].
+016215 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+016215 LOG1 logIndex: 1, recordIndex:1
+016216 LOG1 S0 T2, || Applying logs with index: 1, command: 4595421112717539338.
+016216 LOG1 S0 T2, || logs: [{<nil> 0} {4595421112717539338 2}].
+017211 LOG1 logIndex: 1, recordIndex:1
+017213 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 1, PrevLogTerm:2, LeaderCommit: 1 
+017214 LOG1 logIndex: 1, recordIndex:1
+017214 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 0, PrevLogIndex: 1, PrevLogTerm:2, LeaderCommit: 1 
+017221 LOG1 S2 T2, || Receive || Received AppendEntry RPC ||
+017222 LOG1 logIndex: 1, recordIndex:1
+017223 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+017223 LOG1 logIndex: 1, recordIndex:1
+017225 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 2 with success: true 
+017226 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+018221 LOG1 logIndex: 1, recordIndex:1
+018224 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 1, PrevLogTerm:2, LeaderCommit: 1 
+018224 LOG1 logIndex: 1, recordIndex:1
+018224 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 0, PrevLogIndex: 1, PrevLogTerm:2, LeaderCommit: 1 
+018229 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+018229 LOG1 logIndex: 1, recordIndex:1
+018230 LOG1 S2 T2, || Receive || Received AppendEntry RPC ||
+018230 LOG1 logIndex: 1, recordIndex:1
+018232 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+018233 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 2 with success: true 
+019233 LOG1 logIndex: 1, recordIndex:1
+019235 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 1, PrevLogTerm:2, LeaderCommit: 1 
+019236 LOG1 logIndex: 1, recordIndex:1
+019236 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 0, PrevLogIndex: 1, PrevLogTerm:2, LeaderCommit: 1 
+019241 LOG1 S2 T2, || Receive || Received AppendEntry RPC ||
+019241 LOG1 logIndex: 1, recordIndex:1
+019244 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 2 with success: true 
+019247 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+019248 LOG1 logIndex: 1, recordIndex:1
+019250 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+020240 LOG1 logIndex: 1, recordIndex:1
+020242 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 1, PrevLogTerm:2, LeaderCommit: 1 
+020242 LOG1 logIndex: 1, recordIndex:1
+020243 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 0, PrevLogIndex: 1, PrevLogTerm:2, LeaderCommit: 1 
+020248 LOG1 S2 T2, || Receive || Received AppendEntry RPC ||
+020248 LOG1 logIndex: 1, recordIndex:1
+020248 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+020251 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 2 with success: true 
+020252 LOG1 logIndex: 1, recordIndex:1
+020255 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+021107 INFO S2 disconnect
+021110 LOG1 S1 T2, Leader|| Start || Received and appended 1 log entry, lastLogIndex: 2.
+021250 LOG1 logIndex: 1, recordIndex:1
+021252 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 1, PrevLogIndex: 1, PrevLogTerm:2, LeaderCommit: 1 
+021264 LOG1 logIndex: 1, recordIndex:1
+021264 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 1, PrevLogIndex: 1, PrevLogTerm:2, LeaderCommit: 1 
+021269 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+021269 LOG1 logIndex: 1, recordIndex:1
+021270 LOG1 S0 T2, || Append || Appended 1 log entry, lastLogIndex: 2.
+021270 LOG1 logIndex: 2, recordIndex:2
+021272 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+021272 LOG1 S1 T2, Leader|| Update || Updated server 0 with nextIndex: 3, matchIndex: 2 
+021272 LOG1 logIndex: 2, recordIndex:2
+021272 LOG1 S1 T2, Leader|| Updated || Updated commitIndex from 1 to 2.||
+021273 LOG1 logIndex: 2, recordIndex:2
+021273 LOG1 S1 T2, || Applying logs with index: 2, command: 8143000349911853241.
+021273 LOG1 S1 T2, || logs: [{<nil> 0} {4595421112717539338 2} {8143000349911853241 2}].
+022261 LOG1 logIndex: 2, recordIndex:2
+022263 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 2, PrevLogTerm:2, LeaderCommit: 2 
+022263 LOG1 logIndex: 1, recordIndex:1
+022263 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 1, PrevLogIndex: 1, PrevLogTerm:2, LeaderCommit: 2 
+022269 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+022269 LOG1 logIndex: 2, recordIndex:2
+022270 LOG1 S0 T2, || Commit || Commit to 2
+022271 LOG1 logIndex: 2, recordIndex:2
+022271 LOG1 S0 T2, || Applying logs with index: 2, command: 8143000349911853241.
+022271 LOG1 S0 T2, || logs: [{<nil> 0} {4595421112717539338 2} {8143000349911853241 2}].
+022272 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+022346 WARN Got here
+022347 LOG1 S1 T2, Leader|| Start || Received and appended 1 log entry, lastLogIndex: 3.
+022348 LOG1 S1 T2, Leader|| Start || Received and appended 1 log entry, lastLogIndex: 4.
+022349 LOG1 S1 T2, Leader|| Start || Received and appended 1 log entry, lastLogIndex: 5.
+022349 LOG1 S1 T2, Leader|| Start || Received and appended 1 log entry, lastLogIndex: 6.
+022350 LOG1 S1 T2, Leader|| Start || Received and appended 1 log entry, lastLogIndex: 7.
+022351 LOG1 S1 T2, Leader|| Start || Received and appended 1 log entry, lastLogIndex: 8.
+022352 LOG1 S1 T2, Leader|| Start || Received and appended 1 log entry, lastLogIndex: 9.
+022353 LOG1 S1 T2, Leader|| Start || Received and appended 1 log entry, lastLogIndex: 10.
+022354 LOG1 S1 T2, Leader|| Start || Received and appended 1 log entry, lastLogIndex: 11.
+022354 LOG1 S1 T2, Leader|| Start || Received and appended 1 log entry, lastLogIndex: 12.
+022355 LOG1 S1 T2, Leader|| Start || Received and appended 1 log entry, lastLogIndex: 13.
+022356 LOG1 S1 T2, Leader|| Start || Received and appended 1 log entry, lastLogIndex: 14.
+023262 LOG1 logIndex: 2, recordIndex:2
+023265 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 12, PrevLogIndex: 2, PrevLogTerm:2, LeaderCommit: 2 
+023275 LOG1 logIndex: 1, recordIndex:1
+023276 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 13, PrevLogIndex: 1, PrevLogTerm:2, LeaderCommit: 2 
+023281 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+023281 LOG1 logIndex: 2, recordIndex:2
+023281 LOG1 S0 T2, || Append || Appended 1 log entry, lastLogIndex: 3.
+023281 LOG1 logIndex: 3, recordIndex:3
+023282 LOG1 S0 T2, || Append || Appended 1 log entry, lastLogIndex: 4.
+023282 LOG1 logIndex: 4, recordIndex:4
+023282 LOG1 S0 T2, || Append || Appended 1 log entry, lastLogIndex: 5.
+023282 LOG1 logIndex: 5, recordIndex:5
+023282 LOG1 S0 T2, || Append || Appended 1 log entry, lastLogIndex: 6.
+023282 LOG1 logIndex: 6, recordIndex:6
+023283 LOG1 S0 T2, || Append || Appended 1 log entry, lastLogIndex: 7.
+023283 LOG1 logIndex: 7, recordIndex:7
+023283 LOG1 S0 T2, || Append || Appended 1 log entry, lastLogIndex: 8.
+023283 LOG1 logIndex: 8, recordIndex:8
+023283 LOG1 S0 T2, || Append || Appended 1 log entry, lastLogIndex: 9.
+023283 LOG1 logIndex: 9, recordIndex:9
+023283 LOG1 S0 T2, || Append || Appended 1 log entry, lastLogIndex: 10.
+023283 LOG1 logIndex: 10, recordIndex:10
+023284 LOG1 S0 T2, || Append || Appended 1 log entry, lastLogIndex: 11.
+023284 LOG1 logIndex: 11, recordIndex:11
+023284 LOG1 S0 T2, || Append || Appended 1 log entry, lastLogIndex: 12.
+023284 LOG1 logIndex: 12, recordIndex:12
+023284 LOG1 S0 T2, || Append || Appended 1 log entry, lastLogIndex: 13.
+023284 LOG1 logIndex: 13, recordIndex:13
+023284 LOG1 S0 T2, || Append || Appended 1 log entry, lastLogIndex: 14.
+023285 LOG1 logIndex: 14, recordIndex:14
+023286 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+023286 LOG1 S1 T2, Leader|| Update || Updated server 0 with nextIndex: 15, matchIndex: 14 
+023286 LOG1 logIndex: 3, recordIndex:3
+023287 LOG1 S1 T2, Leader|| Updated || Updated commitIndex from 2 to 3.||
+023287 LOG1 logIndex: 4, recordIndex:4
+023287 LOG1 S1 T2, Leader|| Updated || Updated commitIndex from 3 to 4.||
+023287 LOG1 logIndex: 5, recordIndex:5
+023287 LOG1 S1 T2, Leader|| Updated || Updated commitIndex from 4 to 5.||
+023287 LOG1 logIndex: 6, recordIndex:6
+023287 LOG1 S1 T2, Leader|| Updated || Updated commitIndex from 5 to 6.||
+023287 LOG1 logIndex: 7, recordIndex:7
+023287 LOG1 S1 T2, Leader|| Updated || Updated commitIndex from 6 to 7.||
+023287 LOG1 logIndex: 8, recordIndex:8
+023288 LOG1 S1 T2, Leader|| Updated || Updated commitIndex from 7 to 8.||
+023288 LOG1 logIndex: 9, recordIndex:9
+023288 LOG1 S1 T2, Leader|| Updated || Updated commitIndex from 8 to 9.||
+023288 LOG1 logIndex: 10, recordIndex:10
+023288 LOG1 S1 T2, Leader|| Updated || Updated commitIndex from 9 to 10.||
+023288 LOG1 logIndex: 11, recordIndex:11
+023288 LOG1 S1 T2, Leader|| Updated || Updated commitIndex from 10 to 11.||
+023288 LOG1 logIndex: 12, recordIndex:12
+023288 LOG1 S1 T2, Leader|| Updated || Updated commitIndex from 11 to 12.||
+023288 LOG1 logIndex: 13, recordIndex:13
+023288 LOG1 S1 T2, Leader|| Updated || Updated commitIndex from 12 to 13.||
+023289 LOG1 logIndex: 14, recordIndex:14
+023289 LOG1 S1 T2, Leader|| Updated || Updated commitIndex from 13 to 14.||
+023289 LOG1 logIndex: 3, recordIndex:3
+023289 LOG1 S1 T2, || Applying logs with index: 3, command: 8810974360582558085.
+023289 LOG1 S1 T2, || logs: [{<nil> 0} {4595421112717539338 2} {8143000349911853241 2} {8810974360582558085 2} {7473435410440426222 2} {7056288179775861426 2} {467430628794924458 2} {1169911811769752953 2} {623043508668534955 2} {6627371190132306232 2} {1053687794779397837 2} {5060212067941311220 2} {3049662004401300609 2} {5591698399418864686 2} {8602408520253604195 2}].
+023290 LOG1 logIndex: 4, recordIndex:4
+023290 LOG1 S1 T2, || Applying logs with index: 4, command: 7473435410440426222.
+023291 LOG1 S1 T2, || logs: [{<nil> 0} {4595421112717539338 2} {8143000349911853241 2} {8810974360582558085 2} {7473435410440426222 2} {7056288179775861426 2} {467430628794924458 2} {1169911811769752953 2} {623043508668534955 2} {6627371190132306232 2} {1053687794779397837 2} {5060212067941311220 2} {3049662004401300609 2} {5591698399418864686 2} {8602408520253604195 2}].
+023291 LOG1 logIndex: 5, recordIndex:5
+023291 LOG1 S1 T2, || Applying logs with index: 5, command: 7056288179775861426.
+023291 LOG1 S1 T2, || logs: [{<nil> 0} {4595421112717539338 2} {8143000349911853241 2} {8810974360582558085 2} {7473435410440426222 2} {7056288179775861426 2} {467430628794924458 2} {1169911811769752953 2} {623043508668534955 2} {6627371190132306232 2} {1053687794779397837 2} {5060212067941311220 2} {3049662004401300609 2} {5591698399418864686 2} {8602408520253604195 2}].
+023292 LOG1 logIndex: 6, recordIndex:6
+023292 LOG1 S1 T2, || Applying logs with index: 6, command: 467430628794924458.
+023292 LOG1 S1 T2, || logs: [{<nil> 0} {4595421112717539338 2} {8143000349911853241 2} {8810974360582558085 2} {7473435410440426222 2} {7056288179775861426 2} {467430628794924458 2} {1169911811769752953 2} {623043508668534955 2} {6627371190132306232 2} {1053687794779397837 2} {5060212067941311220 2} {3049662004401300609 2} {5591698399418864686 2} {8602408520253604195 2}].
+023293 LOG1 logIndex: 7, recordIndex:7
+023293 LOG1 S1 T2, || Applying logs with index: 7, command: 1169911811769752953.
+023294 LOG1 S1 T2, || logs: [{<nil> 0} {4595421112717539338 2} {8143000349911853241 2} {8810974360582558085 2} {7473435410440426222 2} {7056288179775861426 2} {467430628794924458 2} {1169911811769752953 2} {623043508668534955 2} {6627371190132306232 2} {1053687794779397837 2} {5060212067941311220 2} {3049662004401300609 2} {5591698399418864686 2} {8602408520253604195 2}].
+023294 LOG1 logIndex: 8, recordIndex:8
+023294 LOG1 S1 T2, || Applying logs with index: 8, command: 623043508668534955.
+023295 LOG1 S1 T2, || logs: [{<nil> 0} {4595421112717539338 2} {8143000349911853241 2} {8810974360582558085 2} {7473435410440426222 2} {7056288179775861426 2} {467430628794924458 2} {1169911811769752953 2} {623043508668534955 2} {6627371190132306232 2} {1053687794779397837 2} {5060212067941311220 2} {3049662004401300609 2} {5591698399418864686 2} {8602408520253604195 2}].
+023295 LOG1 logIndex: 9, recordIndex:9
+023295 LOG1 S1 T2, || Applying logs with index: 9, command: 6627371190132306232.
+023295 LOG1 S1 T2, || logs: [{<nil> 0} {4595421112717539338 2} {8143000349911853241 2} {8810974360582558085 2} {7473435410440426222 2} {7056288179775861426 2} {467430628794924458 2} {1169911811769752953 2} {623043508668534955 2} {6627371190132306232 2} {1053687794779397837 2} {5060212067941311220 2} {3049662004401300609 2} {5591698399418864686 2} {8602408520253604195 2}].
+023296 LOG1 logIndex: 10, recordIndex:10
+023300 SNAP S1 T2, || Before snapshot: index: 0, log: [{<nil> 0} {4595421112717539338 2} {8143000349911853241 2} {8810974360582558085 2} {7473435410440426222 2} {7056288179775861426 2} {467430628794924458 2} {1169911811769752953 2} {623043508668534955 2} {6627371190132306232 2} {1053687794779397837 2} {5060212067941311220 2} {3049662004401300609 2} {5591698399418864686 2} {8602408520253604195 2}].
+023306 LOG1 logIndex: 9, recordIndex:9
+023306 SNAP S1 T2, || After snapshot: index: 9, log: [{6627371190132306232 2} {1053687794779397837 2} {5060212067941311220 2} {3049662004401300609 2} {5591698399418864686 2} {8602408520253604195 2}].
+024265 LOG1 logIndex: 14, recordIndex:5
+024266 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 14, PrevLogTerm:2, LeaderCommit: 14 
+024267 SNAP S1 T2, sending InstallSnapshot RPC to 2
+024278 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+024279 LOG1 logIndex: 14, recordIndex:14
+024279 LOG1 S0 T2, || Commit || Commit to 14
+024281 LOG1 logIndex: 3, recordIndex:3
+024281 LOG1 S0 T2, || Applying logs with index: 3, command: 8810974360582558085.
+024281 LOG1 S0 T2, || logs: [{<nil> 0} {4595421112717539338 2} {8143000349911853241 2} {8810974360582558085 2} {7473435410440426222 2} {7056288179775861426 2} {467430628794924458 2} {1169911811769752953 2} {623043508668534955 2} {6627371190132306232 2} {1053687794779397837 2} {5060212067941311220 2} {3049662004401300609 2} {5591698399418864686 2} {8602408520253604195 2}].
+024282 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+024283 LOG1 logIndex: 4, recordIndex:4
+024284 LOG1 S0 T2, || Applying logs with index: 4, command: 7473435410440426222.
+024284 LOG1 S0 T2, || logs: [{<nil> 0} {4595421112717539338 2} {8143000349911853241 2} {8810974360582558085 2} {7473435410440426222 2} {7056288179775861426 2} {467430628794924458 2} {1169911811769752953 2} {623043508668534955 2} {6627371190132306232 2} {1053687794779397837 2} {5060212067941311220 2} {3049662004401300609 2} {5591698399418864686 2} {8602408520253604195 2}].
+024285 LOG1 logIndex: 5, recordIndex:5
+024285 LOG1 S0 T2, || Applying logs with index: 5, command: 7056288179775861426.
+024285 LOG1 S0 T2, || logs: [{<nil> 0} {4595421112717539338 2} {8143000349911853241 2} {8810974360582558085 2} {7473435410440426222 2} {7056288179775861426 2} {467430628794924458 2} {1169911811769752953 2} {623043508668534955 2} {6627371190132306232 2} {1053687794779397837 2} {5060212067941311220 2} {3049662004401300609 2} {5591698399418864686 2} {8602408520253604195 2}].
+024286 LOG1 logIndex: 6, recordIndex:6
+024286 LOG1 S0 T2, || Applying logs with index: 6, command: 467430628794924458.
+024286 LOG1 S0 T2, || logs: [{<nil> 0} {4595421112717539338 2} {8143000349911853241 2} {8810974360582558085 2} {7473435410440426222 2} {7056288179775861426 2} {467430628794924458 2} {1169911811769752953 2} {623043508668534955 2} {6627371190132306232 2} {1053687794779397837 2} {5060212067941311220 2} {3049662004401300609 2} {5591698399418864686 2} {8602408520253604195 2}].
+024287 LOG1 logIndex: 7, recordIndex:7
+024287 LOG1 S0 T2, || Applying logs with index: 7, command: 1169911811769752953.
+024287 LOG1 S0 T2, || logs: [{<nil> 0} {4595421112717539338 2} {8143000349911853241 2} {8810974360582558085 2} {7473435410440426222 2} {7056288179775861426 2} {467430628794924458 2} {1169911811769752953 2} {623043508668534955 2} {6627371190132306232 2} {1053687794779397837 2} {5060212067941311220 2} {3049662004401300609 2} {5591698399418864686 2} {8602408520253604195 2}].
+024287 LOG1 logIndex: 8, recordIndex:8
+024288 LOG1 S0 T2, || Applying logs with index: 8, command: 623043508668534955.
+024288 LOG1 S0 T2, || logs: [{<nil> 0} {4595421112717539338 2} {8143000349911853241 2} {8810974360582558085 2} {7473435410440426222 2} {7056288179775861426 2} {467430628794924458 2} {1169911811769752953 2} {623043508668534955 2} {6627371190132306232 2} {1053687794779397837 2} {5060212067941311220 2} {3049662004401300609 2} {5591698399418864686 2} {8602408520253604195 2}].
+024288 LOG1 logIndex: 9, recordIndex:9
+024288 LOG1 S0 T2, || Applying logs with index: 9, command: 6627371190132306232.
+024288 LOG1 S0 T2, || logs: [{<nil> 0} {4595421112717539338 2} {8143000349911853241 2} {8810974360582558085 2} {7473435410440426222 2} {7056288179775861426 2} {467430628794924458 2} {1169911811769752953 2} {623043508668534955 2} {6627371190132306232 2} {1053687794779397837 2} {5060212067941311220 2} {3049662004401300609 2} {5591698399418864686 2} {8602408520253604195 2}].
+024289 LOG1 logIndex: 10, recordIndex:10
+024291 SNAP S0 T2, || Before snapshot: index: 0, log: [{<nil> 0} {4595421112717539338 2} {8143000349911853241 2} {8810974360582558085 2} {7473435410440426222 2} {7056288179775861426 2} {467430628794924458 2} {1169911811769752953 2} {623043508668534955 2} {6627371190132306232 2} {1053687794779397837 2} {5060212067941311220 2} {3049662004401300609 2} {5591698399418864686 2} {8602408520253604195 2}].
+024291 LOG1 logIndex: 9, recordIndex:9
+024292 SNAP S0 T2, || After snapshot: index: 9, log: [{6627371190132306232 2} {1053687794779397837 2} {5060212067941311220 2} {3049662004401300609 2} {5591698399418864686 2} {8602408520253604195 2}].
+025276 LOG1 logIndex: 14, recordIndex:5
+025277 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 14, PrevLogTerm:2, LeaderCommit: 14 
+025278 SNAP S1 T2, sending InstallSnapshot RPC to 2
+025281 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+025281 LOG1 logIndex: 14, recordIndex:5
+025282 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+026280 LOG1 logIndex: 14, recordIndex:5
+026283 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 14, PrevLogTerm:2, LeaderCommit: 14 
+026290 SNAP S1 T2, sending InstallSnapshot RPC to 2
+026294 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+026295 LOG1 logIndex: 14, recordIndex:5
+026297 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+026543 WARN S1, Failed in InstallSnapshotReply PRC from 1 to 2! (term: 2)
+026543 SNAP S1 T0, received InstallSnapshot reply from 2, reply term: 0
+026544 SNAP S1 T2, Leader|| updated server: 2 nextIndex to 10, matchIndex to:9.
+027288 VOTE S2 T2, timed out
+027290 VOTE S2 T3, Started election
+027288 LOG1 logIndex: 14, recordIndex:5
+027291 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 14, PrevLogTerm:2, LeaderCommit: 14 
+027291 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 5, PrevLogIndex: 9, PrevLogTerm:2, LeaderCommit: 14 
+027292 VOTE S2 T3, sending RequestVote RPC to 1
+027294 VOTE S2 T3, sending RequestVote RPC to 0
+027298 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+027299 LOG1 logIndex: 14, recordIndex:5
+027302 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+028298 LOG1 logIndex: 14, recordIndex:5
+028300 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 14, PrevLogTerm:2, LeaderCommit: 14 
+028301 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 5, PrevLogIndex: 9, PrevLogTerm:2, LeaderCommit: 14 
+028306 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+028306 LOG1 logIndex: 14, recordIndex:5
+028309 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+029303 LOG1 logIndex: 14, recordIndex:5
+029305 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 14, PrevLogTerm:2, LeaderCommit: 14 
+029305 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 5, PrevLogIndex: 9, PrevLogTerm:2, LeaderCommit: 14 
+029310 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+029310 LOG1 logIndex: 14, recordIndex:5
+029313 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+030303 LOG1 logIndex: 14, recordIndex:5
+030305 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 14, PrevLogTerm:2, LeaderCommit: 14 
+030306 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 5, PrevLogIndex: 9, PrevLogTerm:2, LeaderCommit: 14 
+030311 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+030312 LOG1 logIndex: 14, recordIndex:5
+030318 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+031314 LOG1 logIndex: 14, recordIndex:5
+031317 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 14, PrevLogTerm:2, LeaderCommit: 14 
+031317 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 5, PrevLogIndex: 9, PrevLogTerm:2, LeaderCommit: 14 
+031322 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+031323 LOG1 logIndex: 14, recordIndex:5
+031326 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+032323 LOG1 logIndex: 14, recordIndex:5
+032326 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 14, PrevLogTerm:2, LeaderCommit: 14 
+032326 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 5, PrevLogIndex: 9, PrevLogTerm:2, LeaderCommit: 14 
+032331 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+032331 LOG1 logIndex: 14, recordIndex:5
+032334 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+032795 WARN S1, Failed in InstallSnapshotReply PRC from 1 to 2! (term: 2)
+032797 SNAP S1 T0, received InstallSnapshot reply from 2, reply term: 0
+032797 SNAP S1 T2, Leader|| updated server: 2 nextIndex to 10, matchIndex to:9.
+033338 LOG1 logIndex: 14, recordIndex:5
+033340 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 14, PrevLogTerm:2, LeaderCommit: 14 
+033340 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 5, PrevLogIndex: 9, PrevLogTerm:2, LeaderCommit: 14 
+033346 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+033346 LOG1 logIndex: 14, recordIndex:5
+033349 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+034344 LOG1 logIndex: 14, recordIndex:5
+034346 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 14, PrevLogTerm:2, LeaderCommit: 14 
+034346 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 5, PrevLogIndex: 9, PrevLogTerm:2, LeaderCommit: 14 
+034351 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+034351 LOG1 logIndex: 14, recordIndex:5
+034356 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+035349 VOTE S2 T3, timed out
+035351 VOTE S2 T4, Started election
+035349 LOG1 logIndex: 14, recordIndex:5
+035352 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 14, PrevLogTerm:2, LeaderCommit: 14 
+035353 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 5, PrevLogIndex: 9, PrevLogTerm:2, LeaderCommit: 14 
+035352 VOTE S2 T4, sending RequestVote RPC to 0
+035352 VOTE S2 T4, sending RequestVote RPC to 1
+035362 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+035363 LOG1 logIndex: 14, recordIndex:5
+035365 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+036357 LOG1 logIndex: 14, recordIndex:5
+036359 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 14, PrevLogTerm:2, LeaderCommit: 14 
+036360 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 5, PrevLogIndex: 9, PrevLogTerm:2, LeaderCommit: 14 
+036367 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+036367 LOG1 logIndex: 14, recordIndex:5
+036370 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+037362 LOG1 logIndex: 14, recordIndex:5
+037365 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 14, PrevLogTerm:2, LeaderCommit: 14 
+037368 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 5, PrevLogIndex: 9, PrevLogTerm:2, LeaderCommit: 14 
+037373 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+037374 LOG1 logIndex: 14, recordIndex:5
+037377 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+038372 LOG1 logIndex: 14, recordIndex:5
+038375 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 14, PrevLogTerm:2, LeaderCommit: 14 
+038375 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 5, PrevLogIndex: 9, PrevLogTerm:2, LeaderCommit: 14 
+038380 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+038381 LOG1 logIndex: 14, recordIndex:5
+038384 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+039377 LOG1 logIndex: 14, recordIndex:5
+039379 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 14, PrevLogTerm:2, LeaderCommit: 14 
+039380 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 5, PrevLogIndex: 9, PrevLogTerm:2, LeaderCommit: 14 
+039388 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+039389 LOG1 logIndex: 14, recordIndex:5
+039391 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+040382 LOG1 logIndex: 14, recordIndex:5
+040384 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 14, PrevLogTerm:2, LeaderCommit: 14 
+040385 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 5, PrevLogIndex: 9, PrevLogTerm:2, LeaderCommit: 14 
+040391 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+040391 LOG1 logIndex: 14, recordIndex:5
+040394 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+041383 LOG1 logIndex: 14, recordIndex:5
+041385 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 14, PrevLogTerm:2, LeaderCommit: 14 
+041385 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 5, PrevLogIndex: 9, PrevLogTerm:2, LeaderCommit: 14 
+041390 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+041390 LOG1 logIndex: 14, recordIndex:5
+041393 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+042393 LOG1 logIndex: 14, recordIndex:5
+042395 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 14, PrevLogTerm:2, LeaderCommit: 14 
+042395 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 5, PrevLogIndex: 9, PrevLogTerm:2, LeaderCommit: 14 
+042400 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+042401 LOG1 logIndex: 14, recordIndex:5
+042403 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+042425 LOG1 S1 T2, Leader|| Start || Received and appended 1 log entry, lastLogIndex: 15.
+043403 VOTE S2 T4, timed out
+043405 VOTE S2 T5, Started election
+043403 LOG1 logIndex: 14, recordIndex:5
+043406 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 1, PrevLogIndex: 14, PrevLogTerm:2, LeaderCommit: 14 
+043406 VOTE S2 T5, sending RequestVote RPC to 1
+043408 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 6, PrevLogIndex: 9, PrevLogTerm:2, LeaderCommit: 14 
+043406 VOTE S2 T5, sending RequestVote RPC to 0
+043414 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+043414 LOG1 logIndex: 14, recordIndex:5
+043414 LOG1 S0 T2, || Append || Appended 1 log entry, lastLogIndex: 15.
+043414 LOG1 logIndex: 15, recordIndex:6
+043417 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+043417 LOG1 S1 T2, Leader|| Update || Updated server 0 with nextIndex: 16, matchIndex: 15 
+043418 LOG1 logIndex: 15, recordIndex:6
+043418 LOG1 S1 T2, Leader|| Updated || Updated commitIndex from 14 to 15.||
+044414 LOG1 logIndex: 15, recordIndex:6
+044416 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 15, PrevLogTerm:2, LeaderCommit: 15 
+044416 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 6, PrevLogIndex: 9, PrevLogTerm:2, LeaderCommit: 15 
+044428 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+044429 LOG1 logIndex: 15, recordIndex:6
+044429 LOG1 S0 T2, || Commit || Commit to 15
+044432 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+044975 LOG1 Failed in AppendEntries PRC from 1 to 2! (term: 2)
+045327 LOG1 Failed in AppendEntries PRC from 1 to 2! (term: 2)
+045416 LOG1 logIndex: 15, recordIndex:6
+045416 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 15, PrevLogTerm:2, LeaderCommit: 15 
+045417 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 6, PrevLogIndex: 9, PrevLogTerm:2, LeaderCommit: 15 
+045422 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+045423 LOG1 logIndex: 15, recordIndex:6
+045425 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+046420 LOG1 logIndex: 15, recordIndex:6
+046448 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 15, PrevLogTerm:2, LeaderCommit: 15 
+046449 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 6, PrevLogIndex: 9, PrevLogTerm:2, LeaderCommit: 15 
+046452 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+046452 LOG1 logIndex: 15, recordIndex:6
+046454 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+047429 LOG1 logIndex: 15, recordIndex:6
+047431 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 15, PrevLogTerm:2, LeaderCommit: 15 
+047432 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 6, PrevLogIndex: 9, PrevLogTerm:2, LeaderCommit: 15 
+047437 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+047438 LOG1 logIndex: 15, recordIndex:6
+047440 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+047570 VOTE Failed in RequestVote PRC from 2 to 1! (term: 4)
+048439 LOG1 logIndex: 15, recordIndex:6
+048441 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 15, PrevLogTerm:2, LeaderCommit: 15 
+048442 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 6, PrevLogIndex: 9, PrevLogTerm:2, LeaderCommit: 15 
+048448 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+048448 LOG1 logIndex: 15, recordIndex:6
+048451 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+048898 LOG1 Failed in AppendEntries PRC from 1 to 2! (term: 2)
+049440 LOG1 logIndex: 15, recordIndex:6
+049442 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 15, PrevLogTerm:2, LeaderCommit: 15 
+049443 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 6, PrevLogIndex: 9, PrevLogTerm:2, LeaderCommit: 15 
+049447 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+049448 LOG1 logIndex: 15, recordIndex:6
+049451 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+049532 VOTE Failed in RequestVote PRC from 2 to 0! (term: 4)
+050450 LOG1 logIndex: 15, recordIndex:6
+050453 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 15, PrevLogTerm:2, LeaderCommit: 15 
+050453 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 6, PrevLogIndex: 9, PrevLogTerm:2, LeaderCommit: 15 
+050461 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+050461 LOG1 logIndex: 15, recordIndex:6
+050464 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+050724 LOG1 Failed in AppendEntries PRC from 1 to 2! (term: 2)
+051454 VOTE S2 T5, timed out
+051455 VOTE S2 T6, Started election
+051456 VOTE S2 T6, sending RequestVote RPC to 1
+051456 VOTE S2 T6, sending RequestVote RPC to 0
+051456 LOG1 logIndex: 15, recordIndex:6
+051458 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 15, PrevLogTerm:2, LeaderCommit: 15 
+051458 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 6, PrevLogIndex: 9, PrevLogTerm:2, LeaderCommit: 15 
+051467 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+051467 LOG1 logIndex: 15, recordIndex:6
+051470 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+052461 LOG1 logIndex: 15, recordIndex:6
+052467 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 15, PrevLogTerm:2, LeaderCommit: 15 
+052467 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 6, PrevLogIndex: 9, PrevLogTerm:2, LeaderCommit: 15 
+052474 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+052474 LOG1 logIndex: 15, recordIndex:6
+052477 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+052532 LOG1 Failed in AppendEntries PRC from 1 to 2! (term: 2)
+053470 LOG1 logIndex: 15, recordIndex:6
+053473 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 15, PrevLogTerm:2, LeaderCommit: 15 
+053473 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 6, PrevLogIndex: 9, PrevLogTerm:2, LeaderCommit: 15 
+053478 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+053478 LOG1 logIndex: 15, recordIndex:6
+053481 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+054473 LOG1 logIndex: 15, recordIndex:6
+054475 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 15, PrevLogTerm:2, LeaderCommit: 15 
+054475 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 6, PrevLogIndex: 9, PrevLogTerm:2, LeaderCommit: 15 
+054481 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+054481 LOG1 logIndex: 15, recordIndex:6
+054484 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+055483 LOG1 logIndex: 15, recordIndex:6
+055485 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 15, PrevLogTerm:2, LeaderCommit: 15 
+055486 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 6, PrevLogIndex: 9, PrevLogTerm:2, LeaderCommit: 15 
+055516 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+055517 LOG1 logIndex: 15, recordIndex:6
+055520 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+055662 LOG1 Failed in AppendEntries PRC from 1 to 2! (term: 2)
+056489 LOG1 logIndex: 15, recordIndex:6
+056491 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 15, PrevLogTerm:2, LeaderCommit: 15 
+056492 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 6, PrevLogIndex: 9, PrevLogTerm:2, LeaderCommit: 15 
+056497 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+056497 LOG1 logIndex: 15, recordIndex:6
+056500 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+057133 LOG1 Failed in AppendEntries PRC from 1 to 2! (term: 2)
+057495 LOG1 logIndex: 15, recordIndex:6
+057496 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 15, PrevLogTerm:2, LeaderCommit: 15 
+057500 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 6, PrevLogIndex: 9, PrevLogTerm:2, LeaderCommit: 15 
+057504 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+057504 LOG1 logIndex: 15, recordIndex:6
+057506 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+058497 LOG1 logIndex: 15, recordIndex:6
+058499 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 15, PrevLogTerm:2, LeaderCommit: 15 
+058500 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 6, PrevLogIndex: 9, PrevLogTerm:2, LeaderCommit: 15 
+058504 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+058505 LOG1 logIndex: 15, recordIndex:6
+058508 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+059097 VOTE Failed in RequestVote PRC from 2 to 0! (term: 3)
+059189 LOG1 Failed in AppendEntries PRC from 1 to 2! (term: 2)
+059210 LOG1 Failed in AppendEntries PRC from 1 to 2! (term: 2)
+059508 LOG1 logIndex: 15, recordIndex:6
+059509 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 15, PrevLogTerm:2, LeaderCommit: 15 
+059510 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 6, PrevLogIndex: 9, PrevLogTerm:2, LeaderCommit: 15 
+059509 VOTE S2 T6, timed out
+059513 VOTE S2 T7, Started election
+059513 VOTE S2 T7, sending RequestVote RPC to 1
+059514 VOTE S2 T7, sending RequestVote RPC to 0
+059515 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+059516 LOG1 logIndex: 15, recordIndex:6
+059519 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+060510 LOG1 logIndex: 15, recordIndex:6
+060516 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 15, PrevLogTerm:2, LeaderCommit: 15 
+060516 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 6, PrevLogIndex: 9, PrevLogTerm:2, LeaderCommit: 15 
+060521 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+060522 LOG1 logIndex: 15, recordIndex:6
+060524 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+060583 LOG1 Failed in AppendEntries PRC from 1 to 2! (term: 2)
+061376 VOTE Failed in RequestVote PRC from 2 to 1! (term: 5)
+061520 LOG1 logIndex: 15, recordIndex:6
+061521 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 15, PrevLogTerm:2, LeaderCommit: 15 
+061522 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 6, PrevLogIndex: 9, PrevLogTerm:2, LeaderCommit: 15 
+061533 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+061534 LOG1 logIndex: 15, recordIndex:6
+061537 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+062428 LOG1 S1 T2, Leader|| Start || Received and appended 1 log entry, lastLogIndex: 16.
+062531 LOG1 logIndex: 15, recordIndex:6
+062535 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 1, PrevLogIndex: 15, PrevLogTerm:2, LeaderCommit: 15 
+062536 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 7, PrevLogIndex: 9, PrevLogTerm:2, LeaderCommit: 15 
+062543 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+062543 LOG1 logIndex: 15, recordIndex:6
+062543 LOG1 S0 T2, || Append || Appended 1 log entry, lastLogIndex: 16.
+062543 LOG1 logIndex: 16, recordIndex:7
+062546 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+062546 LOG1 S1 T2, Leader|| Update || Updated server 0 with nextIndex: 17, matchIndex: 16 
+062546 LOG1 logIndex: 16, recordIndex:7
+062546 LOG1 S1 T2, Leader|| Updated || Updated commitIndex from 15 to 16.||
+063544 LOG1 logIndex: 16, recordIndex:7
+063547 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 16, PrevLogTerm:2, LeaderCommit: 16 
+063547 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 7, PrevLogIndex: 9, PrevLogTerm:2, LeaderCommit: 16 
+063552 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+063553 LOG1 logIndex: 16, recordIndex:7
+063553 LOG1 S0 T2, || Commit || Commit to 16
+063556 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+063591 LOG1 Failed in AppendEntries PRC from 1 to 2! (term: 2)
+063907 LOG1 Failed in AppendEntries PRC from 1 to 2! (term: 2)
+064545 LOG1 logIndex: 16, recordIndex:7
+064548 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 16, PrevLogTerm:2, LeaderCommit: 16 
+064548 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 7, PrevLogIndex: 9, PrevLogTerm:2, LeaderCommit: 16 
+064552 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+064552 LOG1 logIndex: 16, recordIndex:7
+064553 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+065363 LOG1 Failed in AppendEntries PRC from 1 to 2! (term: 2)
+065551 LOG1 logIndex: 16, recordIndex:7
+065558 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 16, PrevLogTerm:2, LeaderCommit: 16 
+065558 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 7, PrevLogIndex: 9, PrevLogTerm:2, LeaderCommit: 16 
+065564 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+065565 LOG1 logIndex: 16, recordIndex:7
+065567 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+065740 LOG1 Failed in AppendEntries PRC from 1 to 2! (term: 2)
+066565 LOG1 logIndex: 16, recordIndex:7
+066572 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 16, PrevLogTerm:2, LeaderCommit: 16 
+066573 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 7, PrevLogIndex: 9, PrevLogTerm:2, LeaderCommit: 16 
+066569 VOTE S2 T7, timed out
+066580 VOTE S2 T8, Started election
+066581 VOTE S2 T8, sending RequestVote RPC to 1
+066588 VOTE S2 T8, sending RequestVote RPC to 0
+066589 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+066589 LOG1 logIndex: 16, recordIndex:7
+066592 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+067576 LOG1 logIndex: 16, recordIndex:7
+067588 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 16, PrevLogTerm:2, LeaderCommit: 16 
+067589 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 7, PrevLogIndex: 9, PrevLogTerm:2, LeaderCommit: 16 
+067595 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+067595 LOG1 logIndex: 16, recordIndex:7
+067598 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+067745 LOG1 Failed in AppendEntries PRC from 1 to 2! (term: 2)
+068588 LOG1 logIndex: 16, recordIndex:7
+068590 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 16, PrevLogTerm:2, LeaderCommit: 16 
+068590 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 7, PrevLogIndex: 9, PrevLogTerm:2, LeaderCommit: 16 
+068599 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+068599 LOG1 logIndex: 16, recordIndex:7
+068603 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+068925 LOG1 Failed in AppendEntries PRC from 1 to 2! (term: 2)
+069602 LOG1 logIndex: 16, recordIndex:7
+069606 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 16, PrevLogTerm:2, LeaderCommit: 16 
+069606 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 7, PrevLogIndex: 9, PrevLogTerm:2, LeaderCommit: 16 
+069616 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+069617 LOG1 logIndex: 16, recordIndex:7
+069619 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+070614 LOG1 logIndex: 16, recordIndex:7
+070616 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 16, PrevLogTerm:2, LeaderCommit: 16 
+070616 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 7, PrevLogIndex: 9, PrevLogTerm:2, LeaderCommit: 16 
+070626 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+070627 LOG1 logIndex: 16, recordIndex:7
+070630 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+071620 LOG1 logIndex: 16, recordIndex:7
+071621 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 16, PrevLogTerm:2, LeaderCommit: 16 
+071622 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 7, PrevLogIndex: 9, PrevLogTerm:2, LeaderCommit: 16 
+071625 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+071625 LOG1 logIndex: 16, recordIndex:7
+071627 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+071922 LOG1 Failed in AppendEntries PRC from 1 to 2! (term: 2)
+072128 VOTE Failed in RequestVote PRC from 2 to 1! (term: 8)
+072632 LOG1 logIndex: 16, recordIndex:7
+072634 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 16, PrevLogTerm:2, LeaderCommit: 16 
+072634 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 7, PrevLogIndex: 9, PrevLogTerm:2, LeaderCommit: 16 
+072640 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+072640 LOG1 logIndex: 16, recordIndex:7
+072644 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+073637 LOG1 logIndex: 16, recordIndex:7
+073639 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 16, PrevLogTerm:2, LeaderCommit: 16 
+073639 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 7, PrevLogIndex: 9, PrevLogTerm:2, LeaderCommit: 16 
+073644 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+073644 LOG1 logIndex: 16, recordIndex:7
+073647 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+073960 LOG1 Failed in AppendEntries PRC from 1 to 2! (term: 2)
+074484 LOG1 Failed in AppendEntries PRC from 1 to 2! (term: 2)
+074643 VOTE S2 T8, timed out
+074645 VOTE S2 T9, Started election
+074644 LOG1 logIndex: 16, recordIndex:7
+074647 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 16, PrevLogTerm:2, LeaderCommit: 16 
+074647 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 7, PrevLogIndex: 9, PrevLogTerm:2, LeaderCommit: 16 
+074647 VOTE S2 T9, sending RequestVote RPC to 1
+074648 VOTE S2 T9, sending RequestVote RPC to 0
+074654 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+074654 LOG1 logIndex: 16, recordIndex:7
+074657 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+075597 VOTE Failed in RequestVote PRC from 2 to 1! (term: 7)
+075648 LOG1 logIndex: 16, recordIndex:7
+075648 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 16, PrevLogTerm:2, LeaderCommit: 16 
+075648 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 7, PrevLogIndex: 9, PrevLogTerm:2, LeaderCommit: 16 
+075659 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+075661 LOG1 logIndex: 16, recordIndex:7
+075663 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+075857 VOTE Failed in RequestVote PRC from 2 to 1! (term: 3)
+076652 LOG1 logIndex: 16, recordIndex:7
+076652 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 16, PrevLogTerm:2, LeaderCommit: 16 
+076652 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 7, PrevLogIndex: 9, PrevLogTerm:2, LeaderCommit: 16 
+076654 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+076654 LOG1 logIndex: 16, recordIndex:7
+076655 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+077478 VOTE Failed in RequestVote PRC from 2 to 0! (term: 6)
+077661 LOG1 logIndex: 16, recordIndex:7
+077662 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 16, PrevLogTerm:2, LeaderCommit: 16 
+077662 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 7, PrevLogIndex: 9, PrevLogTerm:2, LeaderCommit: 16 
+077666 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+077666 LOG1 logIndex: 16, recordIndex:7
+077668 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+077898 LOG1 Failed in AppendEntries PRC from 1 to 2! (term: 2)
+078036 WARN S1, Failed in InstallSnapshotReply PRC from 1 to 2! (term: 2)
+078037 SNAP S1 T0, received InstallSnapshot reply from 2, reply term: 0
+078037 SNAP S1 T2, Leader|| updated server: 2 nextIndex to 10, matchIndex to:9.
+078672 LOG1 logIndex: 16, recordIndex:7
+078677 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 16, PrevLogTerm:2, LeaderCommit: 16 
+078677 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 7, PrevLogIndex: 9, PrevLogTerm:2, LeaderCommit: 16 
+078681 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+078681 LOG1 logIndex: 16, recordIndex:7
+078684 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+078819 VOTE Failed in RequestVote PRC from 2 to 1! (term: 9)
+079682 LOG1 logIndex: 16, recordIndex:7
+079684 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 16, PrevLogTerm:2, LeaderCommit: 16 
+079684 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 7, PrevLogIndex: 9, PrevLogTerm:2, LeaderCommit: 16 
+079694 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+079694 LOG1 logIndex: 16, recordIndex:7
+079713 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+080691 LOG1 logIndex: 16, recordIndex:7
+080693 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 16, PrevLogTerm:2, LeaderCommit: 16 
+080694 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 7, PrevLogIndex: 9, PrevLogTerm:2, LeaderCommit: 16 
+080701 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+080701 LOG1 logIndex: 16, recordIndex:7
+080704 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+080795 LOG1 Failed in AppendEntries PRC from 1 to 2! (term: 2)
+081697 VOTE S2 T9, timed out
+081698 VOTE S2 T10, Started election
+081697 LOG1 logIndex: 16, recordIndex:7
+081699 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 16, PrevLogTerm:2, LeaderCommit: 16 
+081699 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 7, PrevLogIndex: 9, PrevLogTerm:2, LeaderCommit: 16 
+081701 VOTE S2 T10, sending RequestVote RPC to 1
+081702 VOTE S2 T10, sending RequestVote RPC to 0
+081706 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+081706 LOG1 logIndex: 16, recordIndex:7
+081709 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+082003 LOG1 Failed in AppendEntries PRC from 1 to 2! (term: 2)
+082347 VOTE Failed in RequestVote PRC from 2 to 0! (term: 9)
+082386 LOG1 Failed in AppendEntries PRC from 1 to 2! (term: 2)
+082495 LOG1 S1 T2, Leader|| Start || Received and appended 1 log entry, lastLogIndex: 17.
+082698 LOG1 logIndex: 16, recordIndex:7
+082700 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 1, PrevLogIndex: 16, PrevLogTerm:2, LeaderCommit: 16 
+082701 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 8, PrevLogIndex: 9, PrevLogTerm:2, LeaderCommit: 16 
+082708 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+082709 LOG1 logIndex: 16, recordIndex:7
+082709 LOG1 S0 T2, || Append || Appended 1 log entry, lastLogIndex: 17.
+082709 LOG1 logIndex: 17, recordIndex:8
+082712 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+082712 LOG1 S1 T2, Leader|| Update || Updated server 0 with nextIndex: 18, matchIndex: 17 
+082712 LOG1 logIndex: 17, recordIndex:8
+082712 LOG1 S1 T2, Leader|| Updated || Updated commitIndex from 16 to 17.||
+082992 LOG1 Failed in AppendEntries PRC from 1 to 2! (term: 2)
+083709 LOG1 logIndex: 17, recordIndex:8
+083711 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 17, PrevLogTerm:2, LeaderCommit: 17 
+083712 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 8, PrevLogIndex: 9, PrevLogTerm:2, LeaderCommit: 17 
+083720 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+083720 LOG1 logIndex: 17, recordIndex:8
+083720 LOG1 S0 T2, || Commit || Commit to 17
+083722 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+083811 LOG1 Failed in AppendEntries PRC from 1 to 2! (term: 2)
+083926 VOTE Failed in RequestVote PRC from 2 to 0! (term: 10)
+084061 LOG1 Failed in AppendEntries PRC from 1 to 2! (term: 2)
+084482 VOTE Failed in RequestVote PRC from 2 to 0! (term: 5)
+084717 LOG1 logIndex: 17, recordIndex:8
+084724 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 17, PrevLogTerm:2, LeaderCommit: 17 
+084725 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 8, PrevLogIndex: 9, PrevLogTerm:2, LeaderCommit: 17 
+084730 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+084730 LOG1 logIndex: 17, recordIndex:8
+084732 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+085721 LOG1 logIndex: 17, recordIndex:8
+085724 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 17, PrevLogTerm:2, LeaderCommit: 17 
+085726 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 8, PrevLogIndex: 9, PrevLogTerm:2, LeaderCommit: 17 
+085732 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+085732 LOG1 logIndex: 17, recordIndex:8
+085735 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+086648 LOG1 Failed in AppendEntries PRC from 1 to 2! (term: 2)
+086731 LOG1 logIndex: 17, recordIndex:8
+086732 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 17, PrevLogTerm:2, LeaderCommit: 17 
+086733 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 8, PrevLogIndex: 9, PrevLogTerm:2, LeaderCommit: 17 
+086736 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+086737 LOG1 logIndex: 17, recordIndex:8
+086739 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+087734 LOG1 logIndex: 17, recordIndex:8
+087745 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 17, PrevLogTerm:2, LeaderCommit: 17 
+087746 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 8, PrevLogIndex: 9, PrevLogTerm:2, LeaderCommit: 17 
+087750 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+087750 LOG1 logIndex: 17, recordIndex:8
+087753 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+088106 LOG1 Failed in AppendEntries PRC from 1 to 2! (term: 2)
+088343 LOG1 Failed in AppendEntries PRC from 1 to 2! (term: 2)
+088745 LOG1 logIndex: 17, recordIndex:8
+088747 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 17, PrevLogTerm:2, LeaderCommit: 17 
+088747 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 8, PrevLogIndex: 9, PrevLogTerm:2, LeaderCommit: 17 
+088745 VOTE S2 T10, timed out
+088749 VOTE S2 T11, Started election
+088751 VOTE S2 T11, sending RequestVote RPC to 1
+088754 VOTE S2 T11, sending RequestVote RPC to 0
+088758 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+088758 LOG1 logIndex: 17, recordIndex:8
+088760 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+088775 LOG1 Failed in AppendEntries PRC from 1 to 2! (term: 2)
+089756 LOG1 logIndex: 17, recordIndex:8
+089758 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 17, PrevLogTerm:2, LeaderCommit: 17 
+089760 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 8, PrevLogIndex: 9, PrevLogTerm:2, LeaderCommit: 17 
+089764 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+089765 LOG1 logIndex: 17, recordIndex:8
+089767 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+090108 LOG1 Failed in AppendEntries PRC from 1 to 2! (term: 2)
+090469 LOG1 Failed in AppendEntries PRC from 1 to 2! (term: 2)
+090769 LOG1 logIndex: 17, recordIndex:8
+090771 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 17, PrevLogTerm:2, LeaderCommit: 17 
+090771 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 8, PrevLogIndex: 9, PrevLogTerm:2, LeaderCommit: 17 
+090779 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+090780 LOG1 logIndex: 17, recordIndex:8
+090783 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+090801 LOG1 Failed in AppendEntries PRC from 1 to 2! (term: 2)
+091211 LOG1 Failed in AppendEntries PRC from 1 to 2! (term: 2)
+091778 LOG1 logIndex: 17, recordIndex:8
+091782 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 17, PrevLogTerm:2, LeaderCommit: 17 
+091782 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 8, PrevLogIndex: 9, PrevLogTerm:2, LeaderCommit: 17 
+091790 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+091791 LOG1 logIndex: 17, recordIndex:8
+091793 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+092557 LOG1 Failed in AppendEntries PRC from 1 to 2! (term: 2)
+092780 LOG1 logIndex: 17, recordIndex:8
+092782 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 17, PrevLogTerm:2, LeaderCommit: 17 
+092782 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 8, PrevLogIndex: 9, PrevLogTerm:2, LeaderCommit: 17 
+092801 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+092802 LOG1 logIndex: 17, recordIndex:8
+092805 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+093785 LOG1 logIndex: 17, recordIndex:8
+093787 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 17, PrevLogTerm:2, LeaderCommit: 17 
+093792 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 8, PrevLogIndex: 9, PrevLogTerm:2, LeaderCommit: 17 
+093797 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+093797 LOG1 logIndex: 17, recordIndex:8
+093801 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+094795 LOG1 logIndex: 17, recordIndex:8
+094798 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 17, PrevLogTerm:2, LeaderCommit: 17 
+094798 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 8, PrevLogIndex: 9, PrevLogTerm:2, LeaderCommit: 17 
+094804 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+094804 LOG1 logIndex: 17, recordIndex:8
+094808 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+094933 LOG1 Failed in AppendEntries PRC from 1 to 2! (term: 2)
+095802 LOG1 logIndex: 17, recordIndex:8
+095804 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 17, PrevLogTerm:2, LeaderCommit: 17 
+095804 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 8, PrevLogIndex: 9, PrevLogTerm:2, LeaderCommit: 17 
+095811 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+095811 LOG1 logIndex: 17, recordIndex:8
+095814 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+096291 LOG1 Failed in AppendEntries PRC from 1 to 2! (term: 2)
+096371 LOG1 Failed in AppendEntries PRC from 1 to 2! (term: 2)
+096808 VOTE S2 T11, timed out
+096809 VOTE S2 T12, Started election
+096808 LOG1 logIndex: 17, recordIndex:8
+096809 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 17, PrevLogTerm:2, LeaderCommit: 17 
+096810 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 8, PrevLogIndex: 9, PrevLogTerm:2, LeaderCommit: 17 
+096810 VOTE S2 T12, sending RequestVote RPC to 1
+096812 VOTE S2 T12, sending RequestVote RPC to 0
+096816 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+096817 LOG1 logIndex: 17, recordIndex:8
+096820 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+097817 LOG1 logIndex: 17, recordIndex:8
+097819 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 17, PrevLogTerm:2, LeaderCommit: 17 
+097819 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 8, PrevLogIndex: 9, PrevLogTerm:2, LeaderCommit: 17 
+097824 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+097824 LOG1 logIndex: 17, recordIndex:8
+097828 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+097965 LOG1 Failed in AppendEntries PRC from 1 to 2! (term: 2)
+098018 LOG1 Failed in AppendEntries PRC from 1 to 2! (term: 2)
+098822 LOG1 logIndex: 17, recordIndex:8
+098827 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 17, PrevLogTerm:2, LeaderCommit: 17 
+098828 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 8, PrevLogIndex: 9, PrevLogTerm:2, LeaderCommit: 17 
+098833 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+098833 LOG1 logIndex: 17, recordIndex:8
+098836 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+099823 LOG1 logIndex: 17, recordIndex:8
+099825 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 17, PrevLogTerm:2, LeaderCommit: 17 
+099825 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 8, PrevLogIndex: 9, PrevLogTerm:2, LeaderCommit: 17 
+099831 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+099831 LOG1 logIndex: 17, recordIndex:8
+099834 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+100139 LOG1 Failed in AppendEntries PRC from 1 to 2! (term: 2)
+100833 LOG1 logIndex: 17, recordIndex:8
+100835 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 17, PrevLogTerm:2, LeaderCommit: 17 
+100836 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 8, PrevLogIndex: 9, PrevLogTerm:2, LeaderCommit: 17 
+100841 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+100841 LOG1 logIndex: 17, recordIndex:8
+100844 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+101845 LOG1 logIndex: 17, recordIndex:8
+101849 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 17, PrevLogTerm:2, LeaderCommit: 17 
+101849 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 8, PrevLogIndex: 9, PrevLogTerm:2, LeaderCommit: 17 
+101858 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+101858 LOG1 logIndex: 17, recordIndex:8
+101861 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+102514 LOG1 S1 T2, Leader|| Start || Received and appended 1 log entry, lastLogIndex: 18.
+102640 LOG1 Failed in AppendEntries PRC from 1 to 2! (term: 2)
+102739 LOG1 Failed in AppendEntries PRC from 1 to 2! (term: 2)
+102855 LOG1 logIndex: 17, recordIndex:8
+102858 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 1, PrevLogIndex: 17, PrevLogTerm:2, LeaderCommit: 17 
+102859 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 9, PrevLogIndex: 9, PrevLogTerm:2, LeaderCommit: 17 
+102864 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+102865 LOG1 logIndex: 17, recordIndex:8
+102865 LOG1 S0 T2, || Append || Appended 1 log entry, lastLogIndex: 18.
+102865 LOG1 logIndex: 18, recordIndex:9
+102868 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+102869 LOG1 S1 T2, Leader|| Update || Updated server 0 with nextIndex: 19, matchIndex: 18 
+102869 LOG1 logIndex: 18, recordIndex:9
+102869 LOG1 S1 T2, Leader|| Updated || Updated commitIndex from 17 to 18.||
+103866 LOG1 logIndex: 18, recordIndex:9
+103874 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 18, PrevLogTerm:2, LeaderCommit: 18 
+103875 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 9, PrevLogIndex: 9, PrevLogTerm:2, LeaderCommit: 18 
+103880 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+103880 LOG1 logIndex: 18, recordIndex:9
+103880 LOG1 S0 T2, || Commit || Commit to 18
+103883 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+103902 LOG1 Failed in AppendEntries PRC from 1 to 2! (term: 2)
+104871 LOG1 logIndex: 18, recordIndex:9
+104873 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 18, PrevLogTerm:2, LeaderCommit: 18 
+104873 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 9, PrevLogIndex: 9, PrevLogTerm:2, LeaderCommit: 18 
+104871 VOTE S2 T12, timed out
+104875 VOTE S2 T13, Started election
+104875 VOTE S2 T13, sending RequestVote RPC to 1
+104876 VOTE S2 T13, sending RequestVote RPC to 0
+104879 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+104879 LOG1 logIndex: 18, recordIndex:9
+104881 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+105350 LOG1 Failed in AppendEntries PRC from 1 to 2! (term: 2)
+105874 LOG1 logIndex: 18, recordIndex:9
+105876 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 18, PrevLogTerm:2, LeaderCommit: 18 
+105877 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 9, PrevLogIndex: 9, PrevLogTerm:2, LeaderCommit: 18 
+105882 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+105882 LOG1 logIndex: 18, recordIndex:9
+105885 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+106668 VOTE Failed in RequestVote PRC from 2 to 1! (term: 6)
+106885 LOG1 logIndex: 18, recordIndex:9
+106886 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 18, PrevLogTerm:2, LeaderCommit: 18 
+106886 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 9, PrevLogIndex: 9, PrevLogTerm:2, LeaderCommit: 18 
+106890 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+106891 LOG1 logIndex: 18, recordIndex:9
+106893 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+107435 LOG1 Failed in AppendEntries PRC from 1 to 2! (term: 2)
+107894 LOG1 logIndex: 18, recordIndex:9
+107896 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 18, PrevLogTerm:2, LeaderCommit: 18 
+107897 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 9, PrevLogIndex: 9, PrevLogTerm:2, LeaderCommit: 18 
+107902 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+107902 LOG1 logIndex: 18, recordIndex:9
+107905 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+108896 LOG1 logIndex: 18, recordIndex:9
+108899 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 18, PrevLogTerm:2, LeaderCommit: 18 
+108903 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 9, PrevLogIndex: 9, PrevLogTerm:2, LeaderCommit: 18 
+108908 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+108908 LOG1 logIndex: 18, recordIndex:9
+108911 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+109032 LOG1 Failed in AppendEntries PRC from 1 to 2! (term: 2)
+109907 LOG1 logIndex: 18, recordIndex:9
+109909 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 18, PrevLogTerm:2, LeaderCommit: 18 
+109909 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 9, PrevLogIndex: 9, PrevLogTerm:2, LeaderCommit: 18 
+109916 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+109917 LOG1 logIndex: 18, recordIndex:9
+109920 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+110910 LOG1 logIndex: 18, recordIndex:9
+110934 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 18, PrevLogTerm:2, LeaderCommit: 18 
+110935 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 9, PrevLogIndex: 9, PrevLogTerm:2, LeaderCommit: 18 
+110938 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+110939 LOG1 logIndex: 18, recordIndex:9
+110941 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+111360 LOG1 Failed in AppendEntries PRC from 1 to 2! (term: 2)
+111909 VOTE S2 T13, timed out
+111910 VOTE S2 T14, Started election
+111911 VOTE S2 T14, sending RequestVote RPC to 0
+111911 VOTE S2 T14, sending RequestVote RPC to 1
+111918 LOG1 logIndex: 18, recordIndex:9
+111920 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 18, PrevLogTerm:2, LeaderCommit: 18 
+111920 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 9, PrevLogIndex: 9, PrevLogTerm:2, LeaderCommit: 18 
+111923 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+111923 LOG1 logIndex: 18, recordIndex:9
+111925 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+112921 LOG1 logIndex: 18, recordIndex:9
+112925 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 18, PrevLogTerm:2, LeaderCommit: 18 
+112926 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 9, PrevLogIndex: 9, PrevLogTerm:2, LeaderCommit: 18 
+112930 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+112930 LOG1 logIndex: 18, recordIndex:9
+112933 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+113519 LOG1 Failed in AppendEntries PRC from 1 to 2! (term: 2)
+113668 LOG1 Failed in AppendEntries PRC from 1 to 2! (term: 2)
+113931 LOG1 logIndex: 18, recordIndex:9
+113932 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 18, PrevLogTerm:2, LeaderCommit: 18 
+113933 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 9, PrevLogIndex: 9, PrevLogTerm:2, LeaderCommit: 18 
+113938 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+113938 LOG1 logIndex: 18, recordIndex:9
+113942 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+114127 VOTE Failed in RequestVote PRC from 2 to 1! (term: 13)
+114197 LOG1 Failed in AppendEntries PRC from 1 to 2! (term: 2)
+114937 LOG1 logIndex: 18, recordIndex:9
+114941 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 18, PrevLogTerm:2, LeaderCommit: 18 
+114943 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 9, PrevLogIndex: 9, PrevLogTerm:2, LeaderCommit: 18 
+114947 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+114948 LOG1 logIndex: 18, recordIndex:9
+114951 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+115670 LOG1 Failed in AppendEntries PRC from 1 to 2! (term: 2)
+115811 LOG1 Failed in AppendEntries PRC from 1 to 2! (term: 2)
+115944 LOG1 logIndex: 18, recordIndex:9
+115947 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 18, PrevLogTerm:2, LeaderCommit: 18 
+115947 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 9, PrevLogIndex: 9, PrevLogTerm:2, LeaderCommit: 18 
+115952 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+115953 LOG1 logIndex: 18, recordIndex:9
+115956 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+116948 LOG1 logIndex: 18, recordIndex:9
+116949 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 18, PrevLogTerm:2, LeaderCommit: 18 
+116950 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 9, PrevLogIndex: 9, PrevLogTerm:2, LeaderCommit: 18 
+116959 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+116959 LOG1 logIndex: 18, recordIndex:9
+116962 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+117784 LOG1 Failed in AppendEntries PRC from 1 to 2! (term: 2)
+117949 LOG1 logIndex: 18, recordIndex:9
+117951 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 18, PrevLogTerm:2, LeaderCommit: 18 
+117957 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 9, PrevLogIndex: 9, PrevLogTerm:2, LeaderCommit: 18 
+117963 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+117963 LOG1 logIndex: 18, recordIndex:9
+117966 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+118960 LOG1 logIndex: 18, recordIndex:9
+118962 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 18, PrevLogTerm:2, LeaderCommit: 18 
+118962 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 9, PrevLogIndex: 9, PrevLogTerm:2, LeaderCommit: 18 
+118969 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+118969 LOG1 logIndex: 18, recordIndex:9
+118973 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+119062 LOG1 Failed in AppendEntries PRC from 1 to 2! (term: 2)
+119963 LOG1 logIndex: 18, recordIndex:9
+119965 VOTE S2 T14, timed out
+119968 VOTE S2 T15, Started election
+119966 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 18, PrevLogTerm:2, LeaderCommit: 18 
+119969 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 9, PrevLogIndex: 9, PrevLogTerm:2, LeaderCommit: 18 
+119969 VOTE S2 T15, sending RequestVote RPC to 1
+119971 VOTE S2 T15, sending RequestVote RPC to 0
+119975 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+119975 LOG1 logIndex: 18, recordIndex:9
+119978 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+120289 LOG1 Failed in AppendEntries PRC from 1 to 2! (term: 2)
+120974 LOG1 logIndex: 18, recordIndex:9
+120976 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 18, PrevLogTerm:2, LeaderCommit: 18 
+120976 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 9, PrevLogIndex: 9, PrevLogTerm:2, LeaderCommit: 18 
+120981 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+120981 LOG1 logIndex: 18, recordIndex:9
+120984 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+121266 VOTE Failed in RequestVote PRC from 2 to 0! (term: 11)
+121978 LOG1 logIndex: 18, recordIndex:9
+121981 LOG1 S1 T2, Leader|| Send || Replicating logs to 0, log length: 0, PrevLogIndex: 18, PrevLogTerm:2, LeaderCommit: 18 
+121981 LOG1 S1 T2, Leader|| Send || Replicating logs to 2, log length: 9, PrevLogIndex: 9, PrevLogTerm:2, LeaderCommit: 18 
+121987 LOG1 S0 T2, || Receive || Received AppendEntry RPC ||
+121987 LOG1 logIndex: 18, recordIndex:9
+121989 LOG1 S1 T2, Leader|| Response || Received AppendEntries response from 0 with success: true 
+122162 LOG1 Failed in AppendEntries PRC from 1 to 2! (term: 2)
+122313 VOTE Failed in RequestVote PRC from 2 to 0! (term: 12)
+122375 LOG1 Failed in AppendEntries PRC from 1 to 2! (term: 2)
+--- FAIL: TestSnapshotInstall2D (12.25s)
+    config.go:608: one(8602408520253604195) failed to reach agreement
+FAIL
+exit status 1
+FAIL	6.5840/raft	12.500s
