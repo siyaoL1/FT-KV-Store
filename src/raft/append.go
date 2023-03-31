@@ -116,24 +116,34 @@ func (rf *Raft) AppendEntries(args *AppendEntriesArgs, reply *AppendEntriesReply
 	reply.Success = false
 
 	// Checks if the current log is inconsistent from leader's
-	// First two cases are Rule 2
-	if args.PrevLogIndex > rf.lastLogIndex() || args.PrevLogIndex < rf.LogRecord.startIndex() {
+	// First and third cases are Rule 2
+	if args.PrevLogIndex > rf.lastLogIndex() {
 		// invalid prev log index
 		// Tell leader to backup nextIndex[]
-		reply.ConflictTerm = args.Term + 1
-		reply.ConflictFirst = rf.lastLogIndex()
-		reply.ConflictValid = true
-	} else if rf.LogRecord.entry(args.PrevLogIndex).Term != args.PrevLogTerm {
-		// conflict entry, need to tell leader to roll back
 		reply.ConflictTerm = rf.LogRecord.lastLogEntry().Term
 		reply.ConflictFirst = rf.lastLogIndex()
 		reply.ConflictValid = true
+	} else if args.PrevLogIndex < rf.LogRecord.startIndex() {
+		// invalid prev log index
+		// prevLogIndex is being snapshotted.
+
+	} else if rf.LogRecord.entry(args.PrevLogIndex).Term != args.PrevLogTerm {
+		// conflict entry, need to tell leader to roll back
+		reply.ConflictTerm = rf.LogRecord.entry(args.PrevLogIndex).term
+		reply.ConflictFirst = rf.LogRecord.entry(args.PrevLogIndex)
+		reply.ConflictValid = true
 		// Roll back the entire term
-		i := rf.lastLogIndex()
-		for i > rf.LogRecord.startIndex()+1 && rf.LogRecord.entry(i).Term == reply.ConflictTerm {
-			reply.ConflictFirst = i
-			i -= 1
+		for reply.ConflictFirst > rf.LogRecord.startIndex()+1 {
+			reply.ConflictFirst -= 1
+			if rf.LogRecord.entry(reply.ConflictFirst).Term <= args.PrevLogTerm {
+				break
+			}
 		}
+		// if the term is the same, find the first one
+		if 
+		// else use the current conflictFirst 
+		//
+
 	} else {
 		rf.updateLogL(args, reply)
 		reply.Success = true
@@ -251,6 +261,8 @@ func (rf *Raft) conflictTermL(server int, args *AppendEntriesArgs, reply *Append
 			break
 		}
 	}
+
+	// TODO: New: Right now the updating condition of conflict terms are not well defined
 
 	if !hasTerm {
 		Debug(dLeader, "S%d T%d, Update || 1 Decremented server %v's nextIndex from %v to %v\n", rf.me, rf.currentTerm, server, rf.nextIndex[server], reply.ConflictFirst)

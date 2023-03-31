@@ -156,3 +156,28 @@ Questions:
 - Why doesn't lastApplied needed to be persisted?
 - How are we using snapshot and how to install it?
 - Is the offset used at all?
+
+
+
+
+Todo:
+Follower:
+1. Follow the steps in the hint to define the rejection message to include
+   1. XTerm:  term in the conflicting entry
+   2. XIndex: index of first entry with that term (if any)
+   3. XLen:   log length
+2. If conflict log's term exist in the follower's log, find the earlist log in the term.
+3. If term not exist, find the first log that has smaller term than the conflict log.
+
+Leader: 
+1.  Then the leader's logic can be something like:
+  Case 1: leader doesn't have XTerm:
+    nextIndex = XIndex
+  Case 2: leader has XTerm:
+    nextIndex = leader's last entry for XTerm
+  Case 3: follower's log is too short:
+    nextIndex = XLen
+
+
+Note:
+- The reason why that a server that has fewer logs than others can become a leader is because the leader's last log has higher term.
