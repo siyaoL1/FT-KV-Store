@@ -9,7 +9,7 @@ import (
 )
 
 // Debugging
-const debug = false
+const debug = true
 
 func DPrintf(format string, a ...interface{}) (n int, err error) {
 	if debug {
@@ -64,7 +64,7 @@ func init() {
 }
 
 func Debug(topic logTopic, format string, a ...interface{}) {
-	if true {
+	if debug {
 		time := time.Since(debugStart).Microseconds()
 		time /= 100
 		prefix := fmt.Sprintf("%06d %v ", time, string(topic))

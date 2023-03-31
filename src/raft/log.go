@@ -62,7 +62,7 @@ func (l LogRecord) lastLogEntry() Entry {
 
 func (l LogRecord) entry(logIndex int) Entry {
 	recordIndex := l.toRecordIndex(logIndex)
-	Debug(dLog, "logIndex: %v, recordIndex:%v\n", logIndex, recordIndex)
+	// Debug(dLog, "logIndex: %v, recordIndex:%v\n", logIndex, recordIndex)
 	return l.Log[recordIndex]
 }
 

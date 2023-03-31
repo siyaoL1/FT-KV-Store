@@ -106,7 +106,7 @@ func (rf *Raft) GetState() (int, bool) {
 // Note that this function assumes to be called within a locked region
 func (rf *Raft) checkTermNumebrL(otherTerm int) bool {
 	if otherTerm > rf.currentTerm {
-		Debug(dLog, "S%d T%d, Converted from term %v to term %v, now a follower.\n", rf.me, otherTerm, rf.currentTerm, otherTerm)
+		Debug(dTerm, "S%d T%d, Converted from term %v to term %v, now a follower.\n", rf.me, otherTerm, rf.currentTerm, otherTerm)
 		rf.currentTerm = otherTerm
 		rf.status = FOLLOWER
 		rf.votedFor = -1
@@ -138,7 +138,7 @@ func (rf *Raft) Start(command interface{}) (int, int, bool) {
 		rf.matchIndex[rf.me] += 1
 		rf.persist(nil)
 		rf.mu.Unlock()
-		Debug(dLog, "S%d T%d, Leader|| Start || Received and appended 1 log entry, lastLogIndex: %v.\n", rf.me, rf.currentTerm, rf.lastLogIndex())
+		Debug(dClient, "S%d T%d, Start || Received and appended 1 log entry, lastLogIndex: %v.\n", rf.me, rf.currentTerm, rf.lastLogIndex())
 	}
 
 	return rf.lastLogIndex(), rf.currentTerm, isLeader

@@ -39,6 +39,7 @@ func (rf *Raft) broadcastLogsL() {
 		var prevLogTerm int
 		// Leader's log is too short, need to install Snapshot
 		if prevLogIndex < rf.LastIncludedIndex {
+			Debug(dSnap, "S%d T%d, leader's log is too short for %d, prevLogIndex:%d, rf.LastIncludedIndex:%d", rf.me, rf.currentTerm, server, prevLogIndex, rf.LastIncludedIndex)
 			go rf.installSnapshot(server)
 			continue
 		} else if prevLogIndex == rf.LastIncludedIndex {
@@ -63,7 +64,7 @@ func (rf *Raft) broadcastLogsL() {
 			copy(args.Entries, rf.LogRecord.slice(rf.nextIndex[server]))
 		}
 
-		Debug(dLog, "S%d T%d, Leader|| Send || Replicating logs to %v, log length: %v, PrevLogIndex: %v, PrevLogTerm:%v, LeaderCommit: %v \n", rf.me, rf.currentTerm, server, len(args.Entries), args.PrevLogIndex, args.PrevLogTerm, args.LeaderCommit)
+		Debug(dLeader, "S%d T%d, Send || Replicating logs to %v, log length: %v, PrevLogIndex: %v, PrevLogTerm:%v, LeaderCommit: %v \n", rf.me, rf.currentTerm, server, len(args.Entries), args.PrevLogIndex, args.PrevLogTerm, args.LeaderCommit)
 
 		// Go routine to send AppendEntries RPC and wait for response
 		go func(server int) {
@@ -85,7 +86,7 @@ func (rf *Raft) sendAppendEntries(server int, args *AppendEntriesArgs, reply *Ap
 	ok := rf.peers[server].Call("Raft.AppendEntries", args, reply)
 
 	if !ok {
-		Debug(dLog, "Failed in AppendEntries PRC from %v to %v! (term: %v)\n", rf.me, server, args.Term)
+		Debug(dLog, "S%d T%d, Failed in AppendEntries PRC from %v to %v! (term: %v)\n", rf.me, rf.currentTerm, rf.me, server, args.Term)
 	}
 	return ok
 }
@@ -96,7 +97,7 @@ func (rf *Raft) sendAppendEntries(server int, args *AppendEntriesArgs, reply *Ap
 
 // AppendEntries RPC request handler (being handled concurrently)
 func (rf *Raft) AppendEntries(args *AppendEntriesArgs, reply *AppendEntriesReply) {
-	Debug(dLog, "S%d T%d, || Receive || Received AppendEntry RPC ||\n", rf.me, rf.currentTerm)
+	Debug(dLog, "S%d T%d, Received AppendEntry RPC \n", rf.me, rf.currentTerm)
 	// Your code here (2A, 2B).
 	rf.mu.Lock()
 	defer rf.mu.Unlock()
@@ -143,6 +144,7 @@ func (rf *Raft) AppendEntries(args *AppendEntriesArgs, reply *AppendEntriesReply
 
 	rf.signalApplierL()
 	reply.Term = rf.currentTerm
+	Debug(dLog, "S%d T%d, Replied AppendEntry with %t, ConflictValid: %t\n", rf.me, rf.currentTerm, reply.Success, reply.ConflictValid)
 }
 
 func (rf *Raft) updateLogL(args *AppendEntriesArgs, reply *AppendEntriesReply) {
@@ -199,7 +201,7 @@ func (rf *Raft) updateLogL(args *AppendEntriesArgs, reply *AppendEntriesReply) {
 // AppendEntries RPC response Handler
 func (rf *Raft) processAppendReplyL(server int, args *AppendEntriesArgs, reply *AppendEntriesReply) {
 	// Handle AppendEntries result
-	Debug(dLog, "S%d T%d, Leader|| Response || Received AppendEntries response from %v with success: %v \n", rf.me, rf.currentTerm, server, reply.Success)
+	Debug(dLeader, "S%d T%d, Response || Received AppendEntries response from %v with success: %v \n", rf.me, rf.currentTerm, server, reply.Success)
 	if rf.currentTerm < reply.Term { // response term is higher than current term
 		rf.checkTermNumebrL(reply.Term)
 	} else if rf.currentTerm == args.Term { // term is still the same from sending the AppendEntries RPC
@@ -216,14 +218,14 @@ func (rf *Raft) processAppendReplyL(server int, args *AppendEntriesArgs, reply *
 				if newMatchIndex > rf.matchIndex[server] {
 					rf.matchIndex[server] = rf.nextIndex[server] - 1
 				}
-				Debug(dLog, "S%d T%d, Leader|| Update || Updated server %v with nextIndex: %v, matchIndex: %v \n", rf.me, rf.currentTerm, server, rf.nextIndex[server], rf.matchIndex[server])
+				Debug(dLeader, "S%d T%d, Update || Updated server %v with nextIndex: %v, matchIndex: %v \n", rf.me, rf.currentTerm, server, rf.nextIndex[server], rf.matchIndex[server])
 			}
 		} else if reply.ConflictValid { // Failure
 			// Backup one term
 			rf.conflictTermL(server, args, reply)
 		} else if rf.nextIndex[server] > 1 {
 			// Backup one index
-			Debug(dLog, "S%d T%d, Leader|| Update || Decremented server %v's nextIndex to %v\n", rf.me, rf.currentTerm, server, rf.nextIndex[server])
+			Debug(dLeader, "S%d T%d, Update || Decremented server %v's nextIndex to %v\n", rf.me, rf.currentTerm, server, rf.nextIndex[server])
 			rf.nextIndex[server] -= 1
 			// 2D
 			// if rf.nextIndex[peer] < rf.log.start() + 1 {
@@ -251,7 +253,7 @@ func (rf *Raft) conflictTermL(server int, args *AppendEntriesArgs, reply *Append
 	}
 
 	if !hasTerm {
-		Debug(dLog, "S%d T%d, Leader|| Update || 1 Decremented server %v's nextIndex from %v to %v\n", rf.me, rf.currentTerm, server, rf.nextIndex[server], reply.ConflictFirst)
+		Debug(dLeader, "S%d T%d, Update || 1 Decremented server %v's nextIndex from %v to %v\n", rf.me, rf.currentTerm, server, rf.nextIndex[server], reply.ConflictFirst)
 		rf.nextIndex[server] = reply.ConflictFirst
 		// TODO: stopped here, need to check which condition caused the conflictfirst to be higher than actual index.
 		if reply.ConflictFirst < rf.nextIndex[server] {
@@ -263,7 +265,7 @@ func (rf *Raft) conflictTermL(server int, args *AppendEntriesArgs, reply *Append
 			rf.LogRecord.entry(firstTermIndex).Term == rf.LogRecord.entry(lastTermIndex).Term {
 			lastTermIndex += 1
 		}
-		Debug(dLog, "S%d T%d, Leader|| Update || 2 Decremented server %v's nextIndex from %v to %v\n", rf.me, rf.currentTerm, server, rf.nextIndex[server], lastTermIndex-1)
+		Debug(dLeader, "S%d T%d, Update || 2 Decremented server %v's nextIndex from %v to %v\n", rf.me, rf.currentTerm, server, rf.nextIndex[server], lastTermIndex-1)
 		rf.nextIndex[server] = lastTermIndex - 1
 	}
 }
@@ -299,7 +301,7 @@ func (rf *Raft) advancedCommitL() {
 		}
 		// If majority, updates commitIndex
 		if count > rf.numPeers/2 {
-			Debug(dLog, "S%d T%d, Leader|| Updated || Updated commitIndex from %v to %v.||\n", rf.me, rf.currentTerm, rf.commitIndex, index)
+			Debug(dLeader, "S%d T%d, Updated || Updated commitIndex from %v to %v.||\n", rf.me, rf.currentTerm, rf.commitIndex, index)
 			rf.commitIndex = index
 		}
 	}

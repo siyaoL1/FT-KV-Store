@@ -62,10 +62,12 @@ func (rf *Raft) RequestVote(args *RequestVoteArgs, reply *RequestVoteReply) {
 	}
 	rf.persist(nil)
 
-	// Debug(dVote, "S%d T%d, || logs: %v.\n", rf.me, rf.currentTerm, rf.LogRecord.Log)
-	// if !reply.VoteGranted {
-	// 	Debug(dVote, "Yooo I don't vote for u, rf.currentTerm: %v, rf.election.votedFor: %v, args.LastLogTerm: %v, args.LastLogIndex: %v\n", rf.currentTerm, rf.votedFor, args.LastLogTerm, args.LastLogIndex)
-	// }
+	Debug(dVote, "S%d T%d, || logs: %v.\n", rf.me, rf.currentTerm, rf.LogRecord.Log)
+	if !reply.VoteGranted {
+		Debug(dVote, "S%d T%d, Rejected vote to %d, rf.currentTerm: %v, rf.election.votedFor: %v, rf.lastLogTerm: %v, rf.lastLogIndex: %v, args.LastLogTerm: %v, args.LastLogIndex: %v\n", rf.me, rf.currentTerm, args.CandidateID, rf.currentTerm, rf.votedFor, rf.lastLogTerm(), rf.lastLogIndex(), args.LastLogTerm, args.LastLogIndex)
+	} else {
+		Debug(dVote, "S%d T%d, Granted vote to %d, rf.currentTerm: %v, rf.election.votedFor: %v, args.LastLogTerm: %v, args.LastLogIndex: %v\n", rf.me, rf.currentTerm, args.CandidateID, rf.currentTerm, rf.votedFor, args.LastLogTerm, args.LastLogIndex)
+	}
 }
 
 func (rf *Raft) becomeLeaderL() {
@@ -131,7 +133,7 @@ func (rf *Raft) requestVotes(server int, args *RequestVoteArgs, votes *int) {
 	ok := rf.sendRequestVote(server, args, &reply)
 
 	if !ok {
-		Debug(dVote, "Failed in RequestVote PRC from %v to %v! (term: %v)\n", rf.me, server, args.Term)
+		Debug(dVote, "S%d T%d, Failed in RequestVote PRC from %v to %v! (term: %v)\n", rf.me, rf.currentTerm, rf.me, server, args.Term)
 		return
 	}
 
@@ -147,7 +149,7 @@ func (rf *Raft) requestVotes(server int, args *RequestVoteArgs, votes *int) {
 		if *votes > rf.numPeers/2 {
 			if rf.currentTerm == args.Term {
 				rf.becomeLeaderL()
-				Debug(dVote, "S%d T%d, Leader|| logs: %v.\n", rf.me, rf.currentTerm, rf.LogRecord.Log)
+				Debug(dLeader, "S%d T%d, Leader logs: %v.\n", rf.me, rf.currentTerm, rf.LogRecord.Log)
 			}
 		}
 	}
@@ -162,6 +164,7 @@ func (rf *Raft) requestVotesL() {
 		LastLogTerm:  rf.lastLogTerm(),
 	}
 	votes := 1
+	Debug(dVote, "S%d T%d, || logs: %v.\n", rf.me, rf.currentTerm, rf.LogRecord.Log)
 	// Send each server a RequestVote RPC
 	for server := 0; server < rf.numPeers; server++ {
 		if server != rf.me {

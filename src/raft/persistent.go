@@ -116,7 +116,7 @@ func (rf *Raft) processSnapshotReplyL(server int, args *InstallSnapshotArgs, rep
 		if args.LastIncludedIndex > rf.matchIndex[server] {
 			rf.matchIndex[server] = args.LastIncludedIndex
 		}
-		Debug(dSnap, "S%d T%d, Leader|| updated server: %v nextIndex to %v, matchIndex to:%v.\n", rf.me, rf.currentTerm, server, rf.nextIndex[server], rf.matchIndex[server])
+		Debug(dSnap, "S%d T%d, Updated server: %v nextIndex to %v, matchIndex to:%v.\n", rf.me, rf.currentTerm, server, rf.nextIndex[server], rf.matchIndex[server])
 	}
 }
 
@@ -176,8 +176,8 @@ func (rf *Raft) persist(snapshot []byte) {
 	e.Encode(rf.currentTerm)
 	e.Encode(rf.votedFor)
 	e.Encode(rf.LogRecord)
-	e.Encode(rf.commitIndex)
-	e.Encode(rf.lastApplied)
+	e.Encode(rf.LastIncludedIndex)
+	e.Encode(rf.LastIncludedTerm)
 	raftstate := w.Bytes()
 
 	if snapshot == nil {
