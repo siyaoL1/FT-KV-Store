@@ -1,0 +1,1 @@
+Frangipani copes with this situation by having the Frangipani server to acquire the lock before the write the data to Petal with the sync operation.
