@@ -172,29 +172,47 @@ func (rf *Raft) ticker() {
 	}
 }
 
-func (rf *Raft) applier() {
+func (rf *Raft) apply() {
 	rf.mu.Lock()
 	defer rf.mu.Unlock()
 
-	for !rf.killed() {
-		nextApplyIndex := rf.lastApplied + 1
-		if nextApplyIndex <= rf.commitIndex &&
-			nextApplyIndex <= rf.lastLogIndex() {
-			rf.lastApplied += 1
-			msg := ApplyMsg{
-				CommandValid: true,
-				Command:      rf.LogRecord.entry(rf.lastApplied).Command,
-				CommandIndex: rf.lastApplied,
-			}
-			rf.mu.Unlock()
-			rf.applyCh <- msg
-			rf.mu.Lock()
-			Debug(dLog, "S%d T%d, || Applying logs with index: %v, command: %v.\n", rf.me, rf.currentTerm, rf.lastApplied, msg.Command)
-			Debug(dLog, "S%d T%d, || logs: %v.\n", rf.me, rf.currentTerm, rf.LogRecord.Log)
-			rf.persist(nil)
-		} else {
-			rf.applyCond.Wait()
+	nextApplyIndex := rf.lastApplied + 1
+	// Debug(dLog2, "S%d T%d, nextApplyIndex:%v, (<=) rf.commitIndex:%v, nextApplyIndex:%v, (<=) rf.lastLogIndex:%v", rf.me, rf.currentTerm, nextApplyIndex, rf.commitIndex, nextApplyIndex, rf.lastLogIndex())
+
+	var msg ApplyMsg
+	if nextApplyIndex <= rf.commitIndex &&
+		nextApplyIndex <= rf.lastLogIndex() {
+		rf.lastApplied += 1
+		msg = ApplyMsg{
+			CommandValid: true,
+			Command:      rf.LogRecord.entry(rf.lastApplied).Command,
+			CommandIndex: rf.lastApplied,
 		}
+		// Debug(dLog2, "S%d T%d, before waiting for lock\n", rf.me, rf.currentTerm)
+		// Debug(dLog2, "S%d T%d, waiting for lock\n", rf.me, rf.currentTerm)
+		Debug(dLog, "S%d T%d, || Applying logs with index: %v, command: %v, commitIndex: %v.\n", rf.me, rf.currentTerm, rf.lastApplied, msg.Command, rf.commitIndex)
+		Debug(dLog, "S%d T%d, || logs: %v.\n", rf.me, rf.currentTerm, rf.LogRecord.Log)
+		// rf.persist(nil)
+	} else if nextApplyIndex < rf.LastIncludedIndex {
+		msg = ApplyMsg{
+			SnapshotValid: true,
+			Snapshot:      rf.persister.ReadSnapshot(),
+			SnapshotTerm:  rf.LastIncludedTerm,
+			SnapshotIndex: rf.LastIncludedIndex,
+		}
+		Debug(dLog, "S%d T%d, || Applying Snapshot with SnapshotTerm: %v, SnapshotIndex: %v.\n", rf.me, rf.currentTerm, msg.SnapshotTerm, msg.SnapshotIndex)
+	}
+	rf.mu.Unlock()
+	rf.applyCh <- msg
+	rf.mu.Lock()
+}
+
+func (rf *Raft) applier() {
+	for !rf.killed() {
+		// Your code here (2A)
+		rf.apply()
+		ms := 100 // Wait for 0.1 seconds
+		time.Sleep(time.Duration(ms) * time.Millisecond)
 	}
 }
 

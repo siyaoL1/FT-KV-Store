@@ -48,12 +48,30 @@ func (l LogRecord) len() int {
 	return len(l.Log)
 }
 
+func (l LogRecord) firstOfTerm(term int, start int) int {
+	resultIndex := start
+	// indexExist && sameTerm
+	for resultIndex > l.Index0 && l.term(resultIndex) == term {
+		resultIndex -= 1
+	}
+	return resultIndex
+}
+
+func (l LogRecord) lastOfTerm(term int, start int) int {
+	resultIndex := start
+	// indexExist && sameTerm
+	for resultIndex > l.Index0 && l.term(resultIndex) == term {
+		resultIndex -= 1
+	}
+	return resultIndex
+}
+
 func (l LogRecord) lastLogIndex() int {
 	return l.toLogIndex(len(l.Log) - 1)
 }
 
 func (l LogRecord) lastLogTerm() int {
-	return l.Log[len(l.Log)-1].Term
+	return l.lastLogEntry().Term
 }
 
 func (l LogRecord) lastLogEntry() Entry {
@@ -64,6 +82,10 @@ func (l LogRecord) entry(logIndex int) Entry {
 	recordIndex := l.toRecordIndex(logIndex)
 	// Debug(dLog, "logIndex: %v, recordIndex:%v\n", logIndex, recordIndex)
 	return l.Log[recordIndex]
+}
+
+func (l LogRecord) term(logIndex int) int {
+	return l.entry(logIndex).Term
 }
 
 func (l LogRecord) slice(logIndex int) []Entry {

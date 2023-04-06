@@ -16,11 +16,12 @@ type AppendEntriesArgs struct {
 }
 
 type AppendEntriesReply struct {
-	Term          int
-	Success       bool
-	ConflictTerm  int
-	ConflictFirst int
-	ConflictValid bool
+	Term     int
+	Success  bool
+	Conflict bool
+	XTerm    int // term in the conflicting entry
+	XFirst   int // index of first entry with that term
+	XLen     int //log length
 }
 
 // ***************************************
@@ -116,34 +117,23 @@ func (rf *Raft) AppendEntries(args *AppendEntriesArgs, reply *AppendEntriesReply
 	reply.Success = false
 
 	// Checks if the current log is inconsistent from leader's
-	// First and third cases are Rule 2
-	if args.PrevLogIndex > rf.lastLogIndex() {
-		// invalid prev log index
-		// Tell leader to backup nextIndex[]
-		reply.ConflictTerm = rf.LogRecord.lastLogEntry().Term
-		reply.ConflictFirst = rf.lastLogIndex()
-		reply.ConflictValid = true
+	// First case is Rule 2
+	if args.PrevLogIndex > rf.lastLogIndex() { //
+		// Log is too short, Tell leader to backup
+		reply.XTerm = rf.lastLogTerm()
+		reply.XFirst = rf.LogRecord.firstOfTerm(reply.XTerm, rf.lastLogIndex())
+		reply.XLen = rf.LogRecord.len()
+		reply.Conflict = true
 	} else if args.PrevLogIndex < rf.LogRecord.startIndex() {
 		// invalid prev log index
 		// prevLogIndex is being snapshotted.
-
+		// Does this need to be considered? Since if a log is being snapshotted, we would not appendEntries at that index.
 	} else if rf.LogRecord.entry(args.PrevLogIndex).Term != args.PrevLogTerm {
 		// conflict entry, need to tell leader to roll back
-		reply.ConflictTerm = rf.LogRecord.entry(args.PrevLogIndex).term
-		reply.ConflictFirst = rf.LogRecord.entry(args.PrevLogIndex)
-		reply.ConflictValid = true
-		// Roll back the entire term
-		for reply.ConflictFirst > rf.LogRecord.startIndex()+1 {
-			reply.ConflictFirst -= 1
-			if rf.LogRecord.entry(reply.ConflictFirst).Term <= args.PrevLogTerm {
-				break
-			}
-		}
-		// if the term is the same, find the first one
-		if 
-		// else use the current conflictFirst 
-		//
-
+		reply.XTerm = rf.LogRecord.term(args.PrevLogIndex)
+		reply.XFirst = rf.LogRecord.firstOfTerm(reply.XTerm, args.PrevLogIndex)
+		reply.XLen = rf.LogRecord.len()
+		reply.Conflict = true
 	} else {
 		rf.updateLogL(args, reply)
 		reply.Success = true
@@ -154,7 +144,7 @@ func (rf *Raft) AppendEntries(args *AppendEntriesArgs, reply *AppendEntriesReply
 
 	rf.signalApplierL()
 	reply.Term = rf.currentTerm
-	Debug(dLog, "S%d T%d, Replied AppendEntry with %t, ConflictValid: %t\n", rf.me, rf.currentTerm, reply.Success, reply.ConflictValid)
+	Debug(dLog, "S%d T%d, Replied AppendEntry with %t, Conflict: %t\n", rf.me, rf.currentTerm, reply.Success, reply.Conflict)
 }
 
 func (rf *Raft) updateLogL(args *AppendEntriesArgs, reply *AppendEntriesReply) {
@@ -193,9 +183,9 @@ func (rf *Raft) updateLogL(args *AppendEntriesArgs, reply *AppendEntriesReply) {
 	if args.LeaderCommit > rf.commitIndex {
 		rf.commitIndex = args.LeaderCommit
 		latestIndex := args.PrevLogIndex + 1 + len(args.Entries) - 1
-		Debug(dLog, "S%d T%d, || Commit || Commit to %v\n", rf.me, rf.currentTerm, rf.commitIndex)
+		Debug(dCommit, "S%d T%d, || Commit || Commit to %v\n", rf.me, rf.currentTerm, rf.commitIndex)
 		if rf.commitIndex > latestIndex {
-			Debug(dLog, "S%d T%d, || Commit || Commit to %v\n", rf.me, rf.currentTerm, latestIndex)
+			Debug(dCommit, "S%d T%d, || Commit || Commit to %v\n", rf.me, rf.currentTerm, latestIndex)
 			rf.commitIndex = latestIndex
 		}
 	}
@@ -230,17 +220,9 @@ func (rf *Raft) processAppendReplyL(server int, args *AppendEntriesArgs, reply *
 				}
 				Debug(dLeader, "S%d T%d, Update || Updated server %v with nextIndex: %v, matchIndex: %v \n", rf.me, rf.currentTerm, server, rf.nextIndex[server], rf.matchIndex[server])
 			}
-		} else if reply.ConflictValid { // Failure
+		} else if reply.Conflict { // Failure
 			// Backup one term
-			rf.conflictTermL(server, args, reply)
-		} else if rf.nextIndex[server] > 1 {
-			// Backup one index
-			Debug(dLeader, "S%d T%d, Update || Decremented server %v's nextIndex to %v\n", rf.me, rf.currentTerm, server, rf.nextIndex[server])
-			rf.nextIndex[server] -= 1
-			// 2D
-			// if rf.nextIndex[peer] < rf.log.start() + 1 {
-			// 	rf.sendSnaphsot(peer)
-			// }
+			rf.handleconflictL(server, args, reply)
 		}
 		rf.advancedCommitL()
 		// Debug(dLog, "S%d T%d, received AppendEntries reply from %v (term %v)\n", rf.me, reply.Term, server)
@@ -248,38 +230,27 @@ func (rf *Raft) processAppendReplyL(server int, args *AppendEntriesArgs, reply *
 	}
 }
 
-func (rf *Raft) conflictTermL(server int, args *AppendEntriesArgs, reply *AppendEntriesReply) {
-	firstTermIndex := rf.LastIncludedIndex
-	hasTerm := false
+func (rf *Raft) handleconflictL(server int, args *AppendEntriesArgs, reply *AppendEntriesReply) {
+	// starting from conflictfirst going backward to find the last entry of the term if exist
+	lastIndexOfTerm := rf.LogRecord.lastOfTerm(reply.XTerm, reply.XFirst)
 
-	for i, entry := range rf.LogRecord.Log {
-		if entry.Term == reply.Term {
-			hasTerm = true
-			firstTermIndex = rf.LastIncludedIndex + i
-			break
-		} else if entry.Term < reply.Term {
-			break
-		}
-	}
-
-	// TODO: New: Right now the updating condition of conflict terms are not well defined
-
-	if !hasTerm {
-		Debug(dLeader, "S%d T%d, Update || 1 Decremented server %v's nextIndex from %v to %v\n", rf.me, rf.currentTerm, server, rf.nextIndex[server], reply.ConflictFirst)
-		rf.nextIndex[server] = reply.ConflictFirst
-		// TODO: stopped here, need to check which condition caused the conflictfirst to be higher than actual index.
-		if reply.ConflictFirst < rf.nextIndex[server] {
-			rf.nextIndex[server] = reply.ConflictFirst
-		}
+	if lastIndexOfTerm == -1 {
+		// Doesn't have term
+		rf.nextIndex[server] = reply.XFirst
 	} else {
-		lastTermIndex := firstTermIndex
-		for lastTermIndex <= rf.lastLogIndex() &&
-			rf.LogRecord.entry(firstTermIndex).Term == rf.LogRecord.entry(lastTermIndex).Term {
-			lastTermIndex += 1
-		}
-		Debug(dLeader, "S%d T%d, Update || 2 Decremented server %v's nextIndex from %v to %v\n", rf.me, rf.currentTerm, server, rf.nextIndex[server], lastTermIndex-1)
-		rf.nextIndex[server] = lastTermIndex - 1
+		// Has Term
+		rf.nextIndex[server] = lastIndexOfTerm
 	}
+
+	// Follower's log is too short
+	if rf.nextIndex[server] > reply.XLen {
+		rf.nextIndex[server] = reply.XLen
+	}
+
+	// // 2D
+	// if rf.nextIndex[server] < rf.LogRecord.startIndex()+1 {
+	// 	rf.sendSnaphsot()
+	// }
 }
 
 // ***************************************
@@ -313,7 +284,7 @@ func (rf *Raft) advancedCommitL() {
 		}
 		// If majority, updates commitIndex
 		if count > rf.numPeers/2 {
-			Debug(dLeader, "S%d T%d, Updated || Updated commitIndex from %v to %v.||\n", rf.me, rf.currentTerm, rf.commitIndex, index)
+			Debug(dCommit, "S%d T%d, Commit || Updated commitIndex from %v to %v.\n", rf.me, rf.currentTerm, rf.commitIndex, index)
 			rf.commitIndex = index
 		}
 	}

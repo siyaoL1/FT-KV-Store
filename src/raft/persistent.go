@@ -46,11 +46,12 @@ func (rf *Raft) installSnapshot(server int) {
 	ok := rf.sendInstallSnapshot(server, args, &reply)
 	if !ok {
 		Debug(dWarn, "S%v, Failed in InstallSnapshotReply PRC from %v to %v! (term: %v)\n", rf.me, rf.me, server, args.Term)
+		return
 	}
 
 	rf.mu.Lock()
 	rf.processSnapshotReplyL(server, args, &reply)
-	defer rf.mu.Unlock()
+	rf.mu.Unlock()
 }
 
 // *****************************************
@@ -94,8 +95,8 @@ func (rf *Raft) InstallSnapshot(args *InstallSnapshotArgs, reply *InstallSnapsho
 	rf.lastApplied = args.LastIncludedIndex
 
 	// install Snapshot
+	rf.readPersist(args.Data)
 	rf.persist(args.Data)
-
 }
 
 // ***************************************
@@ -147,15 +148,8 @@ func (rf *Raft) Snapshot(index int, snapshot []byte) {
 
 	rf.persist(snapshot)
 	Debug(dSnap, "S%d T%d, || After snapshot: index: %v, log: %v.\n", rf.me, rf.currentTerm, rf.LogRecord.Index0, rf.LogRecord.Log)
-	msg := ApplyMsg{
-		SnapshotValid: true,
-		Snapshot:      snapshot,
-		SnapshotTerm:  rf.LastIncludedTerm,
-		SnapshotIndex: rf.LastIncludedIndex,
-	}
-	rf.mu.Unlock()
-	rf.applyCh <- msg
-	rf.mu.Lock()
+	Debug(dSnap, "S%d T%d, nextApplyIndex:%v, (<=) rf.commitIndex:%v, nextApplyIndex:%v, (<=) rf.lastLogIndex:%v, rf.LastIncludedIndex:%v", rf.me, rf.currentTerm, rf.lastApplied+1, rf.commitIndex, rf.lastApplied+1, rf.lastLogIndex(), rf.LastIncludedIndex)
+
 }
 
 // ***********************************

@@ -181,3 +181,18 @@ Leader:
 
 Note:
 - The reason why that a server that has fewer logs than others can become a leader is because the leader's last log has higher term.
+
+
+XTerm:  term in the conflicting entry (if any)
+XIndex: index of first entry with that term (if any)
+XLen:   log length
+Case 1: leader doesn't have XTerm:
+  nextIndex = XIndex
+Case 2: leader has XTerm:
+  nextIndex = leader's last entry for XTerm
+Case 3: follower's log is too short:
+  nextIndex = XLen
+
+
+
+For 2D, Need to change the indexing machanism in the log.go
