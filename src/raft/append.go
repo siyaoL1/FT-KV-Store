@@ -21,7 +21,7 @@ type AppendEntriesReply struct {
 	Conflict bool
 	XTerm    int // term in the conflicting entry
 	XFirst   int // index of first entry with that term
-	XLen     int //log length
+	XLen     int // log length, which should be the last log's index
 }
 
 // ***************************************
@@ -41,12 +41,14 @@ func (rf *Raft) broadcastLogsL() {
 		// Leader's log is too short, need to install Snapshot
 		if prevLogIndex < rf.LastIncludedIndex {
 			Debug(dSnap, "S%d T%d, leader's log is too short for %d, prevLogIndex:%d, rf.LastIncludedIndex:%d", rf.me, rf.currentTerm, server, prevLogIndex, rf.LastIncludedIndex)
+			Debug(dSnap, "S%d T%d, rf.nextIndex:%v", rf.me, rf.currentTerm, rf.nextIndex)
+
 			go rf.installSnapshot(server)
 			continue
 		} else if prevLogIndex == rf.LastIncludedIndex {
 			prevLogTerm = rf.LastIncludedTerm
 		} else {
-			prevLogTerm = rf.LogRecord.entry(rf.nextIndex[server] - 1).Term
+			prevLogTerm = rf.LogRecord.term(rf.nextIndex[server] - 1)
 		}
 
 		// Construct Args for AppendEntries RPC
@@ -122,18 +124,23 @@ func (rf *Raft) AppendEntries(args *AppendEntriesArgs, reply *AppendEntriesReply
 		// Log is too short, Tell leader to backup
 		reply.XTerm = rf.lastLogTerm()
 		reply.XFirst = rf.LogRecord.firstOfTerm(reply.XTerm, rf.lastLogIndex())
-		reply.XLen = rf.LogRecord.len()
+		reply.XLen = rf.lastLogIndex()
 		reply.Conflict = true
+		Debug(dLog, "S%d T%d, AppendEntry Conflict 1\n", rf.me, rf.currentTerm)
 	} else if args.PrevLogIndex < rf.LogRecord.startIndex() {
 		// invalid prev log index
 		// prevLogIndex is being snapshotted.
 		// Does this need to be considered? Since if a log is being snapshotted, we would not appendEntries at that index.
-	} else if rf.LogRecord.entry(args.PrevLogIndex).Term != args.PrevLogTerm {
+		Debug(dLog, "S%d T%d, AppendEntry Conflict 2\n", rf.me, rf.currentTerm)
+	} else if (rf.LogRecord.len() > 1 && rf.LogRecord.term(args.PrevLogIndex) != args.PrevLogTerm) ||
+		(rf.LogRecord.len() == 1 && rf.LastIncludedTerm != args.PrevLogTerm) {
 		// conflict entry, need to tell leader to roll back
 		reply.XTerm = rf.LogRecord.term(args.PrevLogIndex)
 		reply.XFirst = rf.LogRecord.firstOfTerm(reply.XTerm, args.PrevLogIndex)
-		reply.XLen = rf.LogRecord.len()
+		reply.XLen = rf.lastLogIndex()
 		reply.Conflict = true
+		Debug(dLog, "S%d T%d, AppendEntry Conflict 3\n", rf.me, rf.currentTerm)
+		Debug(dLog, "S%d T%d, || logs: %v, args: %v.\n", rf.me, rf.currentTerm, rf.LogRecord.Log, args)
 	} else {
 		rf.updateLogL(args, reply)
 		reply.Success = true
@@ -157,7 +164,7 @@ func (rf *Raft) updateLogL(args *AppendEntriesArgs, reply *AppendEntriesReply) {
 		index := args.PrevLogIndex + 1 + i
 		// If two logs have the same index and same term they are identical,
 		// this case they don't have the same term so we erase the log starting from that index.
-		if index <= rf.lastLogIndex() && rf.LogRecord.entry(index).Term != entry.Term {
+		if index <= rf.lastLogIndex() && rf.LogRecord.term(index) != entry.Term {
 			(&(rf.LogRecord)).cutend(index)
 		}
 	}
@@ -172,7 +179,7 @@ func (rf *Raft) updateLogL(args *AppendEntriesArgs, reply *AppendEntriesReply) {
 		}
 		if !reflect.DeepEqual(rf.LogRecord.entry(index).Command, entry.Command) {
 			// Debug(dLog, "Entry error")
-			Debug(dLog, "S%d T%d, || Current log index0: %v, log: %v.||\n", rf.me, rf.currentTerm, rf.LogRecord.Index0, rf.LogRecord.Log)
+			Debug(dLog, "S%d T%d, || Current log index0: %v, log: %v.||\n", rf.me, rf.currentTerm, rf.LogRecord.Index0, rf.LogRecord)
 
 			log.Fatalf("Entry error %v from=%v index%v old=%v new=%v\n",
 				rf.me, args.LeaderID, index, rf.LogRecord.entry(index), args.Entries[i])
@@ -233,19 +240,24 @@ func (rf *Raft) processAppendReplyL(server int, args *AppendEntriesArgs, reply *
 func (rf *Raft) handleconflictL(server int, args *AppendEntriesArgs, reply *AppendEntriesReply) {
 	// starting from conflictfirst going backward to find the last entry of the term if exist
 	lastIndexOfTerm := rf.LogRecord.lastOfTerm(reply.XTerm, reply.XFirst)
-
+	Debug(dLeader, "S%d T%d, Handling Append Conflict, XTerm: %v, XFirst: %v, log: %v\n", rf.me, rf.currentTerm, reply.XTerm, reply.XFirst, rf.LogRecord)
+	newNextIndex := -1
 	if lastIndexOfTerm == -1 {
 		// Doesn't have term
-		rf.nextIndex[server] = reply.XFirst
+		Debug(dLeader, "S%d T%d, Handling Append Conflict, Case 1 \n", rf.me, rf.currentTerm)
+		newNextIndex = reply.XFirst
 	} else {
 		// Has Term
-		rf.nextIndex[server] = lastIndexOfTerm
+		Debug(dLeader, "S%d T%d, Handling Append Conflict, Case 2 \n", rf.me, rf.currentTerm)
+		newNextIndex = lastIndexOfTerm
 	}
 
 	// Follower's log is too short
 	if rf.nextIndex[server] > reply.XLen {
-		rf.nextIndex[server] = reply.XLen
+		Debug(dLeader, "S%d T%d, Handling Append Conflict, Case 3 \n", rf.me, rf.currentTerm)
+		newNextIndex = reply.XLen
 	}
+	rf.nextIndex[server] = newNextIndex
 
 	// // 2D
 	// if rf.nextIndex[server] < rf.LogRecord.startIndex()+1 {
@@ -272,7 +284,7 @@ func (rf *Raft) advancedCommitL() {
 	}
 
 	for index := start; index <= rf.lastLogIndex(); index++ {
-		if rf.LogRecord.entry(index).Term != rf.currentTerm { // 5.4 (figure 8)
+		if rf.LogRecord.term(index) != rf.currentTerm { // 5.4 (figure 8)
 			continue
 		}
 

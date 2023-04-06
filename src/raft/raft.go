@@ -71,11 +71,12 @@ type Raft struct {
 	applyCond *sync.Cond
 
 	// Persistent state
-	currentTerm       int
-	votedFor          int
-	LogRecord         LogRecord
-	LastIncludedIndex int
-	LastIncludedTerm  int
+	currentTerm int
+	votedFor    int
+	LogRecord   LogRecord
+
+	LastIncludedIndex int // last index and term included in Snapshot
+	LastIncludedTerm  int // Means we don't have that index in current LogRecord
 
 	// Volatile state(note: volatile means subject to rapid or unpredictable change)
 	commitIndex int
@@ -176,12 +177,19 @@ func (rf *Raft) apply() {
 	rf.mu.Lock()
 	defer rf.mu.Unlock()
 
-	nextApplyIndex := rf.lastApplied + 1
 	// Debug(dLog2, "S%d T%d, nextApplyIndex:%v, (<=) rf.commitIndex:%v, nextApplyIndex:%v, (<=) rf.lastLogIndex:%v", rf.me, rf.currentTerm, nextApplyIndex, rf.commitIndex, nextApplyIndex, rf.lastLogIndex())
 
 	var msg ApplyMsg
-	if nextApplyIndex <= rf.commitIndex &&
-		nextApplyIndex <= rf.lastLogIndex() {
+	// TODO: Solve the issue that the snapshot never get sent to the applych
+	if rf.lastApplied < rf.LastIncludedIndex {
+		msg = ApplyMsg{
+			SnapshotValid: true,
+			Snapshot:      rf.persister.ReadSnapshot(),
+			SnapshotTerm:  rf.LastIncludedTerm,
+			SnapshotIndex: rf.LastIncludedIndex,
+		}
+		Debug(dLog, "S%d T%d, || Applying Snapshot with SnapshotTerm: %v, SnapshotIndex: %v.\n", rf.me, rf.currentTerm, msg.SnapshotTerm, msg.SnapshotIndex)
+	} else if rf.lastApplied < rf.commitIndex && rf.lastApplied+1 <= rf.lastLogIndex() {
 		rf.lastApplied += 1
 		msg = ApplyMsg{
 			CommandValid: true,
@@ -193,14 +201,6 @@ func (rf *Raft) apply() {
 		Debug(dLog, "S%d T%d, || Applying logs with index: %v, command: %v, commitIndex: %v.\n", rf.me, rf.currentTerm, rf.lastApplied, msg.Command, rf.commitIndex)
 		Debug(dLog, "S%d T%d, || logs: %v.\n", rf.me, rf.currentTerm, rf.LogRecord.Log)
 		// rf.persist(nil)
-	} else if nextApplyIndex < rf.LastIncludedIndex {
-		msg = ApplyMsg{
-			SnapshotValid: true,
-			Snapshot:      rf.persister.ReadSnapshot(),
-			SnapshotTerm:  rf.LastIncludedTerm,
-			SnapshotIndex: rf.LastIncludedIndex,
-		}
-		Debug(dLog, "S%d T%d, || Applying Snapshot with SnapshotTerm: %v, SnapshotIndex: %v.\n", rf.me, rf.currentTerm, msg.SnapshotTerm, msg.SnapshotIndex)
 	}
 	rf.mu.Unlock()
 	rf.applyCh <- msg
@@ -242,7 +242,7 @@ func Make(peers []*labrpc.ClientEnd, me int,
 		// Persistent state on all server
 		currentTerm:       0,
 		votedFor:          -1,
-		LogRecord:         mkLogEmpty(),
+		LogRecord:         mkLogEmpty(0),
 		LastIncludedIndex: 0,
 		LastIncludedTerm:  0,
 		// Volatile state on all servers

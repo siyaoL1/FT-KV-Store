@@ -1,412 +1,464 @@
 000006 INFO S0 disconnect
-000017 INFO S1 disconnect
-000018 INFO S2 disconnect
-000018 INFO S0 connected
-000018 INFO S1 connected
-000018 INFO S2 connected
+000020 INFO S1 disconnect
+000020 INFO S2 disconnect
+000020 INFO S0 connected
+000020 INFO S1 connected
+000020 INFO S2 connected
 Test (2D): install snapshots (disconnect) ...
-006068 VOTE S0 T0, timed out
-006088 VOTE S0 T1, Started election
-006110 VOTE S0 T1, || logs: [{<nil> 0}].
-006125 VOTE S0 T1, sending RequestVote RPC to 2
-006125 VOTE S0 T1, sending RequestVote RPC to 1
-006152 TERM S2 T1, Converted from term 0 to term 1, now a follower.
-006152 TERM S1 T1, Converted from term 0 to term 1, now a follower.
-006152 VOTE S2 T1, || logs: [{<nil> 0}].
-006152 VOTE S2 T1, Granted vote to 0, rf.currentTerm: 1, rf.election.votedFor: 0, args.LastLogTerm: 0, args.LastLogIndex: 0
-006153 VOTE S1 T1, || logs: [{<nil> 0}].
-006153 VOTE S1 T1, Granted vote to 0, rf.currentTerm: 1, rf.election.votedFor: 0, args.LastLogTerm: 0, args.LastLogIndex: 0
-006162 VOTE S0 T1, received RequestVote reply from 1, granted: true
-006163 VOTE S0 T1, Became a leader 
-006163 LEAD S0 T1, Send || Replicating logs to 1, log length: 0, PrevLogIndex: 0, PrevLogTerm:0, LeaderCommit: 0 
-006163 LEAD S0 T1, Send || Replicating logs to 2, log length: 0, PrevLogIndex: 0, PrevLogTerm:0, LeaderCommit: 0 
-006163 LEAD S0 T1, Leader logs: [{<nil> 0}].
-006164 VOTE S0 T1, received RequestVote reply from 2, granted: true
-006164 LEAD S0 T1, Leader logs: [{<nil> 0}].
-006172 LOG1 S2 T1, Received AppendEntry RPC 
-006172 LOG1 S2 T1, Replied AppendEntry with true, Conflict: false
-006172 LOG1 S1 T1, Received AppendEntry RPC 
-006173 LOG1 S1 T1, Replied AppendEntry with true, Conflict: false
-006175 LEAD S0 T1, Response || Received AppendEntries response from 1 with success: true 
-006176 LEAD S0 T1, Response || Received AppendEntries response from 2 with success: true 
-006609 CLNT S0 T1, Start || Received and appended 1 log entry, lastLogIndex: 1.
-007127 LEAD S0 T1, Send || Replicating logs to 1, log length: 1, PrevLogIndex: 0, PrevLogTerm:0, LeaderCommit: 0 
-007137 LEAD S0 T1, Send || Replicating logs to 2, log length: 1, PrevLogIndex: 0, PrevLogTerm:0, LeaderCommit: 0 
-007144 LOG1 S1 T1, Received AppendEntry RPC 
-007146 LOG1 S1 T1, || Append || Appended 1 log entry, lastLogIndex: 1.
-007147 LOG1 S1 T1, Replied AppendEntry with true, Conflict: false
-007149 LOG1 S2 T1, Received AppendEntry RPC 
-007149 LOG1 S2 T1, || Append || Appended 1 log entry, lastLogIndex: 1.
-007150 LEAD S0 T1, Response || Received AppendEntries response from 1 with success: true 
-007151 LEAD S0 T1, Update || Updated server 1 with nextIndex: 2, matchIndex: 1 
-007151 CMIT S0 T1, Commit || Updated commitIndex from 0 to 1.
-007150 LOG1 S2 T1, Replied AppendEntry with true, Conflict: false
-007166 LEAD S0 T1, Response || Received AppendEntries response from 2 with success: true 
-007166 LEAD S0 T1, Update || Updated server 2 with nextIndex: 2, matchIndex: 1 
-008079 LOG1 S0 T1, || Applying logs with index: 1, command: 125259989751871768, commitIndex: 1.
-008082 LOG1 S0 T1, || logs: [{<nil> 0} {125259989751871768 1}].
-008131 LEAD S0 T1, Send || Replicating logs to 1, log length: 0, PrevLogIndex: 1, PrevLogTerm:1, LeaderCommit: 1 
-008132 LEAD S0 T1, Send || Replicating logs to 2, log length: 0, PrevLogIndex: 1, PrevLogTerm:1, LeaderCommit: 1 
-008136 LOG1 S2 T1, Received AppendEntry RPC 
-008137 CMIT S2 T1, || Commit || Commit to 1
-008137 LOG1 S1 T1, Received AppendEntry RPC 
-008137 CMIT S1 T1, || Commit || Commit to 1
-008137 LOG1 S2 T1, Replied AppendEntry with true, Conflict: false
-008138 LOG1 S1 T1, Replied AppendEntry with true, Conflict: false
-008141 LEAD S0 T1, Response || Received AppendEntries response from 2 with success: true 
-008141 LEAD S0 T1, Response || Received AppendEntries response from 1 with success: true 
-009083 LOG1 S1 T1, || Applying logs with index: 1, command: 125259989751871768, commitIndex: 1.
-009083 LOG1 S2 T1, || Applying logs with index: 1, command: 125259989751871768, commitIndex: 1.
-009091 LOG1 S2 T1, || logs: [{<nil> 0} {125259989751871768 1}].
-009093 LOG1 S1 T1, || logs: [{<nil> 0} {125259989751871768 1}].
-009132 LEAD S0 T1, Send || Replicating logs to 1, log length: 0, PrevLogIndex: 1, PrevLogTerm:1, LeaderCommit: 1 
-009133 LEAD S0 T1, Send || Replicating logs to 2, log length: 0, PrevLogIndex: 1, PrevLogTerm:1, LeaderCommit: 1 
-009137 LOG1 S1 T1, Received AppendEntry RPC 
-009137 LOG1 S2 T1, Received AppendEntry RPC 
-009138 LOG1 S1 T1, Replied AppendEntry with true, Conflict: false
-009139 LEAD S0 T1, Response || Received AppendEntries response from 1 with success: true 
-009140 LOG1 S2 T1, Replied AppendEntry with true, Conflict: false
-009141 LEAD S0 T1, Response || Received AppendEntries response from 2 with success: true 
-010134 LEAD S0 T1, Send || Replicating logs to 1, log length: 0, PrevLogIndex: 1, PrevLogTerm:1, LeaderCommit: 1 
-010137 LEAD S0 T1, Send || Replicating logs to 2, log length: 0, PrevLogIndex: 1, PrevLogTerm:1, LeaderCommit: 1 
-010143 LOG1 S2 T1, Received AppendEntry RPC 
-010144 LOG1 S2 T1, Replied AppendEntry with true, Conflict: false
-010144 LOG1 S1 T1, Received AppendEntry RPC 
-010145 LOG1 S1 T1, Replied AppendEntry with true, Conflict: false
-010146 LEAD S0 T1, Response || Received AppendEntries response from 2 with success: true 
-010148 LEAD S0 T1, Response || Received AppendEntries response from 1 with success: true 
-011139 LEAD S0 T1, Send || Replicating logs to 1, log length: 0, PrevLogIndex: 1, PrevLogTerm:1, LeaderCommit: 1 
-011141 LEAD S0 T1, Send || Replicating logs to 2, log length: 0, PrevLogIndex: 1, PrevLogTerm:1, LeaderCommit: 1 
-011146 LOG1 S2 T1, Received AppendEntry RPC 
-011147 LOG1 S2 T1, Replied AppendEntry with true, Conflict: false
-011146 LOG1 S1 T1, Received AppendEntry RPC 
-011149 LOG1 S1 T1, Replied AppendEntry with true, Conflict: false
-011149 LEAD S0 T1, Response || Received AppendEntries response from 2 with success: true 
-011151 LEAD S0 T1, Response || Received AppendEntries response from 1 with success: true 
-012142 LEAD S0 T1, Send || Replicating logs to 1, log length: 0, PrevLogIndex: 1, PrevLogTerm:1, LeaderCommit: 1 
-012150 LEAD S0 T1, Send || Replicating logs to 2, log length: 0, PrevLogIndex: 1, PrevLogTerm:1, LeaderCommit: 1 
-012154 LOG1 S1 T1, Received AppendEntry RPC 
-012155 LOG1 S2 T1, Received AppendEntry RPC 
-012155 LOG1 S1 T1, Replied AppendEntry with true, Conflict: false
-012156 LOG1 S2 T1, Replied AppendEntry with true, Conflict: false
-012157 LEAD S0 T1, Response || Received AppendEntries response from 1 with success: true 
-012158 LEAD S0 T1, Response || Received AppendEntries response from 2 with success: true 
-013148 LEAD S0 T1, Send || Replicating logs to 1, log length: 0, PrevLogIndex: 1, PrevLogTerm:1, LeaderCommit: 1 
-013150 LEAD S0 T1, Send || Replicating logs to 2, log length: 0, PrevLogIndex: 1, PrevLogTerm:1, LeaderCommit: 1 
-013155 LOG1 S1 T1, Received AppendEntry RPC 
-013156 LOG1 S2 T1, Received AppendEntry RPC 
-013157 LOG1 S2 T1, Replied AppendEntry with true, Conflict: false
-013156 LOG1 S1 T1, Replied AppendEntry with true, Conflict: false
-013159 LEAD S0 T1, Response || Received AppendEntries response from 2 with success: true 
-013159 LEAD S0 T1, Response || Received AppendEntries response from 1 with success: true 
-014151 LEAD S0 T1, Send || Replicating logs to 1, log length: 0, PrevLogIndex: 1, PrevLogTerm:1, LeaderCommit: 1 
-014153 LEAD S0 T1, Send || Replicating logs to 2, log length: 0, PrevLogIndex: 1, PrevLogTerm:1, LeaderCommit: 1 
-014157 LOG1 S2 T1, Received AppendEntry RPC 
-014157 LOG1 S1 T1, Received AppendEntry RPC 
-014158 LOG1 S2 T1, Replied AppendEntry with true, Conflict: false
-014159 LOG1 S1 T1, Replied AppendEntry with true, Conflict: false
-014160 LEAD S0 T1, Response || Received AppendEntries response from 2 with success: true 
-014161 LEAD S0 T1, Response || Received AppendEntries response from 1 with success: true 
-014613 INFO S1 disconnect
-014618 CLNT S0 T1, Start || Received and appended 1 log entry, lastLogIndex: 2.
-015154 LEAD S0 T1, Send || Replicating logs to 1, log length: 1, PrevLogIndex: 1, PrevLogTerm:1, LeaderCommit: 1 
-015156 LEAD S0 T1, Send || Replicating logs to 2, log length: 1, PrevLogIndex: 1, PrevLogTerm:1, LeaderCommit: 1 
-015165 LOG1 S2 T1, Received AppendEntry RPC 
-015165 LOG1 S2 T1, || Append || Appended 1 log entry, lastLogIndex: 2.
-015166 LOG1 S2 T1, Replied AppendEntry with true, Conflict: false
-015170 LEAD S0 T1, Response || Received AppendEntries response from 2 with success: true 
-015170 LEAD S0 T1, Update || Updated server 2 with nextIndex: 3, matchIndex: 2 
-015170 CMIT S0 T1, Commit || Updated commitIndex from 1 to 2.
-016139 LOG1 S0 T1, || Applying logs with index: 2, command: 5623326785683991384, commitIndex: 2.
-016142 LOG1 S0 T1, || logs: [{<nil> 0} {125259989751871768 1} {5623326785683991384 1}].
-016155 LEAD S0 T1, Send || Replicating logs to 1, log length: 1, PrevLogIndex: 1, PrevLogTerm:1, LeaderCommit: 2 
-016156 LEAD S0 T1, Send || Replicating logs to 2, log length: 0, PrevLogIndex: 2, PrevLogTerm:1, LeaderCommit: 2 
-016162 LOG1 S2 T1, Received AppendEntry RPC 
-016163 CMIT S2 T1, || Commit || Commit to 2
-016163 LOG1 S2 T1, Replied AppendEntry with true, Conflict: false
-016167 LEAD S0 T1, Response || Received AppendEntries response from 2 with success: true 
-017140 LOG1 S2 T1, || Applying logs with index: 2, command: 5623326785683991384, commitIndex: 2.
-017142 LOG1 S2 T1, || logs: [{<nil> 0} {125259989751871768 1} {5623326785683991384 1}].
-017157 LEAD S0 T1, Send || Replicating logs to 1, log length: 1, PrevLogIndex: 1, PrevLogTerm:1, LeaderCommit: 2 
-017158 LEAD S0 T1, Send || Replicating logs to 2, log length: 0, PrevLogIndex: 2, PrevLogTerm:1, LeaderCommit: 2 
-017163 LOG1 S2 T1, Received AppendEntry RPC 
-017163 LOG1 S2 T1, Replied AppendEntry with true, Conflict: false
-017165 LEAD S0 T1, Response || Received AppendEntries response from 2 with success: true 
-017336 WARN Got here
-017338 CLNT S0 T1, Start || Received and appended 1 log entry, lastLogIndex: 3.
-017339 CLNT S0 T1, Start || Received and appended 1 log entry, lastLogIndex: 4.
-017340 CLNT S0 T1, Start || Received and appended 1 log entry, lastLogIndex: 5.
-017340 CLNT S0 T1, Start || Received and appended 1 log entry, lastLogIndex: 6.
-017341 CLNT S0 T1, Start || Received and appended 1 log entry, lastLogIndex: 7.
-017342 CLNT S0 T1, Start || Received and appended 1 log entry, lastLogIndex: 8.
-017343 CLNT S0 T1, Start || Received and appended 1 log entry, lastLogIndex: 9.
-017343 CLNT S0 T1, Start || Received and appended 1 log entry, lastLogIndex: 10.
-017344 CLNT S0 T1, Start || Received and appended 1 log entry, lastLogIndex: 11.
-017345 CLNT S0 T1, Start || Received and appended 1 log entry, lastLogIndex: 12.
-017346 CLNT S0 T1, Start || Received and appended 1 log entry, lastLogIndex: 13.
-017347 CLNT S0 T1, Start || Received and appended 1 log entry, lastLogIndex: 14.
-018160 LEAD S0 T1, Send || Replicating logs to 1, log length: 13, PrevLogIndex: 1, PrevLogTerm:1, LeaderCommit: 2 
-018162 LEAD S0 T1, Send || Replicating logs to 2, log length: 12, PrevLogIndex: 2, PrevLogTerm:1, LeaderCommit: 2 
-018168 LOG1 S2 T1, Received AppendEntry RPC 
-018168 LOG1 S2 T1, || Append || Appended 1 log entry, lastLogIndex: 3.
-018168 LOG1 S2 T1, || Append || Appended 1 log entry, lastLogIndex: 4.
-018168 LOG1 S2 T1, || Append || Appended 1 log entry, lastLogIndex: 5.
-018168 LOG1 S2 T1, || Append || Appended 1 log entry, lastLogIndex: 6.
-018168 LOG1 S2 T1, || Append || Appended 1 log entry, lastLogIndex: 7.
-018169 LOG1 S2 T1, || Append || Appended 1 log entry, lastLogIndex: 8.
-018169 LOG1 S2 T1, || Append || Appended 1 log entry, lastLogIndex: 9.
-018169 LOG1 S2 T1, || Append || Appended 1 log entry, lastLogIndex: 10.
-018169 LOG1 S2 T1, || Append || Appended 1 log entry, lastLogIndex: 11.
-018169 LOG1 S2 T1, || Append || Appended 1 log entry, lastLogIndex: 12.
-018169 LOG1 S2 T1, || Append || Appended 1 log entry, lastLogIndex: 13.
-018169 LOG1 S2 T1, || Append || Appended 1 log entry, lastLogIndex: 14.
-018170 LOG1 S2 T1, Replied AppendEntry with true, Conflict: false
-018171 LEAD S0 T1, Response || Received AppendEntries response from 2 with success: true 
-018171 LEAD S0 T1, Update || Updated server 2 with nextIndex: 15, matchIndex: 14 
-018171 CMIT S0 T1, Commit || Updated commitIndex from 2 to 3.
-018172 CMIT S0 T1, Commit || Updated commitIndex from 3 to 4.
-018172 CMIT S0 T1, Commit || Updated commitIndex from 4 to 5.
-018172 CMIT S0 T1, Commit || Updated commitIndex from 5 to 6.
-018172 CMIT S0 T1, Commit || Updated commitIndex from 6 to 7.
-018172 CMIT S0 T1, Commit || Updated commitIndex from 7 to 8.
-018172 CMIT S0 T1, Commit || Updated commitIndex from 8 to 9.
-018172 CMIT S0 T1, Commit || Updated commitIndex from 9 to 10.
-018173 CMIT S0 T1, Commit || Updated commitIndex from 10 to 11.
-018173 CMIT S0 T1, Commit || Updated commitIndex from 11 to 12.
-018173 CMIT S0 T1, Commit || Updated commitIndex from 12 to 13.
-018173 CMIT S0 T1, Commit || Updated commitIndex from 13 to 14.
-019146 LOG1 S0 T1, || Applying logs with index: 3, command: 307385101692354516, commitIndex: 14.
-019148 LOG1 S0 T1, || logs: [{<nil> 0} {125259989751871768 1} {5623326785683991384 1} {307385101692354516 1} {4837524872400205078 1} {2815657512201069328 1} {8929323898592713773 1} {8587834662273016111 1} {3434138791423226670 1} {2325450986020652952 1} {4583109432383170097 1} {7546595365254703560 1} {7128003583775367174 1} {8119647378818657906 1} {4139018254636409909 1}].
-019161 LEAD S0 T1, Send || Replicating logs to 1, log length: 13, PrevLogIndex: 1, PrevLogTerm:1, LeaderCommit: 14 
-019162 LEAD S0 T1, Send || Replicating logs to 2, log length: 0, PrevLogIndex: 14, PrevLogTerm:1, LeaderCommit: 14 
-019167 LOG1 S2 T1, Received AppendEntry RPC 
-019167 CMIT S2 T1, || Commit || Commit to 14
-019168 LOG1 S2 T1, Replied AppendEntry with true, Conflict: false
-019171 LEAD S0 T1, Response || Received AppendEntries response from 2 with success: true 
-020149 LOG1 S2 T1, || Applying logs with index: 3, command: 307385101692354516, commitIndex: 14.
-020149 LOG1 S0 T1, || Applying logs with index: 4, command: 4837524872400205078, commitIndex: 14.
-020151 LOG1 S2 T1, || logs: [{<nil> 0} {125259989751871768 1} {5623326785683991384 1} {307385101692354516 1} {4837524872400205078 1} {2815657512201069328 1} {8929323898592713773 1} {8587834662273016111 1} {3434138791423226670 1} {2325450986020652952 1} {4583109432383170097 1} {7546595365254703560 1} {7128003583775367174 1} {8119647378818657906 1} {4139018254636409909 1}].
-020151 LOG1 S0 T1, || logs: [{<nil> 0} {125259989751871768 1} {5623326785683991384 1} {307385101692354516 1} {4837524872400205078 1} {2815657512201069328 1} {8929323898592713773 1} {8587834662273016111 1} {3434138791423226670 1} {2325450986020652952 1} {4583109432383170097 1} {7546595365254703560 1} {7128003583775367174 1} {8119647378818657906 1} {4139018254636409909 1}].
-020163 LEAD S0 T1, Send || Replicating logs to 1, log length: 13, PrevLogIndex: 1, PrevLogTerm:1, LeaderCommit: 14 
-020163 LEAD S0 T1, Send || Replicating logs to 2, log length: 0, PrevLogIndex: 14, PrevLogTerm:1, LeaderCommit: 14 
-020169 LOG1 S2 T1, Received AppendEntry RPC 
-020170 LOG1 S2 T1, Replied AppendEntry with true, Conflict: false
-020173 LEAD S0 T1, Response || Received AppendEntries response from 2 with success: true 
-021120 LOG1 S0 T1, Failed in AppendEntries PRC from 0 to 1! (term: 1)
-021152 LOG1 S2 T1, || Applying logs with index: 4, command: 4837524872400205078, commitIndex: 14.
-021153 LOG1 S0 T1, || Applying logs with index: 5, command: 2815657512201069328, commitIndex: 14.
-021153 LOG1 S2 T1, || logs: [{<nil> 0} {125259989751871768 1} {5623326785683991384 1} {307385101692354516 1} {4837524872400205078 1} {2815657512201069328 1} {8929323898592713773 1} {8587834662273016111 1} {3434138791423226670 1} {2325450986020652952 1} {4583109432383170097 1} {7546595365254703560 1} {7128003583775367174 1} {8119647378818657906 1} {4139018254636409909 1}].
-021154 LOG1 S0 T1, || logs: [{<nil> 0} {125259989751871768 1} {5623326785683991384 1} {307385101692354516 1} {4837524872400205078 1} {2815657512201069328 1} {8929323898592713773 1} {8587834662273016111 1} {3434138791423226670 1} {2325450986020652952 1} {4583109432383170097 1} {7546595365254703560 1} {7128003583775367174 1} {8119647378818657906 1} {4139018254636409909 1}].
-021164 LEAD S0 T1, Send || Replicating logs to 1, log length: 13, PrevLogIndex: 1, PrevLogTerm:1, LeaderCommit: 14 
-021165 LEAD S0 T1, Send || Replicating logs to 2, log length: 0, PrevLogIndex: 14, PrevLogTerm:1, LeaderCommit: 14 
-021170 LOG1 S2 T1, Received AppendEntry RPC 
-021171 LOG1 S2 T1, Replied AppendEntry with true, Conflict: false
-021173 LEAD S0 T1, Response || Received AppendEntries response from 2 with success: true 
-022157 LOG1 S0 T1, || Applying logs with index: 6, command: 8929323898592713773, commitIndex: 14.
-022157 LOG1 S2 T1, || Applying logs with index: 5, command: 2815657512201069328, commitIndex: 14.
-022159 LOG1 S0 T1, || logs: [{<nil> 0} {125259989751871768 1} {5623326785683991384 1} {307385101692354516 1} {4837524872400205078 1} {2815657512201069328 1} {8929323898592713773 1} {8587834662273016111 1} {3434138791423226670 1} {2325450986020652952 1} {4583109432383170097 1} {7546595365254703560 1} {7128003583775367174 1} {8119647378818657906 1} {4139018254636409909 1}].
-022160 LOG1 S2 T1, || logs: [{<nil> 0} {125259989751871768 1} {5623326785683991384 1} {307385101692354516 1} {4837524872400205078 1} {2815657512201069328 1} {8929323898592713773 1} {8587834662273016111 1} {3434138791423226670 1} {2325450986020652952 1} {4583109432383170097 1} {7546595365254703560 1} {7128003583775367174 1} {8119647378818657906 1} {4139018254636409909 1}].
-022164 LEAD S0 T1, Send || Replicating logs to 1, log length: 13, PrevLogIndex: 1, PrevLogTerm:1, LeaderCommit: 14 
-022165 LEAD S0 T1, Send || Replicating logs to 2, log length: 0, PrevLogIndex: 14, PrevLogTerm:1, LeaderCommit: 14 
-022172 LOG1 S2 T1, Received AppendEntry RPC 
-022174 LOG1 S2 T1, Replied AppendEntry with true, Conflict: false
-022177 LEAD S0 T1, Response || Received AppendEntries response from 2 with success: true 
-023158 VOTE S1 T1, timed out
-023160 VOTE S1 T2, Started election
-023161 LOG1 S2 T1, || Applying logs with index: 6, command: 8929323898592713773, commitIndex: 14.
-023161 LOG1 S2 T1, || logs: [{<nil> 0} {125259989751871768 1} {5623326785683991384 1} {307385101692354516 1} {4837524872400205078 1} {2815657512201069328 1} {8929323898592713773 1} {8587834662273016111 1} {3434138791423226670 1} {2325450986020652952 1} {4583109432383170097 1} {7546595365254703560 1} {7128003583775367174 1} {8119647378818657906 1} {4139018254636409909 1}].
-023162 LOG1 S0 T1, || Applying logs with index: 7, command: 8587834662273016111, commitIndex: 14.
-023162 LOG1 S0 T1, || logs: [{<nil> 0} {125259989751871768 1} {5623326785683991384 1} {307385101692354516 1} {4837524872400205078 1} {2815657512201069328 1} {8929323898592713773 1} {8587834662273016111 1} {3434138791423226670 1} {2325450986020652952 1} {4583109432383170097 1} {7546595365254703560 1} {7128003583775367174 1} {8119647378818657906 1} {4139018254636409909 1}].
-023164 VOTE S1 T2, || logs: [{<nil> 0} {125259989751871768 1}].
-023165 LEAD S0 T1, Send || Replicating logs to 1, log length: 13, PrevLogIndex: 1, PrevLogTerm:1, LeaderCommit: 14 
-023165 LEAD S0 T1, Send || Replicating logs to 2, log length: 0, PrevLogIndex: 14, PrevLogTerm:1, LeaderCommit: 14 
-023168 VOTE S1 T2, sending RequestVote RPC to 2
-023169 LOG1 S2 T1, Received AppendEntry RPC 
-023170 LOG1 S2 T1, Replied AppendEntry with true, Conflict: false
-023169 VOTE S1 T2, sending RequestVote RPC to 0
-023173 LEAD S0 T1, Response || Received AppendEntries response from 2 with success: true 
-024166 LEAD S0 T1, Send || Replicating logs to 1, log length: 13, PrevLogIndex: 1, PrevLogTerm:1, LeaderCommit: 14 
-024168 LEAD S0 T1, Send || Replicating logs to 2, log length: 0, PrevLogIndex: 14, PrevLogTerm:1, LeaderCommit: 14 
-024173 LOG1 S2 T1, Received AppendEntry RPC 
-024167 LOG1 S0 T1, || Applying logs with index: 8, command: 3434138791423226670, commitIndex: 14.
-024174 LOG1 S0 T1, || logs: [{<nil> 0} {125259989751871768 1} {5623326785683991384 1} {307385101692354516 1} {4837524872400205078 1} {2815657512201069328 1} {8929323898592713773 1} {8587834662273016111 1} {3434138791423226670 1} {2325450986020652952 1} {4583109432383170097 1} {7546595365254703560 1} {7128003583775367174 1} {8119647378818657906 1} {4139018254636409909 1}].
-024167 LOG1 S2 T1, || Applying logs with index: 7, command: 8587834662273016111, commitIndex: 14.
-024175 LOG1 S2 T1, || logs: [{<nil> 0} {125259989751871768 1} {5623326785683991384 1} {307385101692354516 1} {4837524872400205078 1} {2815657512201069328 1} {8929323898592713773 1} {8587834662273016111 1} {3434138791423226670 1} {2325450986020652952 1} {4583109432383170097 1} {7546595365254703560 1} {7128003583775367174 1} {8119647378818657906 1} {4139018254636409909 1}].
-024177 LOG1 S2 T1, Replied AppendEntry with true, Conflict: false
-024179 LEAD S0 T1, Response || Received AppendEntries response from 2 with success: true 
-025178 LOG1 S0 T1, || Applying logs with index: 9, command: 2325450986020652952, commitIndex: 14.
-025178 LEAD S0 T1, Send || Replicating logs to 1, log length: 13, PrevLogIndex: 1, PrevLogTerm:1, LeaderCommit: 14 
-025179 LOG1 S2 T1, || Applying logs with index: 8, command: 3434138791423226670, commitIndex: 14.
-025181 LEAD S0 T1, Send || Replicating logs to 2, log length: 0, PrevLogIndex: 14, PrevLogTerm:1, LeaderCommit: 14 
-025181 LOG1 S2 T1, || logs: [{<nil> 0} {125259989751871768 1} {5623326785683991384 1} {307385101692354516 1} {4837524872400205078 1} {2815657512201069328 1} {8929323898592713773 1} {8587834662273016111 1} {3434138791423226670 1} {2325450986020652952 1} {4583109432383170097 1} {7546595365254703560 1} {7128003583775367174 1} {8119647378818657906 1} {4139018254636409909 1}].
-025180 LOG1 S0 T1, || logs: [{<nil> 0} {125259989751871768 1} {5623326785683991384 1} {307385101692354516 1} {4837524872400205078 1} {2815657512201069328 1} {8929323898592713773 1} {8587834662273016111 1} {3434138791423226670 1} {2325450986020652952 1} {4583109432383170097 1} {7546595365254703560 1} {7128003583775367174 1} {8119647378818657906 1} {4139018254636409909 1}].
-025187 LOG1 S2 T1, Received AppendEntry RPC 
-025189 LOG1 S2 T1, Replied AppendEntry with true, Conflict: false
-025191 LEAD S0 T1, Response || Received AppendEntries response from 2 with success: true 
-025197 SNAP S0 T1, || Before snapshot: index: 0, log: [{<nil> 0} {125259989751871768 1} {5623326785683991384 1} {307385101692354516 1} {4837524872400205078 1} {2815657512201069328 1} {8929323898592713773 1} {8587834662273016111 1} {3434138791423226670 1} {2325450986020652952 1} {4583109432383170097 1} {7546595365254703560 1} {7128003583775367174 1} {8119647378818657906 1} {4139018254636409909 1}].
-025202 SNAP S0 T1, || After snapshot: index: 9, log: [{2325450986020652952 1} {4583109432383170097 1} {7546595365254703560 1} {7128003583775367174 1} {8119647378818657906 1} {4139018254636409909 1}].
-025203 SNAP S0 T1, nextApplyIndex:10, (<=) rf.commitIndex:14, nextApplyIndex:10, (<=) rf.lastLogIndex:14, rf.LastIncludedIndex:9
-025735 LOG1 S0 T1, Failed in AppendEntries PRC from 0 to 1! (term: 1)
-026178 SNAP S0 T1, leader's log is too short for 1, prevLogIndex:1, rf.LastIncludedIndex:9
-026181 LEAD S0 T1, Send || Replicating logs to 2, log length: 0, PrevLogIndex: 14, PrevLogTerm:1, LeaderCommit: 14 
-026183 LOG1 S0 T1, || Applying logs with index: 10, command: 4583109432383170097, commitIndex: 14.
-026183 LOG1 S0 T1, || logs: [{2325450986020652952 1} {4583109432383170097 1} {7546595365254703560 1} {7128003583775367174 1} {8119647378818657906 1} {4139018254636409909 1}].
-026182 SNAP S0 T1, sending InstallSnapshot RPC to 1
-026187 LOG1 S2 T1, Received AppendEntry RPC 
-026188 LOG1 S2 T1, Replied AppendEntry with true, Conflict: false
-026190 LEAD S0 T1, Response || Received AppendEntries response from 2 with success: true 
-026190 LOG1 S2 T1, || Applying logs with index: 9, command: 2325450986020652952, commitIndex: 14.
-026191 LOG1 S2 T1, || logs: [{<nil> 0} {125259989751871768 1} {5623326785683991384 1} {307385101692354516 1} {4837524872400205078 1} {2815657512201069328 1} {8929323898592713773 1} {8587834662273016111 1} {3434138791423226670 1} {2325450986020652952 1} {4583109432383170097 1} {7546595365254703560 1} {7128003583775367174 1} {8119647378818657906 1} {4139018254636409909 1}].
-026192 SNAP S2 T1, || Before snapshot: index: 0, log: [{<nil> 0} {125259989751871768 1} {5623326785683991384 1} {307385101692354516 1} {4837524872400205078 1} {2815657512201069328 1} {8929323898592713773 1} {8587834662273016111 1} {3434138791423226670 1} {2325450986020652952 1} {4583109432383170097 1} {7546595365254703560 1} {7128003583775367174 1} {8119647378818657906 1} {4139018254636409909 1}].
-026195 SNAP S2 T1, || After snapshot: index: 9, log: [{2325450986020652952 1} {4583109432383170097 1} {7546595365254703560 1} {7128003583775367174 1} {8119647378818657906 1} {4139018254636409909 1}].
-026195 SNAP S2 T1, nextApplyIndex:10, (<=) rf.commitIndex:14, nextApplyIndex:10, (<=) rf.lastLogIndex:14, rf.LastIncludedIndex:9
-027186 LOG1 S0 T1, || Applying logs with index: 11, command: 7546595365254703560, commitIndex: 14.
-027188 LOG1 S0 T1, || logs: [{2325450986020652952 1} {4583109432383170097 1} {7546595365254703560 1} {7128003583775367174 1} {8119647378818657906 1} {4139018254636409909 1}].
-027189 SNAP S0 T1, leader's log is too short for 1, prevLogIndex:1, rf.LastIncludedIndex:9
-027190 LEAD S0 T1, Send || Replicating logs to 2, log length: 0, PrevLogIndex: 14, PrevLogTerm:1, LeaderCommit: 14 
-027190 SNAP S0 T1, sending InstallSnapshot RPC to 1
-027192 LOG1 S2 T1, || Applying logs with index: 10, command: 4583109432383170097, commitIndex: 14.
-027192 LOG1 S2 T1, || logs: [{2325450986020652952 1} {4583109432383170097 1} {7546595365254703560 1} {7128003583775367174 1} {8119647378818657906 1} {4139018254636409909 1}].
-027196 LOG1 S2 T1, Received AppendEntry RPC 
-027197 LOG1 S2 T1, Replied AppendEntry with true, Conflict: false
-027199 LEAD S0 T1, Response || Received AppendEntries response from 2 with success: true 
-028191 LOG1 S0 T1, || Applying logs with index: 12, command: 7128003583775367174, commitIndex: 14.
-028193 LOG1 S0 T1, || logs: [{2325450986020652952 1} {4583109432383170097 1} {7546595365254703560 1} {7128003583775367174 1} {8119647378818657906 1} {4139018254636409909 1}].
-028191 SNAP S0 T1, leader's log is too short for 1, prevLogIndex:1, rf.LastIncludedIndex:9
-028194 LEAD S0 T1, Send || Replicating logs to 2, log length: 0, PrevLogIndex: 14, PrevLogTerm:1, LeaderCommit: 14 
-028194 SNAP S0 T1, sending InstallSnapshot RPC to 1
-028193 LOG1 S2 T1, || Applying logs with index: 11, command: 7546595365254703560, commitIndex: 14.
-028197 LOG1 S2 T1, || logs: [{2325450986020652952 1} {4583109432383170097 1} {7546595365254703560 1} {7128003583775367174 1} {8119647378818657906 1} {4139018254636409909 1}].
-028200 LOG1 S2 T1, Received AppendEntry RPC 
-028201 LOG1 S2 T1, Replied AppendEntry with true, Conflict: false
-028204 LEAD S0 T1, Response || Received AppendEntries response from 2 with success: true 
-028490 LOG1 S0 T1, Failed in AppendEntries PRC from 0 to 1! (term: 1)
-029192 SNAP S0 T1, leader's log is too short for 1, prevLogIndex:1, rf.LastIncludedIndex:9
-029195 LEAD S0 T1, Send || Replicating logs to 2, log length: 0, PrevLogIndex: 14, PrevLogTerm:1, LeaderCommit: 14 
-029194 LOG1 S0 T1, || Applying logs with index: 13, command: 8119647378818657906, commitIndex: 14.
-029196 LOG1 S0 T1, || logs: [{2325450986020652952 1} {4583109432383170097 1} {7546595365254703560 1} {7128003583775367174 1} {8119647378818657906 1} {4139018254636409909 1}].
-029196 SNAP S0 T1, sending InstallSnapshot RPC to 1
-029198 LOG1 S2 T1, || Applying logs with index: 12, command: 7128003583775367174, commitIndex: 14.
-029198 LOG1 S2 T1, || logs: [{2325450986020652952 1} {4583109432383170097 1} {7546595365254703560 1} {7128003583775367174 1} {8119647378818657906 1} {4139018254636409909 1}].
-029204 LOG1 S2 T1, Received AppendEntry RPC 
-029205 LOG1 S2 T1, Replied AppendEntry with true, Conflict: false
-029207 LEAD S0 T1, Response || Received AppendEntries response from 2 with success: true 
-030198 SNAP S0 T1, leader's log is too short for 1, prevLogIndex:1, rf.LastIncludedIndex:9
-030201 LOG1 S2 T1, || Applying logs with index: 13, command: 8119647378818657906, commitIndex: 14.
-030202 SNAP S0 T1, sending InstallSnapshot RPC to 1
-030200 LOG1 S0 T1, || Applying logs with index: 14, command: 4139018254636409909, commitIndex: 14.
-030205 LOG1 S0 T1, || logs: [{2325450986020652952 1} {4583109432383170097 1} {7546595365254703560 1} {7128003583775367174 1} {8119647378818657906 1} {4139018254636409909 1}].
-030202 LOG1 S2 T1, || logs: [{2325450986020652952 1} {4583109432383170097 1} {7546595365254703560 1} {7128003583775367174 1} {8119647378818657906 1} {4139018254636409909 1}].
-030202 LEAD S0 T1, Send || Replicating logs to 2, log length: 0, PrevLogIndex: 14, PrevLogTerm:1, LeaderCommit: 14 
-030200 VOTE S1 T2, timed out
-030207 VOTE S1 T3, Started election
-030208 VOTE S1 T3, || logs: [{<nil> 0} {125259989751871768 1}].
-030209 VOTE S1 T3, sending RequestVote RPC to 2
-030210 VOTE S1 T3, sending RequestVote RPC to 0
-030212 LOG1 S2 T1, Received AppendEntry RPC 
-030213 LOG1 S2 T1, Replied AppendEntry with true, Conflict: false
-030215 LEAD S0 T1, Response || Received AppendEntries response from 2 with success: true 
-031209 LOG1 S2 T1, || Applying logs with index: 14, command: 4139018254636409909, commitIndex: 14.
-031212 LOG1 S2 T1, || logs: [{2325450986020652952 1} {4583109432383170097 1} {7546595365254703560 1} {7128003583775367174 1} {8119647378818657906 1} {4139018254636409909 1}].
-031210 SNAP S0 T1, leader's log is too short for 1, prevLogIndex:1, rf.LastIncludedIndex:9
-031213 LEAD S0 T1, Send || Replicating logs to 2, log length: 0, PrevLogIndex: 14, PrevLogTerm:1, LeaderCommit: 14 
-031220 SNAP S0 T1, sending InstallSnapshot RPC to 1
-031222 LOG1 S2 T1, Received AppendEntry RPC 
-031223 LOG1 S2 T1, Replied AppendEntry with true, Conflict: false
-031226 LEAD S0 T1, Response || Received AppendEntries response from 2 with success: true 
-031240 INFO S1 connected
-031241 CLNT S0 T1, Start || Received and appended 1 log entry, lastLogIndex: 15.
-031606 LOG1 S0 T1, Failed in AppendEntries PRC from 0 to 1! (term: 1)
-032221 SNAP S0 T1, leader's log is too short for 1, prevLogIndex:1, rf.LastIncludedIndex:9
-032224 LEAD S0 T1, Send || Replicating logs to 2, log length: 1, PrevLogIndex: 14, PrevLogTerm:1, LeaderCommit: 14 
-032224 SNAP S0 T1, sending InstallSnapshot RPC to 1
-032229 LOG1 S2 T1, Received AppendEntry RPC 
-032229 SNAP S1 T3, || Receive || Received InstallSnapshot RPC ||
-032229 LOG1 S2 T1, || Append || Appended 1 log entry, lastLogIndex: 15.
-032239 LOG1 S2 T1, Replied AppendEntry with true, Conflict: false
-032241 SNAP S0 T3, received InstallSnapshot reply from 1, reply term: 3
-032241 TERM S0 T3, Converted from term 1 to term 3, now a follower.
-032242 LEAD S0 T3, Response || Received AppendEntries response from 2 with success: true 
-036241 VOTE S1 T3, timed out
-036243 VOTE S1 T4, Started election
-036245 VOTE S1 T4, || logs: [{<nil> 0} {125259989751871768 1}].
-036247 VOTE S1 T4, sending RequestVote RPC to 0
-036249 VOTE S1 T4, sending RequestVote RPC to 2
-036254 TERM S0 T4, Converted from term 3 to term 4, now a follower.
-036254 TERM S2 T4, Converted from term 1 to term 4, now a follower.
-036256 VOTE S0 T4, || logs: [{2325450986020652952 1} {4583109432383170097 1} {7546595365254703560 1} {7128003583775367174 1} {8119647378818657906 1} {4139018254636409909 1} {5880209378026958138 1}].
-036256 VOTE S0 T4, Rejected vote to 1, rf.currentTerm: 4, rf.election.votedFor: -1, rf.lastLogTerm: 1, rf.lastLogIndex: 15, args.LastLogTerm: 1, args.LastLogIndex: 1
-036258 VOTE S1 T4, received RequestVote reply from 0, granted: false
-036261 VOTE S2 T4, || logs: [{2325450986020652952 1} {4583109432383170097 1} {7546595365254703560 1} {7128003583775367174 1} {8119647378818657906 1} {4139018254636409909 1} {5880209378026958138 1}].
-036263 VOTE S2 T4, Rejected vote to 1, rf.currentTerm: 4, rf.election.votedFor: -1, rf.lastLogTerm: 1, rf.lastLogIndex: 15, args.LastLogTerm: 1, args.LastLogIndex: 1
-036265 VOTE S1 T4, received RequestVote reply from 2, granted: false
-036522 VOTE S1 T4, Failed in RequestVote PRC from 1 to 0! (term: 3)
-036971 LOG1 S0 T4, Failed in AppendEntries PRC from 0 to 1! (term: 1)
-037829 WARN S0, Failed in InstallSnapshotReply PRC from 0 to 1! (term: 1)
-038256 VOTE S2 T4, timed out
-038258 VOTE S2 T5, Started election
-038261 VOTE S2 T5, || logs: [{2325450986020652952 1} {4583109432383170097 1} {7546595365254703560 1} {7128003583775367174 1} {8119647378818657906 1} {4139018254636409909 1} {5880209378026958138 1}].
-038263 VOTE S2 T5, sending RequestVote RPC to 0
-038266 VOTE S2 T5, sending RequestVote RPC to 1
-038268 TERM S0 T5, Converted from term 4 to term 5, now a follower.
-038269 TERM S1 T5, Converted from term 4 to term 5, now a follower.
-038270 VOTE S0 T5, || logs: [{2325450986020652952 1} {4583109432383170097 1} {7546595365254703560 1} {7128003583775367174 1} {8119647378818657906 1} {4139018254636409909 1} {5880209378026958138 1}].
-038270 VOTE S0 T5, Granted vote to 2, rf.currentTerm: 5, rf.election.votedFor: 2, args.LastLogTerm: 1, args.LastLogIndex: 15
-038270 VOTE S1 T5, || logs: [{<nil> 0} {125259989751871768 1}].
-038271 VOTE S1 T5, Granted vote to 2, rf.currentTerm: 5, rf.election.votedFor: 2, args.LastLogTerm: 1, args.LastLogIndex: 15
-038272 VOTE S2 T5, received RequestVote reply from 0, granted: true
-038272 VOTE S2 T5, Became a leader 
-038272 LEAD S2 T5, Send || Replicating logs to 0, log length: 0, PrevLogIndex: 15, PrevLogTerm:1, LeaderCommit: 14 
-038273 LEAD S2 T5, Send || Replicating logs to 1, log length: 0, PrevLogIndex: 15, PrevLogTerm:1, LeaderCommit: 14 
-038273 LEAD S2 T5, Leader logs: [{2325450986020652952 1} {4583109432383170097 1} {7546595365254703560 1} {7128003583775367174 1} {8119647378818657906 1} {4139018254636409909 1} {5880209378026958138 1}].
-038274 VOTE S2 T5, received RequestVote reply from 1, granted: true
-038274 LEAD S2 T5, Leader logs: [{2325450986020652952 1} {4583109432383170097 1} {7546595365254703560 1} {7128003583775367174 1} {8119647378818657906 1} {4139018254636409909 1} {5880209378026958138 1}].
-038277 LOG1 S1 T5, Received AppendEntry RPC 
-038278 LOG1 S1 T5, Replied AppendEntry with false, Conflict: true
-038278 LOG1 S0 T5, Received AppendEntry RPC 
-038279 LOG1 S0 T5, Replied AppendEntry with true, Conflict: false
-038280 LEAD S2 T5, Response || Received AppendEntries response from 1 with success: false 
-038281 LEAD S2 T5, Response || Received AppendEntries response from 0 with success: true 
-039267 LEAD S2 T5, Send || Replicating logs to 0, log length: 0, PrevLogIndex: 15, PrevLogTerm:1, LeaderCommit: 14 
-039270 SNAP S2 T5, leader's log is too short for 1, prevLogIndex:-1, rf.LastIncludedIndex:9
-039270 SNAP S2 T5, sending InstallSnapshot RPC to 1
-039275 SNAP S1 T5, || Receive || Received InstallSnapshot RPC ||
-labgob warning: Decoding into a non-default variable/field int may not work
-039275 LOG1 S0 T5, Received AppendEntry RPC 
-039278 LOG1 S0 T5, Replied AppendEntry with true, Conflict: false
-039280 SNAP S2 T5, received InstallSnapshot reply from 1, reply term: 5
-039280 SNAP S2 T5, Updated server: 1 nextIndex to 10, matchIndex to:9.
-039280 LEAD S2 T5, Response || Received AppendEntries response from 0 with success: true 
-040172 VOTE S1 T9, Failed in RequestVote PRC from 1 to 2! (term: 3)
-040275 LEAD S2 T5, Send || Replicating logs to 0, log length: 0, PrevLogIndex: 15, PrevLogTerm:1, LeaderCommit: 14 
-040277 LEAD S2 T5, Send || Replicating logs to 1, log length: 6, PrevLogIndex: 9, PrevLogTerm:1, LeaderCommit: 14 
-040281 LOG1 S0 T5, Received AppendEntry RPC 
-040282 LOG1 S1 T9, Received AppendEntry RPC 
-040282 LOG1 S0 T5, Replied AppendEntry with true, Conflict: false
-040284 LEAD S2 T5, Response || Received AppendEntries response from 1 with success: false 
-040284 TERM S2 T9, Converted from term 5 to term 9, now a follower.
-040285 LEAD S2 T9, Response || Received AppendEntries response from 0 with success: true 
-043395 LOG1 S0 T5, Failed in AppendEntries PRC from 0 to 1! (term: 1)
-045309 VOTE S1 T9, timed out
-045311 VOTE S1 T10, Started election
-panic: runtime error: index out of range [-1]
-
-goroutine 12 [running]:
-6.5840/raft.LogRecord.lastLogEntry(...)
-	/Users/siyaoli/Workspace/Harvard/MIT6.5840/src/raft/log.go:78
-6.5840/raft.LogRecord.lastLogTerm(...)
-	/Users/siyaoli/Workspace/Harvard/MIT6.5840/src/raft/log.go:74
-6.5840/raft.(*Raft).lastLogTerm(...)
-	/Users/siyaoli/Workspace/Harvard/MIT6.5840/src/raft/log.go:31
-6.5840/raft.(*Raft).requestVotesL(0xc000146100)
-	/Users/siyaoli/Workspace/Harvard/MIT6.5840/src/raft/vote.go:164 +0x24c
-6.5840/raft.(*Raft).startElectionL(0xc000146100)
-	/Users/siyaoli/Workspace/Harvard/MIT6.5840/src/raft/vote.go:186 +0xc5
-6.5840/raft.(*Raft).tick(0xc000146100)
-	/Users/siyaoli/Workspace/Harvard/MIT6.5840/src/raft/raft.go:162 +0x13c
-6.5840/raft.(*Raft).ticker(0xc000146100)
-	/Users/siyaoli/Workspace/Harvard/MIT6.5840/src/raft/raft.go:169 +0x25
-created by 6.5840/raft.Make
-	/Users/siyaoli/Workspace/Harvard/MIT6.5840/src/raft/raft.go:267 +0x36a
-exit status 2
-FAIL	6.5840/raft	4.808s
+007079 VOTE S1 T0, timed out
+007100 VOTE S1 T1, Started election
+007116 LOG1 S1 T1, || logs: [{<nil> 0}].
+007125 VOTE S1 T1, || logs: [{<nil> 0}].
+007128 VOTE S1 T1, sending RequestVote RPC to 0
+007128 VOTE S1 T1, sending RequestVote RPC to 2
+007168 TERM S2 T1, Converted from term 0 to term 1, now a follower.
+007168 TERM S0 T1, Converted from term 0 to term 1, now a follower.
+007169 LOG1 S2 T1, || logs: [{<nil> 0}].
+007173 VOTE S2 T1, || logs: [{<nil> 0}].
+007175 LOG1 S0 T1, || logs: [{<nil> 0}].
+007175 VOTE S2 T1, Granted vote to 1, rf.currentTerm: 1, rf.election.votedFor: 1, args.LastLogTerm: 0, args.LastLogIndex: 0
+007176 VOTE S0 T1, || logs: [{<nil> 0}].
+007176 VOTE S0 T1, Granted vote to 1, rf.currentTerm: 1, rf.election.votedFor: 1, args.LastLogTerm: 0, args.LastLogIndex: 0
+007193 VOTE S1 T1, received RequestVote reply from 0, granted: true
+007193 VOTE S1 T1, Became a leader 
+007193 VOTE S1 T1, Set server0's nextIndex to 1
+007193 VOTE S1 T1, Set server1's nextIndex to 1
+007193 VOTE S1 T1, Set server2's nextIndex to 1
+007193 LEAD S1 T1, Send || Replicating logs to 0, log length: 0, PrevLogIndex: 0, PrevLogTerm:0, LeaderCommit: 0 
+007194 LEAD S1 T1, Send || Replicating logs to 2, log length: 0, PrevLogIndex: 0, PrevLogTerm:0, LeaderCommit: 0 
+007194 LEAD S1 T1, Leader logs: [{<nil> 0}].
+007194 VOTE S1 T1, received RequestVote reply from 2, granted: true
+007194 LEAD S1 T1, Leader logs: [{<nil> 0}].
+007205 LOG1 S2 T1, Received AppendEntry RPC 
+007205 LOG1 S2 T1, Replied AppendEntry with true, Conflict: false
+007216 LOG1 S0 T1, Received AppendEntry RPC 
+007216 LOG1 S0 T1, Replied AppendEntry with true, Conflict: false
+007219 LEAD S1 T1, Response || Received AppendEntries response from 2 with success: true 
+007219 LEAD S1 T1, Response || Received AppendEntries response from 0 with success: true 
+007623 CLNT S1 T1, Start || Received and appended 1 log entry, lastLogIndex: 1.
+008133 LEAD S1 T1, Send || Replicating logs to 0, log length: 1, PrevLogIndex: 0, PrevLogTerm:0, LeaderCommit: 0 
+008137 LEAD S1 T1, Send || Replicating logs to 2, log length: 1, PrevLogIndex: 0, PrevLogTerm:0, LeaderCommit: 0 
+008138 LOG1 S0 T1, Received AppendEntry RPC 
+008138 LOG1 S0 T1, || Append || Appended 1 log entry, lastLogIndex: 1.
+008138 LOG1 S0 T1, Replied AppendEntry with true, Conflict: false
+008139 LOG1 S2 T1, Received AppendEntry RPC 
+008139 LOG1 S2 T1, || Append || Appended 1 log entry, lastLogIndex: 1.
+008139 LEAD S1 T1, Response || Received AppendEntries response from 0 with success: true 
+008139 LEAD S1 T1, Update || Updated server 0 with nextIndex: 2, matchIndex: 1 
+008139 CMIT S1 T1, Commit || Updated commitIndex from 0 to 1.
+008140 LOG1 S2 T1, Replied AppendEntry with true, Conflict: false
+008142 LEAD S1 T1, Response || Received AppendEntries response from 2 with success: true 
+008142 LEAD S1 T1, Update || Updated server 2 with nextIndex: 2, matchIndex: 1 
+009135 LOG1 S1 T1, || Applying logs with index: 1, command: 8842978072456174671, commitIndex: 1.
+009139 LOG1 S1 T1, || logs: [{<nil> 0} {8842978072456174671 1}].
+009150 LEAD S1 T1, Send || Replicating logs to 0, log length: 0, PrevLogIndex: 1, PrevLogTerm:1, LeaderCommit: 1 
+009151 LEAD S1 T1, Send || Replicating logs to 2, log length: 0, PrevLogIndex: 1, PrevLogTerm:1, LeaderCommit: 1 
+009156 LOG1 S2 T1, Received AppendEntry RPC 
+009157 CMIT S2 T1, || Commit || Commit to 1
+009158 LOG1 S2 T1, Replied AppendEntry with true, Conflict: false
+009157 LOG1 S0 T1, Received AppendEntry RPC 
+009159 LEAD S1 T1, Response || Received AppendEntries response from 2 with success: true 
+009161 CMIT S0 T1, || Commit || Commit to 1
+009161 LOG1 S0 T1, Replied AppendEntry with true, Conflict: false
+009163 LEAD S1 T1, Response || Received AppendEntries response from 0 with success: true 
+010099 LOG1 S0 T1, || Applying logs with index: 1, command: 8842978072456174671, commitIndex: 1.
+010103 LOG1 S0 T1, || logs: [{<nil> 0} {8842978072456174671 1}].
+010100 LOG1 S2 T1, || Applying logs with index: 1, command: 8842978072456174671, commitIndex: 1.
+010105 LOG1 S2 T1, || logs: [{<nil> 0} {8842978072456174671 1}].
+010151 LEAD S1 T1, Send || Replicating logs to 0, log length: 0, PrevLogIndex: 1, PrevLogTerm:1, LeaderCommit: 1 
+010152 LEAD S1 T1, Send || Replicating logs to 2, log length: 0, PrevLogIndex: 1, PrevLogTerm:1, LeaderCommit: 1 
+010157 LOG1 S0 T1, Received AppendEntry RPC 
+010157 LOG1 S2 T1, Received AppendEntry RPC 
+010157 LOG1 S0 T1, Replied AppendEntry with true, Conflict: false
+010158 LOG1 S2 T1, Replied AppendEntry with true, Conflict: false
+010160 LEAD S1 T1, Response || Received AppendEntries response from 0 with success: true 
+010161 LEAD S1 T1, Response || Received AppendEntries response from 2 with success: true 
+011157 LEAD S1 T1, Send || Replicating logs to 0, log length: 0, PrevLogIndex: 1, PrevLogTerm:1, LeaderCommit: 1 
+011159 LEAD S1 T1, Send || Replicating logs to 2, log length: 0, PrevLogIndex: 1, PrevLogTerm:1, LeaderCommit: 1 
+011163 LOG1 S2 T1, Received AppendEntry RPC 
+011163 LOG1 S2 T1, Replied AppendEntry with true, Conflict: false
+011164 LEAD S1 T1, Response || Received AppendEntries response from 2 with success: true 
+011167 LOG1 S0 T1, Received AppendEntry RPC 
+011167 LOG1 S0 T1, Replied AppendEntry with true, Conflict: false
+011168 LEAD S1 T1, Response || Received AppendEntries response from 0 with success: true 
+012162 LEAD S1 T1, Send || Replicating logs to 0, log length: 0, PrevLogIndex: 1, PrevLogTerm:1, LeaderCommit: 1 
+012164 LEAD S1 T1, Send || Replicating logs to 2, log length: 0, PrevLogIndex: 1, PrevLogTerm:1, LeaderCommit: 1 
+012169 LOG1 S2 T1, Received AppendEntry RPC 
+012169 LOG1 S0 T1, Received AppendEntry RPC 
+012170 LOG1 S0 T1, Replied AppendEntry with true, Conflict: false
+012170 LOG1 S2 T1, Replied AppendEntry with true, Conflict: false
+012173 LEAD S1 T1, Response || Received AppendEntries response from 0 with success: true 
+012174 LEAD S1 T1, Response || Received AppendEntries response from 2 with success: true 
+013166 LEAD S1 T1, Send || Replicating logs to 0, log length: 0, PrevLogIndex: 1, PrevLogTerm:1, LeaderCommit: 1 
+013168 LEAD S1 T1, Send || Replicating logs to 2, log length: 0, PrevLogIndex: 1, PrevLogTerm:1, LeaderCommit: 1 
+013173 LOG1 S2 T1, Received AppendEntry RPC 
+013177 LOG1 S0 T1, Received AppendEntry RPC 
+013178 LOG1 S0 T1, Replied AppendEntry with true, Conflict: false
+013180 LOG1 S2 T1, Replied AppendEntry with true, Conflict: false
+013180 LEAD S1 T1, Response || Received AppendEntries response from 0 with success: true 
+013185 LEAD S1 T1, Response || Received AppendEntries response from 2 with success: true 
+014169 LEAD S1 T1, Send || Replicating logs to 0, log length: 0, PrevLogIndex: 1, PrevLogTerm:1, LeaderCommit: 1 
+014179 LEAD S1 T1, Send || Replicating logs to 2, log length: 0, PrevLogIndex: 1, PrevLogTerm:1, LeaderCommit: 1 
+014187 LOG1 S0 T1, Received AppendEntry RPC 
+014187 LOG1 S2 T1, Received AppendEntry RPC 
+014189 LOG1 S0 T1, Replied AppendEntry with true, Conflict: false
+014189 LOG1 S2 T1, Replied AppendEntry with true, Conflict: false
+014192 LEAD S1 T1, Response || Received AppendEntries response from 2 with success: true 
+014193 LEAD S1 T1, Response || Received AppendEntries response from 0 with success: true 
+014932 INFO S2 disconnect
+014935 CLNT S1 T1, Start || Received and appended 1 log entry, lastLogIndex: 2.
+015173 LEAD S1 T1, Send || Replicating logs to 0, log length: 1, PrevLogIndex: 1, PrevLogTerm:1, LeaderCommit: 1 
+015176 LEAD S1 T1, Send || Replicating logs to 2, log length: 1, PrevLogIndex: 1, PrevLogTerm:1, LeaderCommit: 1 
+015182 LOG1 S0 T1, Received AppendEntry RPC 
+015182 LOG1 S0 T1, || Append || Appended 1 log entry, lastLogIndex: 2.
+015183 LOG1 S0 T1, Replied AppendEntry with true, Conflict: false
+015185 LEAD S1 T1, Response || Received AppendEntries response from 0 with success: true 
+015186 LEAD S1 T1, Update || Updated server 0 with nextIndex: 3, matchIndex: 2 
+015186 CMIT S1 T1, Commit || Updated commitIndex from 1 to 2.
+016175 LOG1 S1 T1, || Applying logs with index: 2, command: 3085036664295936877, commitIndex: 2.
+016177 LOG1 S1 T1, || logs: [{<nil> 0} {8842978072456174671 1} {3085036664295936877 1}].
+016178 LEAD S1 T1, Send || Replicating logs to 0, log length: 0, PrevLogIndex: 2, PrevLogTerm:1, LeaderCommit: 2 
+016178 LEAD S1 T1, Send || Replicating logs to 2, log length: 1, PrevLogIndex: 1, PrevLogTerm:1, LeaderCommit: 2 
+016189 LOG1 S0 T1, Received AppendEntry RPC 
+016189 CMIT S0 T1, || Commit || Commit to 2
+016190 LOG1 S0 T1, Replied AppendEntry with true, Conflict: false
+016192 LEAD S1 T1, Response || Received AppendEntries response from 0 with success: true 
+017161 LOG1 S0 T1, || Applying logs with index: 2, command: 3085036664295936877, commitIndex: 2.
+017163 LOG1 S0 T1, || logs: [{<nil> 0} {8842978072456174671 1} {3085036664295936877 1}].
+017180 LEAD S1 T1, Send || Replicating logs to 0, log length: 0, PrevLogIndex: 2, PrevLogTerm:1, LeaderCommit: 2 
+017180 LEAD S1 T1, Send || Replicating logs to 2, log length: 1, PrevLogIndex: 1, PrevLogTerm:1, LeaderCommit: 2 
+017185 LOG1 S0 T1, Received AppendEntry RPC 
+017186 LOG1 S0 T1, Replied AppendEntry with true, Conflict: false
+017189 LEAD S1 T1, Response || Received AppendEntries response from 0 with success: true 
+017225 WARN Got here
+017229 CLNT S1 T1, Start || Received and appended 1 log entry, lastLogIndex: 3.
+017230 CLNT S1 T1, Start || Received and appended 1 log entry, lastLogIndex: 4.
+017231 CLNT S1 T1, Start || Received and appended 1 log entry, lastLogIndex: 5.
+017232 CLNT S1 T1, Start || Received and appended 1 log entry, lastLogIndex: 6.
+017232 CLNT S1 T1, Start || Received and appended 1 log entry, lastLogIndex: 7.
+017234 CLNT S1 T1, Start || Received and appended 1 log entry, lastLogIndex: 8.
+017234 CLNT S1 T1, Start || Received and appended 1 log entry, lastLogIndex: 9.
+018181 LEAD S1 T1, Send || Replicating logs to 0, log length: 7, PrevLogIndex: 2, PrevLogTerm:1, LeaderCommit: 2 
+018183 LEAD S1 T1, Send || Replicating logs to 2, log length: 8, PrevLogIndex: 1, PrevLogTerm:1, LeaderCommit: 2 
+018189 LOG1 S0 T1, Received AppendEntry RPC 
+018189 LOG1 S0 T1, || Append || Appended 1 log entry, lastLogIndex: 3.
+018190 LOG1 S0 T1, || Append || Appended 1 log entry, lastLogIndex: 4.
+018190 LOG1 S0 T1, || Append || Appended 1 log entry, lastLogIndex: 5.
+018190 LOG1 S0 T1, || Append || Appended 1 log entry, lastLogIndex: 6.
+018190 LOG1 S0 T1, || Append || Appended 1 log entry, lastLogIndex: 7.
+018190 LOG1 S0 T1, || Append || Appended 1 log entry, lastLogIndex: 8.
+018190 LOG1 S0 T1, || Append || Appended 1 log entry, lastLogIndex: 9.
+018191 LOG1 S0 T1, Replied AppendEntry with true, Conflict: false
+018194 LEAD S1 T1, Response || Received AppendEntries response from 0 with success: true 
+018194 LEAD S1 T1, Update || Updated server 0 with nextIndex: 10, matchIndex: 9 
+018194 CMIT S1 T1, Commit || Updated commitIndex from 2 to 3.
+018194 CMIT S1 T1, Commit || Updated commitIndex from 3 to 4.
+018194 CMIT S1 T1, Commit || Updated commitIndex from 4 to 5.
+018195 CMIT S1 T1, Commit || Updated commitIndex from 5 to 6.
+018195 CMIT S1 T1, Commit || Updated commitIndex from 6 to 7.
+018195 CMIT S1 T1, Commit || Updated commitIndex from 7 to 8.
+018195 CMIT S1 T1, Commit || Updated commitIndex from 8 to 9.
+019182 LEAD S1 T1, Send || Replicating logs to 0, log length: 0, PrevLogIndex: 9, PrevLogTerm:1, LeaderCommit: 9 
+019184 LEAD S1 T1, Send || Replicating logs to 2, log length: 8, PrevLogIndex: 1, PrevLogTerm:1, LeaderCommit: 9 
+019183 LOG1 S1 T1, || Applying logs with index: 3, command: 4838278995012803182, commitIndex: 9.
+019186 LOG1 S1 T1, || logs: [{<nil> 0} {8842978072456174671 1} {3085036664295936877 1} {4838278995012803182 1} {8946403163461062013 1} {5336475260674945481 1} {5492654954411577942 1} {8149641896470237618 1} {1104047054686714159 1} {9033980827612061736 1}].
+019192 LOG1 S0 T1, Received AppendEntry RPC 
+019192 CMIT S0 T1, || Commit || Commit to 9
+019193 LOG1 S0 T1, Replied AppendEntry with true, Conflict: false
+019196 LEAD S1 T1, Response || Received AppendEntries response from 0 with success: true 
+020179 LOG1 S0 T1, || Applying logs with index: 3, command: 4838278995012803182, commitIndex: 9.
+020181 LOG1 S0 T1, || logs: [{<nil> 0} {8842978072456174671 1} {3085036664295936877 1} {4838278995012803182 1} {8946403163461062013 1} {5336475260674945481 1} {5492654954411577942 1} {8149641896470237618 1} {1104047054686714159 1} {9033980827612061736 1}].
+020183 LEAD S1 T1, Send || Replicating logs to 0, log length: 0, PrevLogIndex: 9, PrevLogTerm:1, LeaderCommit: 9 
+020183 LEAD S1 T1, Send || Replicating logs to 2, log length: 8, PrevLogIndex: 1, PrevLogTerm:1, LeaderCommit: 9 
+020188 LOG1 S1 T1, || Applying logs with index: 4, command: 8946403163461062013, commitIndex: 9.
+020188 LOG1 S1 T1, || logs: [{<nil> 0} {8842978072456174671 1} {3085036664295936877 1} {4838278995012803182 1} {8946403163461062013 1} {5336475260674945481 1} {5492654954411577942 1} {8149641896470237618 1} {1104047054686714159 1} {9033980827612061736 1}].
+020189 LOG1 S0 T1, Received AppendEntry RPC 
+020190 LOG1 S0 T1, Replied AppendEntry with true, Conflict: false
+020193 LEAD S1 T1, Response || Received AppendEntries response from 0 with success: true 
+021190 LOG1 S0 T1, || Applying logs with index: 4, command: 8946403163461062013, commitIndex: 9.
+021190 LEAD S1 T1, Send || Replicating logs to 0, log length: 0, PrevLogIndex: 9, PrevLogTerm:1, LeaderCommit: 9 
+021190 LOG1 S1 T1, || Applying logs with index: 5, command: 5336475260674945481, commitIndex: 9.
+021192 LOG1 S1 T1, || logs: [{<nil> 0} {8842978072456174671 1} {3085036664295936877 1} {4838278995012803182 1} {8946403163461062013 1} {5336475260674945481 1} {5492654954411577942 1} {8149641896470237618 1} {1104047054686714159 1} {9033980827612061736 1}].
+021190 VOTE S2 T1, timed out
+021193 VOTE S2 T2, Started election
+021193 LEAD S1 T1, Send || Replicating logs to 2, log length: 8, PrevLogIndex: 1, PrevLogTerm:1, LeaderCommit: 9 
+021196 LOG1 S2 T2, || logs: [{<nil> 0} {8842978072456174671 1}].
+021196 VOTE S2 T2, || logs: [{<nil> 0} {8842978072456174671 1}].
+021192 LOG1 S0 T1, || logs: [{<nil> 0} {8842978072456174671 1} {3085036664295936877 1} {4838278995012803182 1} {8946403163461062013 1} {5336475260674945481 1} {5492654954411577942 1} {8149641896470237618 1} {1104047054686714159 1} {9033980827612061736 1}].
+021197 VOTE S2 T2, sending RequestVote RPC to 0
+021197 LOG1 S0 T1, Received AppendEntry RPC 
+021197 VOTE S2 T2, sending RequestVote RPC to 1
+021198 LOG1 S0 T1, Replied AppendEntry with true, Conflict: false
+021199 LEAD S1 T1, Response || Received AppendEntries response from 0 with success: true 
+022201 LOG1 S1 T1, || Applying logs with index: 6, command: 5492654954411577942, commitIndex: 9.
+022203 LOG1 S1 T1, || logs: [{<nil> 0} {8842978072456174671 1} {3085036664295936877 1} {4838278995012803182 1} {8946403163461062013 1} {5336475260674945481 1} {5492654954411577942 1} {8149641896470237618 1} {1104047054686714159 1} {9033980827612061736 1}].
+022201 LEAD S1 T1, Send || Replicating logs to 0, log length: 0, PrevLogIndex: 9, PrevLogTerm:1, LeaderCommit: 9 
+022201 LOG1 S0 T1, || Applying logs with index: 5, command: 5336475260674945481, commitIndex: 9.
+022204 LOG1 S0 T1, || logs: [{<nil> 0} {8842978072456174671 1} {3085036664295936877 1} {4838278995012803182 1} {8946403163461062013 1} {5336475260674945481 1} {5492654954411577942 1} {8149641896470237618 1} {1104047054686714159 1} {9033980827612061736 1}].
+022204 LEAD S1 T1, Send || Replicating logs to 2, log length: 8, PrevLogIndex: 1, PrevLogTerm:1, LeaderCommit: 9 
+022209 LOG1 S0 T1, Received AppendEntry RPC 
+022210 LOG1 S0 T1, Replied AppendEntry with true, Conflict: false
+022212 LEAD S1 T1, Response || Received AppendEntries response from 0 with success: true 
+023204 LOG1 S1 T1, || Applying logs with index: 7, command: 8149641896470237618, commitIndex: 9.
+023206 LOG1 S1 T1, || logs: [{<nil> 0} {8842978072456174671 1} {3085036664295936877 1} {4838278995012803182 1} {8946403163461062013 1} {5336475260674945481 1} {5492654954411577942 1} {8149641896470237618 1} {1104047054686714159 1} {9033980827612061736 1}].
+023205 LOG1 S0 T1, || Applying logs with index: 6, command: 5492654954411577942, commitIndex: 9.
+023208 LOG1 S0 T1, || logs: [{<nil> 0} {8842978072456174671 1} {3085036664295936877 1} {4838278995012803182 1} {8946403163461062013 1} {5336475260674945481 1} {5492654954411577942 1} {8149641896470237618 1} {1104047054686714159 1} {9033980827612061736 1}].
+023207 LEAD S1 T1, Send || Replicating logs to 0, log length: 0, PrevLogIndex: 9, PrevLogTerm:1, LeaderCommit: 9 
+023208 LEAD S1 T1, Send || Replicating logs to 2, log length: 8, PrevLogIndex: 1, PrevLogTerm:1, LeaderCommit: 9 
+023213 LOG1 S0 T1, Received AppendEntry RPC 
+023214 LOG1 S0 T1, Replied AppendEntry with true, Conflict: false
+023216 LEAD S1 T1, Response || Received AppendEntries response from 0 with success: true 
+024210 LOG1 S0 T1, || Applying logs with index: 7, command: 8149641896470237618, commitIndex: 9.
+024211 LEAD S1 T1, Send || Replicating logs to 0, log length: 0, PrevLogIndex: 9, PrevLogTerm:1, LeaderCommit: 9 
+024213 LEAD S1 T1, Send || Replicating logs to 2, log length: 8, PrevLogIndex: 1, PrevLogTerm:1, LeaderCommit: 9 
+024212 LOG1 S1 T1, || Applying logs with index: 8, command: 1104047054686714159, commitIndex: 9.
+024217 LOG1 S1 T1, || logs: [{<nil> 0} {8842978072456174671 1} {3085036664295936877 1} {4838278995012803182 1} {8946403163461062013 1} {5336475260674945481 1} {5492654954411577942 1} {8149641896470237618 1} {1104047054686714159 1} {9033980827612061736 1}].
+024213 LOG1 S0 T1, || logs: [{<nil> 0} {8842978072456174671 1} {3085036664295936877 1} {4838278995012803182 1} {8946403163461062013 1} {5336475260674945481 1} {5492654954411577942 1} {8149641896470237618 1} {1104047054686714159 1} {9033980827612061736 1}].
+024220 LOG1 S0 T1, Received AppendEntry RPC 
+024221 LOG1 S0 T1, Replied AppendEntry with true, Conflict: false
+024223 LEAD S1 T1, Response || Received AppendEntries response from 0 with success: true 
+025212 LEAD S1 T1, Send || Replicating logs to 0, log length: 0, PrevLogIndex: 9, PrevLogTerm:1, LeaderCommit: 9 
+025215 LEAD S1 T1, Send || Replicating logs to 2, log length: 8, PrevLogIndex: 1, PrevLogTerm:1, LeaderCommit: 9 
+025218 LOG1 S0 T1, || Applying logs with index: 8, command: 1104047054686714159, commitIndex: 9.
+025219 LOG1 S0 T1, || logs: [{<nil> 0} {8842978072456174671 1} {3085036664295936877 1} {4838278995012803182 1} {8946403163461062013 1} {5336475260674945481 1} {5492654954411577942 1} {8149641896470237618 1} {1104047054686714159 1} {9033980827612061736 1}].
+025219 LOG1 S1 T1, || Applying logs with index: 9, command: 9033980827612061736, commitIndex: 9.
+025220 LOG1 S1 T1, || logs: [{<nil> 0} {8842978072456174671 1} {3085036664295936877 1} {4838278995012803182 1} {8946403163461062013 1} {5336475260674945481 1} {5492654954411577942 1} {8149641896470237618 1} {1104047054686714159 1} {9033980827612061736 1}].
+025220 LOG1 S0 T1, Received AppendEntry RPC 
+025221 LOG1 S0 T1, Replied AppendEntry with true, Conflict: false
+025223 LEAD S1 T1, Response || Received AppendEntries response from 0 with success: true 
+025230 SNAP S1 T1, || Before snapshot: index: 0, log: {[{<nil> 0} {8842978072456174671 1} {3085036664295936877 1} {4838278995012803182 1} {8946403163461062013 1} {5336475260674945481 1} {5492654954411577942 1} {8149641896470237618 1} {1104047054686714159 1} {9033980827612061736 1}] 0}.
+025235 SNAP S1 T1, || After snapshot: index: 9, log: {[{<nil> 0}] 9}.
+025236 SNAP S1 T1, rf.lastApplied:9, rf.commitIndex:9, rf.lastLogIndex:9, rf.LastIncludedIndex:9
+026223 LOG1 S0 T1, || Applying logs with index: 9, command: 9033980827612061736, commitIndex: 9.
+026223 LEAD S1 T1, Send || Replicating logs to 0, log length: 0, PrevLogIndex: 9, PrevLogTerm:1, LeaderCommit: 9 
+026225 LOG1 S0 T1, || logs: [{<nil> 0} {8842978072456174671 1} {3085036664295936877 1} {4838278995012803182 1} {8946403163461062013 1} {5336475260674945481 1} {5492654954411577942 1} {8149641896470237618 1} {1104047054686714159 1} {9033980827612061736 1}].
+026225 SNAP S1 T1, leader's log is too short for 2, prevLogIndex:1, rf.LastIncludedIndex:9
+026226 SNAP S1 T1, rf.nextIndex:[10 1 2]
+026226 SNAP S1 T1, sending InstallSnapshot RPC to 2
+026227 SNAP S0 T1, || Before snapshot: index: 0, log: {[{<nil> 0} {8842978072456174671 1} {3085036664295936877 1} {4838278995012803182 1} {8946403163461062013 1} {5336475260674945481 1} {5492654954411577942 1} {8149641896470237618 1} {1104047054686714159 1} {9033980827612061736 1}] 0}.
+026229 SNAP S0 T1, || After snapshot: index: 9, log: {[{<nil> 0}] 9}.
+026229 SNAP S0 T1, rf.lastApplied:9, rf.commitIndex:9, rf.lastLogIndex:9, rf.LastIncludedIndex:9
+026232 LOG1 S0 T1, Received AppendEntry RPC 
+026233 LOG1 S0 T1, Replied AppendEntry with true, Conflict: false
+026234 LEAD S1 T1, Response || Received AppendEntries response from 0 with success: true 
+026247 INFO S2 connected
+026247 CLNT S1 T1, Start || Received and appended 1 log entry, lastLogIndex: 10.
+027233 LEAD S1 T1, Send || Replicating logs to 0, log length: 1, PrevLogIndex: 9, PrevLogTerm:1, LeaderCommit: 9 
+027236 SNAP S1 T1, leader's log is too short for 2, prevLogIndex:1, rf.LastIncludedIndex:9
+027236 SNAP S1 T1, rf.nextIndex:[10 1 2]
+027236 SNAP S1 T1, sending InstallSnapshot RPC to 2
+027241 LOG1 S0 T1, Received AppendEntry RPC 
+027242 LOG1 S0 T1, || Append || Appended 1 log entry, lastLogIndex: 10.
+027242 SNAP S2 T2, || Receive || Received InstallSnapshot RPC ||
+027243 LOG1 S0 T1, Replied AppendEntry with true, Conflict: false
+027245 LEAD S1 T1, Response || Received AppendEntries response from 0 with success: true 
+027245 LEAD S1 T1, Update || Updated server 0 with nextIndex: 11, matchIndex: 10 
+027245 CMIT S1 T1, Commit || Updated commitIndex from 9 to 10.
+027251 SNAP S1 T2, received InstallSnapshot reply from 2, reply term: 2
+027251 TERM S1 T2, Converted from term 1 to term 2, now a follower.
+028244 LOG1 S1 T2, || Applying logs with index: 10, command: 5184849288351149702, commitIndex: 10.
+028248 LOG1 S1 T2, || logs: [{<nil> 0} {5184849288351149702 1}].
+028256 VOTE S2 T2, timed out
+028256 VOTE S2 T3, Started election
+028258 LOG1 S2 T3, || logs: [{<nil> 0} {8842978072456174671 1}].
+028258 VOTE S2 T3, || logs: [{<nil> 0} {8842978072456174671 1}].
+028258 VOTE S2 T3, sending RequestVote RPC to 1
+028279 VOTE S2 T3, sending RequestVote RPC to 0
+028280 TERM S1 T3, Converted from term 2 to term 3, now a follower.
+028281 LOG1 S1 T3, || logs: [{<nil> 0} {5184849288351149702 1}].
+028281 LOG1 S1 T3, || logs: [{<nil> 0} {5184849288351149702 1}].
+028282 VOTE S1 T3, || logs: [{<nil> 0} {5184849288351149702 1}].
+028282 TERM S0 T3, Converted from term 1 to term 3, now a follower.
+028282 LOG1 S1 T3, || logs: [{<nil> 0} {5184849288351149702 1}].
+028283 LOG1 S0 T3, || logs: [{<nil> 0} {5184849288351149702 1}].
+028283 LOG1 S0 T3, || logs: [{<nil> 0} {5184849288351149702 1}].
+028283 VOTE S0 T3, || logs: [{<nil> 0} {5184849288351149702 1}].
+028283 LOG1 S0 T3, || logs: [{<nil> 0} {5184849288351149702 1}].
+028283 VOTE S0 T3, Rejected vote to 2, rf.currentTerm: 3, rf.election.votedFor: -1, rf.lastLogTerm: 1, rf.lastLogIndex: 10, args.LastLogTerm: 1, args.LastLogIndex: 1
+028283 VOTE S1 T3, Rejected vote to 2, rf.currentTerm: 3, rf.election.votedFor: -1, rf.lastLogTerm: 1, rf.lastLogIndex: 10, args.LastLogTerm: 1, args.LastLogIndex: 1
+028284 VOTE S2 T3, received RequestVote reply from 0, granted: false
+028285 VOTE S2 T3, received RequestVote reply from 1, granted: false
+029829 VOTE S2 T3, Failed in RequestVote PRC from 2 to 1! (term: 2)
+033280 VOTE S0 T3, timed out
+033282 VOTE S0 T4, Started election
+033285 LOG1 S0 T4, || logs: [{<nil> 0} {5184849288351149702 1}].
+033285 VOTE S0 T4, || logs: [{<nil> 0} {5184849288351149702 1}].
+033285 VOTE S0 T4, sending RequestVote RPC to 2
+033286 VOTE S0 T4, sending RequestVote RPC to 1
+033290 TERM S1 T4, Converted from term 3 to term 4, now a follower.
+033291 LOG1 S1 T4, || logs: [{<nil> 0} {5184849288351149702 1}].
+033291 VOTE S1 T4, || logs: [{<nil> 0} {5184849288351149702 1}].
+033290 TERM S2 T4, Converted from term 3 to term 4, now a follower.
+033292 VOTE S1 T4, Granted vote to 0, rf.currentTerm: 4, rf.election.votedFor: 0, args.LastLogTerm: 1, args.LastLogIndex: 10
+033293 LOG1 S2 T4, || logs: [{<nil> 0} {8842978072456174671 1}].
+033295 VOTE S2 T4, || logs: [{<nil> 0} {8842978072456174671 1}].
+033295 VOTE S2 T4, Granted vote to 0, rf.currentTerm: 4, rf.election.votedFor: 0, args.LastLogTerm: 1, args.LastLogIndex: 10
+033296 VOTE S0 T4, received RequestVote reply from 1, granted: true
+033296 VOTE S0 T4, Became a leader 
+033296 VOTE S0 T4, Set server0's nextIndex to 11
+033296 VOTE S0 T4, Set server1's nextIndex to 11
+033296 VOTE S0 T4, Set server2's nextIndex to 11
+033297 LEAD S0 T4, Send || Replicating logs to 1, log length: 0, PrevLogIndex: 10, PrevLogTerm:1, LeaderCommit: 9 
+033297 LEAD S0 T4, Send || Replicating logs to 2, log length: 0, PrevLogIndex: 10, PrevLogTerm:1, LeaderCommit: 9 
+033297 LEAD S0 T4, Leader logs: [{<nil> 0} {5184849288351149702 1}].
+033298 VOTE S0 T4, received RequestVote reply from 2, granted: true
+033298 LEAD S0 T4, Leader logs: [{<nil> 0} {5184849288351149702 1}].
+033301 LOG1 S1 T4, Received AppendEntry RPC 
+033301 LOG1 S1 T4, Replied AppendEntry with true, Conflict: false
+033301 LOG1 S2 T4, Received AppendEntry RPC 
+033303 LOG1 S2 T4, || logs: [{<nil> 0} {8842978072456174671 1}].
+033304 LEAD S0 T4, Response || Received AppendEntries response from 1 with success: true 
+033304 LOG1 S2 T4, AppendEntry Conflict 1
+033304 LOG1 S2 T4, Replied AppendEntry with false, Conflict: true
+033306 LEAD S0 T4, Response || Received AppendEntries response from 2 with success: false 
+033306 LEAD S0 T4, Handling Append Conflict, XTerm: 1, XFirst: 1, log: {[{<nil> 0} {5184849288351149702 1}] 9}
+033306 LEAD S0 T4, Handling Append Conflict, Case 2 
+033306 LEAD S0 T4, Handling Append Conflict, Case 3 
+034286 LEAD S0 T4, Send || Replicating logs to 1, log length: 0, PrevLogIndex: 10, PrevLogTerm:1, LeaderCommit: 9 
+034290 SNAP S0 T4, leader's log is too short for 2, prevLogIndex:0, rf.LastIncludedIndex:9
+034290 SNAP S0 T4, rf.nextIndex:[11 11 1]
+034292 SNAP S0 T4, sending InstallSnapshot RPC to 2
+034296 SNAP S2 T4, || Receive || Received InstallSnapshot RPC ||
+034296 SNAP S2 T4, Replace with new LogRecord, lastLogIndex < lastIncludedIndex
+034297 SNAP S2 T4, After Installing Snapshot, log: {[{<nil> 0}] 9}
+034296 LOG1 S1 T4, Received AppendEntry RPC 
+034299 LOG1 S1 T4, Replied AppendEntry with true, Conflict: false
+034299 SNAP S0 T4, received InstallSnapshot reply from 2, reply term: 4
+034300 SNAP S0 T4, Updated server: 2 nextIndex to 10, matchIndex to:9.
+034301 LEAD S0 T4, Response || Received AppendEntries response from 1 with success: true 
+035291 LEAD S0 T4, Send || Replicating logs to 1, log length: 0, PrevLogIndex: 10, PrevLogTerm:1, LeaderCommit: 9 
+035294 LEAD S0 T4, Send || Replicating logs to 2, log length: 1, PrevLogIndex: 9, PrevLogTerm:1, LeaderCommit: 9 
+035299 LOG1 S2 T4, Received AppendEntry RPC 
+035299 LOG1 S2 T4, || Append || Appended 1 log entry, lastLogIndex: 10.
+035300 LOG1 S2 T4, Replied AppendEntry with true, Conflict: false
+035301 LOG1 S1 T4, Received AppendEntry RPC 
+035302 LOG1 S1 T4, Replied AppendEntry with true, Conflict: false
+035303 LEAD S0 T4, Response || Received AppendEntries response from 2 with success: true 
+035303 LEAD S0 T4, Update || Updated server 2 with nextIndex: 11, matchIndex: 10 
+035305 LEAD S0 T4, Response || Received AppendEntries response from 1 with success: true 
+036301 LEAD S0 T4, Send || Replicating logs to 1, log length: 0, PrevLogIndex: 10, PrevLogTerm:1, LeaderCommit: 9 
+036303 LEAD S0 T4, Send || Replicating logs to 2, log length: 0, PrevLogIndex: 10, PrevLogTerm:1, LeaderCommit: 9 
+036307 LOG1 S2 T4, Received AppendEntry RPC 
+036307 LOG1 S2 T4, Replied AppendEntry with true, Conflict: false
+036309 LEAD S0 T4, Response || Received AppendEntries response from 2 with success: true 
+036311 LOG1 S1 T4, Received AppendEntry RPC 
+036312 LOG1 S1 T4, Replied AppendEntry with true, Conflict: false
+036313 LEAD S0 T4, Response || Received AppendEntries response from 1 with success: true 
+037312 LEAD S0 T4, Send || Replicating logs to 1, log length: 0, PrevLogIndex: 10, PrevLogTerm:1, LeaderCommit: 9 
+037315 LEAD S0 T4, Send || Replicating logs to 2, log length: 0, PrevLogIndex: 10, PrevLogTerm:1, LeaderCommit: 9 
+037320 LOG1 S2 T4, Received AppendEntry RPC 
+037320 LOG1 S1 T4, Received AppendEntry RPC 
+037321 LOG1 S1 T4, Replied AppendEntry with true, Conflict: false
+037321 LOG1 S2 T4, Replied AppendEntry with true, Conflict: false
+037324 LEAD S0 T4, Response || Received AppendEntries response from 1 with success: true 
+037325 LEAD S0 T4, Response || Received AppendEntries response from 2 with success: true 
+038319 LEAD S0 T4, Send || Replicating logs to 1, log length: 0, PrevLogIndex: 10, PrevLogTerm:1, LeaderCommit: 9 
+038320 LEAD S0 T4, Send || Replicating logs to 2, log length: 0, PrevLogIndex: 10, PrevLogTerm:1, LeaderCommit: 9 
+038322 LOG1 S2 T4, Received AppendEntry RPC 
+038323 LOG1 S1 T4, Received AppendEntry RPC 
+038323 LOG1 S2 T4, Replied AppendEntry with true, Conflict: false
+038323 LOG1 S1 T4, Replied AppendEntry with true, Conflict: false
+038324 LEAD S0 T4, Response || Received AppendEntries response from 2 with success: true 
+038325 LEAD S0 T4, Response || Received AppendEntries response from 1 with success: true 
+039330 LEAD S0 T4, Send || Replicating logs to 1, log length: 0, PrevLogIndex: 10, PrevLogTerm:1, LeaderCommit: 9 
+039333 LEAD S0 T4, Send || Replicating logs to 2, log length: 0, PrevLogIndex: 10, PrevLogTerm:1, LeaderCommit: 9 
+039341 LOG1 S1 T4, Received AppendEntry RPC 
+039341 LOG1 S2 T4, Received AppendEntry RPC 
+039342 LOG1 S1 T4, Replied AppendEntry with true, Conflict: false
+039343 LOG1 S2 T4, Replied AppendEntry with true, Conflict: false
+039345 LEAD S0 T4, Response || Received AppendEntries response from 1 with success: true 
+039346 LEAD S0 T4, Response || Received AppendEntries response from 2 with success: true 
+040336 LEAD S0 T4, Send || Replicating logs to 1, log length: 0, PrevLogIndex: 10, PrevLogTerm:1, LeaderCommit: 9 
+040339 LEAD S0 T4, Send || Replicating logs to 2, log length: 0, PrevLogIndex: 10, PrevLogTerm:1, LeaderCommit: 9 
+040344 LOG1 S1 T4, Received AppendEntry RPC 
+040345 LOG1 S2 T4, Received AppendEntry RPC 
+040345 LOG1 S1 T4, Replied AppendEntry with true, Conflict: false
+040345 LOG1 S2 T4, Replied AppendEntry with true, Conflict: false
+040348 LEAD S0 T4, Response || Received AppendEntries response from 1 with success: true 
+040349 LEAD S0 T4, Response || Received AppendEntries response from 2 with success: true 
+041338 LEAD S0 T4, Send || Replicating logs to 1, log length: 0, PrevLogIndex: 10, PrevLogTerm:1, LeaderCommit: 9 
+041340 LEAD S0 T4, Send || Replicating logs to 2, log length: 0, PrevLogIndex: 10, PrevLogTerm:1, LeaderCommit: 9 
+041345 LOG1 S2 T4, Received AppendEntry RPC 
+041345 LOG1 S1 T4, Received AppendEntry RPC 
+041345 LOG1 S2 T4, Replied AppendEntry with true, Conflict: false
+041346 LOG1 S1 T4, Replied AppendEntry with true, Conflict: false
+041348 LEAD S0 T4, Response || Received AppendEntries response from 2 with success: true 
+041349 LEAD S0 T4, Response || Received AppendEntries response from 1 with success: true 
+042349 LEAD S0 T4, Send || Replicating logs to 1, log length: 0, PrevLogIndex: 10, PrevLogTerm:1, LeaderCommit: 9 
+042352 LEAD S0 T4, Send || Replicating logs to 2, log length: 0, PrevLogIndex: 10, PrevLogTerm:1, LeaderCommit: 9 
+042356 LOG1 S2 T4, Received AppendEntry RPC 
+042357 LOG1 S2 T4, Replied AppendEntry with true, Conflict: false
+042356 LOG1 S1 T4, Received AppendEntry RPC 
+042359 LOG1 S1 T4, Replied AppendEntry with true, Conflict: false
+042360 LEAD S0 T4, Response || Received AppendEntries response from 2 with success: true 
+042361 LEAD S0 T4, Response || Received AppendEntries response from 1 with success: true 
+043357 LEAD S0 T4, Send || Replicating logs to 1, log length: 0, PrevLogIndex: 10, PrevLogTerm:1, LeaderCommit: 9 
+043359 LEAD S0 T4, Send || Replicating logs to 2, log length: 0, PrevLogIndex: 10, PrevLogTerm:1, LeaderCommit: 9 
+043366 LOG1 S1 T4, Received AppendEntry RPC 
+043367 LOG1 S1 T4, Replied AppendEntry with true, Conflict: false
+043366 LOG1 S2 T4, Received AppendEntry RPC 
+043370 LEAD S0 T4, Response || Received AppendEntries response from 1 with success: true 
+043371 LOG1 S2 T4, Replied AppendEntry with true, Conflict: false
+043374 LEAD S0 T4, Response || Received AppendEntries response from 2 with success: true 
+044368 LEAD S0 T4, Send || Replicating logs to 1, log length: 0, PrevLogIndex: 10, PrevLogTerm:1, LeaderCommit: 9 
+044370 LEAD S0 T4, Send || Replicating logs to 2, log length: 0, PrevLogIndex: 10, PrevLogTerm:1, LeaderCommit: 9 
+044375 LOG1 S1 T4, Received AppendEntry RPC 
+044376 LOG1 S1 T4, Replied AppendEntry with true, Conflict: false
+044376 LOG1 S2 T4, Received AppendEntry RPC 
+044377 LOG1 S2 T4, Replied AppendEntry with true, Conflict: false
+044378 LEAD S0 T4, Response || Received AppendEntries response from 1 with success: true 
+044379 LEAD S0 T4, Response || Received AppendEntries response from 2 with success: true 
+045168 LOG1 S1 T4, Failed in AppendEntries PRC from 1 to 2! (term: 1)
+045378 LEAD S0 T4, Send || Replicating logs to 1, log length: 0, PrevLogIndex: 10, PrevLogTerm:1, LeaderCommit: 9 
+045380 LEAD S0 T4, Send || Replicating logs to 2, log length: 0, PrevLogIndex: 10, PrevLogTerm:1, LeaderCommit: 9 
+045386 LOG1 S2 T4, Received AppendEntry RPC 
+045386 LOG1 S2 T4, Replied AppendEntry with true, Conflict: false
+045387 LOG1 S1 T4, Received AppendEntry RPC 
+045387 LOG1 S1 T4, Replied AppendEntry with true, Conflict: false
+045389 LEAD S0 T4, Response || Received AppendEntries response from 2 with success: true 
+045389 LEAD S0 T4, Response || Received AppendEntries response from 1 with success: true 
+046344 CLNT S0 T4, Start || Received and appended 1 log entry, lastLogIndex: 11.
+046381 LEAD S0 T4, Send || Replicating logs to 1, log length: 1, PrevLogIndex: 10, PrevLogTerm:1, LeaderCommit: 9 
+046382 LEAD S0 T4, Send || Replicating logs to 2, log length: 1, PrevLogIndex: 10, PrevLogTerm:1, LeaderCommit: 9 
+046385 LOG1 S2 T4, Received AppendEntry RPC 
+046385 LOG1 S1 T4, Received AppendEntry RPC 
+046386 LOG1 S1 T4, || Append || Appended 1 log entry, lastLogIndex: 11.
+046386 LOG1 S1 T4, Replied AppendEntry with true, Conflict: false
+046385 LOG1 S2 T4, || Append || Appended 1 log entry, lastLogIndex: 11.
+046388 LEAD S0 T4, Response || Received AppendEntries response from 1 with success: true 
+046388 LEAD S0 T4, Update || Updated server 1 with nextIndex: 12, matchIndex: 11 
+046388 CMIT S0 T4, Commit || Updated commitIndex from 9 to 11.
+046393 LOG1 S2 T4, Replied AppendEntry with true, Conflict: false
+046394 LEAD S0 T4, Response || Received AppendEntries response from 2 with success: true 
+046394 LEAD S0 T4, Update || Updated server 2 with nextIndex: 12, matchIndex: 11 
+046739 LOG1 S1 T4, Failed in AppendEntries PRC from 1 to 2! (term: 1)
+047387 LOG1 S0 T4, || Applying logs with index: 10, command: 5184849288351149702, commitIndex: 11.
+047389 LOG1 S0 T4, || logs: [{<nil> 0} {5184849288351149702 1} {5184849288351149702 4}].
+047394 LEAD S0 T4, Send || Replicating logs to 1, log length: 0, PrevLogIndex: 11, PrevLogTerm:4, LeaderCommit: 11 
+047395 LEAD S0 T4, Send || Replicating logs to 2, log length: 0, PrevLogIndex: 11, PrevLogTerm:4, LeaderCommit: 11 
+047399 LOG1 S2 T4, Received AppendEntry RPC 
+047400 CMIT S2 T4, || Commit || Commit to 11
+047400 LOG1 S2 T4, Replied AppendEntry with true, Conflict: false
+047402 LEAD S0 T4, Response || Received AppendEntries response from 2 with success: true 
+047402 LOG1 S1 T4, Received AppendEntry RPC 
+047403 CMIT S1 T4, || Commit || Commit to 11
+047404 LOG1 S1 T4, Replied AppendEntry with true, Conflict: false
+047406 LEAD S0 T4, Response || Received AppendEntries response from 1 with success: true 
+047551 LOG1 S1 T4, Failed in AppendEntries PRC from 1 to 2! (term: 1)
+048392 LOG1 S2 T4, || Applying logs with index: 10, command: 5184849288351149702, commitIndex: 11.
+048393 LOG1 S2 T4, || logs: [{<nil> 0} {5184849288351149702 1} {5184849288351149702 4}].
+048392 LOG1 S1 T4, || Applying logs with index: 11, command: 5184849288351149702, commitIndex: 11.
+048393 LOG1 S1 T4, || logs: [{<nil> 0} {5184849288351149702 1} {5184849288351149702 4}].
+048394 LOG1 S0 T4, || Applying logs with index: 11, command: 5184849288351149702, commitIndex: 11.
+048395 LOG1 S0 T4, || logs: [{<nil> 0} {5184849288351149702 1} {5184849288351149702 4}].
+048394 LEAD S0 T4, Send || Replicating logs to 1, log length: 0, PrevLogIndex: 11, PrevLogTerm:4, LeaderCommit: 11 
+048395 LEAD S0 T4, Send || Replicating logs to 2, log length: 0, PrevLogIndex: 11, PrevLogTerm:4, LeaderCommit: 11 
+048398 LOG1 S1 T4, Received AppendEntry RPC 
+048398 LOG1 S1 T4, Replied AppendEntry with true, Conflict: false
+048398 LOG1 S2 T4, Received AppendEntry RPC 
+048399 LOG1 S2 T4, Replied AppendEntry with true, Conflict: false
+048399 LEAD S0 T4, Response || Received AppendEntries response from 1 with success: true 
+048400 LEAD S0 T4, Response || Received AppendEntries response from 2 with success: true 
+apply error: server 2 apply out of order, expected index 2, got 10
+exit status 1
+FAIL	6.5840/raft	5.164s

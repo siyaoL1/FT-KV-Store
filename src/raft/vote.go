@@ -79,6 +79,7 @@ func (rf *Raft) becomeLeaderL() {
 
 	for i := range rf.nextIndex {
 		rf.nextIndex[i] = rf.lastLogIndex() + 1
+		Debug(dVote, "S%d T%d, Set server%v's nextIndex to %v", rf.me, rf.currentTerm, i, rf.nextIndex[i])
 		rf.matchIndex[i] = 0
 	}
 	rf.broadcastLogsL()

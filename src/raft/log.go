@@ -28,6 +28,7 @@ func (rf *Raft) lastLogTerm() int {
 	// if rf.LogRecord.len() == 0 {
 	// 	return rf.LastIncludedTerm
 	// }
+	Debug(dLog, "S%d T%d, || logs: %v.\n", rf.me, rf.currentTerm, rf.LogRecord.Log)
 	return rf.LogRecord.lastLogTerm()
 }
 
@@ -36,16 +37,27 @@ func (rf *Raft) lastLogTerm() int {
 // ***********************************
 
 // Make a Logs struct with one 0 entry at Log
-func mkLogEmpty() LogRecord {
-	return LogRecord{make([]Entry, 1), 0}
+func mkLogEmpty(index0 int) LogRecord {
+	return LogRecord{make([]Entry, 1), index0}
 }
 
-func mkLog(Log []Entry, index0 int) LogRecord {
-	return LogRecord{Log, index0}
+func mkLog(log []Entry, index0 int) LogRecord {
+	newLog := append(make([]Entry, 1), log...)
+	return LogRecord{newLog, index0}
 }
 
 func (l LogRecord) len() int {
 	return len(l.Log)
+}
+
+// Convert from global log index to server LogRecord index.
+func (l *LogRecord) toRecordIndex(logIndex int) int {
+	return logIndex - l.Index0
+}
+
+// Convert from server LogRecord index to global log index.
+func (l *LogRecord) toLogIndex(recordIndex int) int {
+	return recordIndex + l.Index0
 }
 
 func (l LogRecord) firstOfTerm(term int, start int) int {
@@ -54,7 +66,7 @@ func (l LogRecord) firstOfTerm(term int, start int) int {
 	for resultIndex > l.Index0 && l.term(resultIndex) == term {
 		resultIndex -= 1
 	}
-	return resultIndex
+	return resultIndex + 1
 }
 
 func (l LogRecord) lastOfTerm(term int, start int) int {
@@ -88,6 +100,7 @@ func (l LogRecord) term(logIndex int) int {
 	return l.entry(logIndex).Term
 }
 
+// slice Entry starting from the given logIndex index
 func (l LogRecord) slice(logIndex int) []Entry {
 	recordIndex := l.toRecordIndex(logIndex)
 	return l.Log[recordIndex:]
@@ -104,12 +117,4 @@ func (l *LogRecord) cutend(logIndex int) {
 
 func (l *LogRecord) append(entry Entry) {
 	l.Log = append(l.Log, entry)
-}
-
-func (l *LogRecord) toRecordIndex(logIndex int) int {
-	return logIndex - l.Index0
-}
-
-func (l *LogRecord) toLogIndex(recordIndex int) int {
-	return recordIndex + l.Index0
 }

@@ -9,8 +9,8 @@ import (
 type InstallSnapshotArgs struct {
 	Term              int
 	LeaderId          int
-	LastIncludedIndex int
-	LastIncludedTerm  int
+	LastIncludedIndex int // last index included in snapshot
+	LastIncludedTerm  int // last term included in snapshot
 	Offset            int
 	Data              []byte
 	Done              bool
@@ -18,6 +18,33 @@ type InstallSnapshotArgs struct {
 
 type InstallSnapshotReply struct {
 	Term int
+}
+
+// ***************************************
+// ********    Create Snapshot   *********
+// ***************************************
+
+// the service says it has created a snapshot that has
+// all info up to and including index. this means the
+// service no longer needs the log through (and including)
+// that index. Raft should now trim its log as much as possible.
+func (rf *Raft) Snapshot(index int, snapshot []byte) {
+	rf.mu.Lock()
+	defer rf.mu.Unlock()
+	// Your code here (2D).
+	// Nothing to snapshot
+	if index <= rf.LogRecord.Index0 || index > rf.lastLogIndex() {
+		return
+	}
+	Debug(dSnap, "S%d T%d, || Before snapshot: index: %v, log: %v.\n", rf.me, rf.currentTerm, rf.LogRecord.Index0, rf.LogRecord)
+
+	rf.LastIncludedTerm = rf.LogRecord.term(index)
+	rf.LastIncludedIndex = index
+	rf.LogRecord = mkLog(rf.LogRecord.slice(index+1), index)
+
+	rf.persist(snapshot)
+	Debug(dSnap, "S%d T%d, || After snapshot: index: %v, log: %v.\n", rf.me, rf.currentTerm, rf.LogRecord.Index0, rf.LogRecord)
+	Debug(dSnap, "S%d T%d, rf.lastApplied:%v, rf.commitIndex:%v, rf.lastLogIndex:%v, rf.LastIncludedIndex:%v", rf.me, rf.currentTerm, rf.lastApplied, rf.commitIndex, rf.lastLogIndex(), rf.LastIncludedIndex)
 }
 
 // ***************************************
@@ -75,17 +102,19 @@ func (rf *Raft) InstallSnapshot(args *InstallSnapshotArgs, reply *InstallSnapsho
 		return
 	}
 
-	nextIndex := args.LastIncludedIndex + 1
 	if rf.lastLogIndex() <= args.LastIncludedIndex {
 		// remove all logs
-		rf.LogRecord = mkLog(make([]Entry, 0), nextIndex)
+		rf.LogRecord = mkLogEmpty(args.LastIncludedIndex)
+		Debug(dSnap, "S%d T%d, Replace with new LogRecord, lastLogIndex < lastIncludedIndex\n", rf.me, rf.currentTerm)
 	} else {
-		if rf.LogRecord.entry(args.LastIncludedIndex).Term != args.LastIncludedTerm {
+		if rf.LogRecord.term(args.LastIncludedIndex) != args.LastIncludedTerm {
 			// remove all logs
-			rf.LogRecord = mkLog(make([]Entry, 0), nextIndex)
+			rf.LogRecord = mkLogEmpty(args.LastIncludedIndex)
+			Debug(dSnap, "S%d T%d, Replace with new LogRecord, conflict term at lastIncludedTerm\n", rf.me, rf.currentTerm)
 		} else {
 			// remove logs up include lastIncludedIndex
-			rf.LogRecord = mkLog(rf.LogRecord.slice(nextIndex), nextIndex)
+			rf.LogRecord = mkLogEmpty(args.LastIncludedIndex)
+			Debug(dSnap, "S%d T%d, Removing log up till lastIncludedIndex, no conflict\n", rf.me, rf.currentTerm)
 		}
 	}
 
@@ -93,9 +122,10 @@ func (rf *Raft) InstallSnapshot(args *InstallSnapshotArgs, reply *InstallSnapsho
 	rf.LastIncludedTerm = args.LastIncludedTerm
 	rf.commitIndex = args.LastIncludedIndex
 	rf.lastApplied = args.LastIncludedIndex
+	Debug(dSnap, "S%d T%d, After Installing Snapshot, log: %v\n", rf.me, rf.currentTerm, rf.LogRecord)
 
 	// install Snapshot
-	rf.readPersist(args.Data)
+	// rf.readPersist(args.Data)
 	rf.persist(args.Data)
 }
 
@@ -119,37 +149,6 @@ func (rf *Raft) processSnapshotReplyL(server int, args *InstallSnapshotArgs, rep
 		}
 		Debug(dSnap, "S%d T%d, Updated server: %v nextIndex to %v, matchIndex to:%v.\n", rf.me, rf.currentTerm, server, rf.nextIndex[server], rf.matchIndex[server])
 	}
-}
-
-// ***************************************
-// ********    Create Snapshot   *********
-// ***************************************
-
-// the service says it has created a snapshot that has
-// all info up to and including index. this means the
-// service no longer needs the log through (and including)
-// that index. Raft should now trim its log as much as possible.
-func (rf *Raft) Snapshot(index int, snapshot []byte) {
-	rf.mu.Lock()
-	defer rf.mu.Unlock()
-	// Your code here (2D).
-	firstIndex := rf.LogRecord.Index0
-
-	// Nothing to snapshot
-	if index <= firstIndex || index > rf.lastLogIndex() {
-		return
-	}
-	Debug(dSnap, "S%d T%d, || Before snapshot: index: %v, log: %v.\n", rf.me, rf.currentTerm, rf.LogRecord.Index0, rf.LogRecord.Log)
-
-	rf.LastIncludedTerm = rf.LogRecord.entry(index).Term
-	rf.LogRecord.Log = rf.LogRecord.slice(index)
-	rf.LastIncludedIndex = index
-	rf.LogRecord.Index0 = index
-
-	rf.persist(snapshot)
-	Debug(dSnap, "S%d T%d, || After snapshot: index: %v, log: %v.\n", rf.me, rf.currentTerm, rf.LogRecord.Index0, rf.LogRecord.Log)
-	Debug(dSnap, "S%d T%d, nextApplyIndex:%v, (<=) rf.commitIndex:%v, nextApplyIndex:%v, (<=) rf.lastLogIndex:%v, rf.LastIncludedIndex:%v", rf.me, rf.currentTerm, rf.lastApplied+1, rf.commitIndex, rf.lastApplied+1, rf.lastLogIndex(), rf.LastIncludedIndex)
-
 }
 
 // ***********************************
