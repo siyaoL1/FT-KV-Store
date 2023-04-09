@@ -1,9 +1,9 @@
 package kvraft
 
 const (
+	ErrWrongLeader = "ErrWrongLeader"
 	OK             = "OK"
 	ErrNoKey       = "ErrNoKey"
-	ErrWrongLeader = "ErrWrongLeader"
 )
 
 type Err string

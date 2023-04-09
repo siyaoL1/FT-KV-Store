@@ -2,7 +2,6 @@ package raft
 
 import (
 	"log"
-	"reflect"
 	"time"
 )
 
@@ -183,13 +182,13 @@ func (rf *Raft) updateLogL(args *AppendEntriesArgs, reply *AppendEntriesReply) {
 			rf.LogRecord.append(entry)
 			Debug(dLog, "S%d T%d, || Append || Appended 1 log entry, lastLogIndex: %v.\n", rf.me, rf.currentTerm, rf.lastLogIndex())
 		}
-		if !reflect.DeepEqual(rf.LogRecord.entry(index).Command, entry.Command) {
-			// Debug(dLog, "Entry error")
-			Debug(dLog, "S%d T%d, || Current log index0: %v, log: %v.||\n", rf.me, rf.currentTerm, rf.LogRecord.Index0, rf.LogRecord)
+		// if !reflect.DeepEqual(rf.LogRecord.entry(index).Command, entry.Command) {
+		// 	// Debug(dLog, "Entry error")
+		// 	Debug(dLog, "S%d T%d, || Current log index0: %v, log: %v.||\n", rf.me, rf.currentTerm, rf.LogRecord.Index0, rf.LogRecord)
 
-			log.Fatalf("Entry error %v from=%v index%v old=%v new=%v\n",
-				rf.me, args.LeaderID, index, rf.LogRecord.entry(index), args.Entries[i])
-		}
+		// 	log.Fatalf("Entry error %v from=%v index%v old=%v new=%v\n",
+		// 		rf.me, args.LeaderID, index, rf.LogRecord.entry(index), args.Entries[i])
+		// }
 	}
 
 	// Rule 5

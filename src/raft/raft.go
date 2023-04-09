@@ -168,7 +168,7 @@ func (rf *Raft) ticker() {
 	for !rf.killed() {
 		// Your code here (2A)
 		rf.tick()
-		ms := 50 // Wait for 0.1 seconds
+		ms := 10 // Wait for 0.1 seconds
 		time.Sleep(time.Duration(ms) * time.Millisecond)
 	}
 }

@@ -22,7 +22,13 @@ type logTopic string
 
 const (
 	// New
-	dClerk logTopic = "CLRK"
+	dClerk     logTopic = "CLRK"
+	dKvGet     logTopic = "KGET"
+	dKvPutApp  logTopic = "KP&A"
+	dKvApplier logTopic = "KAPL"
+	dKvApGet   logTopic = "KAPG"
+	dKvApPut   logTopic = "KAPP"
+	dKvApApd   logTopic = "KAPA"
 	// Old
 	dClient  logTopic = "CLNT"
 	dCommit  logTopic = "CMIT"

@@ -11,9 +11,7 @@ from rich.traceback import install
 
 # fmt: off
 # Mapping from topics to colors
-TOPICS = {
-    # kvraft
-    "CLRK": "#B8D8D8",
+RAFTTOPICS = {
     # raft
     "TIMR": "#9a9a99",
     "VOTE": "#67a0b2",
@@ -32,8 +30,21 @@ TOPICS = {
     "ERRO": "#fe2626",
     "TRCE": "#fe2626",    
 }
+
+KVTOPICS = {
+     # kvraft
+    "CLRK": "#B8D8D8",
+    "KGET": "#D8AA96",
+    "KP&A": "#C7D3BF",
+    "KAPL": "#F7B1AB",
+    "KAPG": "#935FA7",
+    "KAPP": "#B49A67",
+    "KAPA": "#8E8DBE",
+}
+
 # fmt: on
 
+TOPICS = {**RAFTTOPICS, **KVTOPICS}
 
 def list_topics(value: Optional[str]):
     if value is None:
@@ -80,7 +91,10 @@ def main(
             # any particular peer. Otherwise we can treat second column
             # as peer id
             if topic not in ["TEST", "CLRK"]:
-                i = int(msg[1])
+                if topic in RAFTTOPICS:
+                    i = int(msg[1])
+                if topic in KVTOPICS:
+                    i = int(msg[2])
 
             # Colorize output by using rich syntax when needed
             if colorize and topic in TOPICS:
@@ -88,7 +102,7 @@ def main(
                 msg = f"[{color}]{msg}[/{color}]"
 
             # Single column printing. Always the case for debug stmts in tests
-            if n_columns is None or topic == "TEST":
+            if n_columns is None or topic in ["TEST", "CLRK"]:
                 print(time, msg)
             # Multi column printing, timing is dropped to maximize horizontal
             # space. Heavylifting is done through rich.column.Columns object

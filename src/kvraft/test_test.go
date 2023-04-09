@@ -555,10 +555,10 @@ func GenericTestSpeed(t *testing.T, part string, maxraftstate int) {
 // 	cfg.end()
 // }
 
-func TestManyPartitionsOneClient3A(t *testing.T) {
-	// Test: partitions, one client (3A) ...
-	GenericTest(t, "3A", 1, 5, false, false, true, -1, false)
-}
+// func TestManyPartitionsOneClient3A(t *testing.T) {
+// 	// Test: partitions, one client (3A) ...
+// 	GenericTest(t, "3A", 1, 5, false, false, true, -1, false)
+// }
 
 // func TestManyPartitionsManyClients3A(t *testing.T) {
 // 	// Test: partitions, many clients (3A) ...
@@ -575,10 +575,10 @@ func TestManyPartitionsOneClient3A(t *testing.T) {
 // 	GenericTest(t, "3A", 5, 5, false, true, false, -1, false)
 // }
 
-// func TestPersistConcurrentUnreliable3A(t *testing.T) {
-// 	// Test: unreliable net, restarts, many clients (3A) ...
-// 	GenericTest(t, "3A", 5, 5, true, true, false, -1, false)
-// }
+func TestPersistConcurrentUnreliable3A(t *testing.T) {
+	// Test: unreliable net, restarts, many clients (3A) ...
+	GenericTest(t, "3A", 5, 5, true, true, false, -1, false)
+}
 
 // func TestPersistPartition3A(t *testing.T) {
 // 	// Test: restarts, partitions, many clients (3A) ...

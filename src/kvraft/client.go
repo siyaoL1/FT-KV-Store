@@ -55,7 +55,7 @@ func MakeClerk(servers []*labrpc.ClientEnd) *Clerk {
 // must match the declared types of the RPC handler function's
 // arguments. and reply must be passed as a pointer.
 func (ck *Clerk) Get(key string) string {
-	DPrintf("C%v | Get | key:%v\n", ck.me%100, key)
+	Debug(dClerk, "C%v | Get | key:%v\n", ck.me%100, key)
 	// Construct Args for Get RPC
 	ck.mu.Lock()
 	ck.opNum += 1
@@ -67,15 +67,13 @@ func (ck *Clerk) Get(key string) string {
 	reply := GetReply{}
 	ck.mu.Unlock()
 
-	server := ck.leader
 	for { // keeps trying forever if error occured
-		ok := ck.sendGet(server, &args, &reply)
+		ok := ck.sendGet(ck.leader, &args, &reply)
 		if ok && reply.Err != ErrWrongLeader {
-			DPrintf("C%v | Get | Received OK reply: %+v\n", ck.me%100, reply)
-			ck.leader = server
+			Debug(dClerk, "C%v | Get | Received OK reply: %+v\n", ck.me%100, reply)
 			return reply.Value
 		}
-		server = (server + 1) % len(ck.servers)
+		ck.leader = (ck.leader + 1) % len(ck.servers)
 	}
 }
 
@@ -101,7 +99,7 @@ func (ck *Clerk) sendGet(server int, args *GetArgs, reply *GetReply) bool {
 // must match the declared types of the RPC handler function's
 // arguments. and reply must be passed as a pointer.
 func (ck *Clerk) PutAppend(key string, value string, op string) {
-	DPrintf("C%v | PutAppend | key:%v, value: |%v|\n", ck.me%100, key, value)
+	Debug(dClerk, "C%v | PutAppend | key:%v, value: |%v|\n", ck.me%100, key, value)
 	// Construct Args for PutAppend RPC
 	ck.mu.Lock()
 	ck.opNum += 1
@@ -118,10 +116,10 @@ func (ck *Clerk) PutAppend(key string, value string, op string) {
 	for { // keeps trying forever if error occured
 		ok := ck.sendPutAppend(ck.leader, &args, &reply)
 		if ok && reply.Err != ErrWrongLeader {
-			DPrintf("C%v | PutAppend | Received OK reply from Raft: %+v\n", ck.me%100, reply)
+			Debug(dClerk, "C%v | PutAppend | Received OK reply from KvServer%v: %+v\n", ck.me%100, ck.leader, reply)
 			return
 		}
-		// DPrintf("C%v | PutAppend | S%v is not leader\n", ck.me%100, server)
+		// Debug(, "C%v | PutAppend | S%v is not leader\n", ck.me%100, server)
 		ck.leader = (ck.leader + 1) % len(ck.servers)
 	}
 }
@@ -131,7 +129,7 @@ func (ck *Clerk) sendPutAppend(server int, args *PutAppendArgs, reply *PutAppend
 	ok := ck.servers[server].Call("KVServer.PutAppend", args, reply)
 
 	if !ok {
-		DPrintf("C%v | PutAppend RPC failed | Err:%v\n", ck.me%100, reply.Err)
+		Debug(dClerk, "C%v | PutAppend RPC failed | Err:%v\n", ck.me%100, reply.Err)
 	}
 	return ok
 }

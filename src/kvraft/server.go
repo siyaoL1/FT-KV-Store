@@ -24,6 +24,7 @@ type Op struct {
 type Result struct {
 	Err   Err
 	Value string
+	Op    Op
 }
 
 type KVServer struct {
@@ -40,6 +41,10 @@ type KVServer struct {
 	dataDict    map[string]string
 	lastCommand map[int64]int // stores OpNum of the last
 }
+
+// ***************************************
+// ************  Get Handler  ************
+// ***************************************
 
 // Get RPC handler
 func (kv *KVServer) Get(args *GetArgs, reply *GetReply) {
@@ -65,7 +70,7 @@ func (kv *KVServer) Get(args *GetArgs, reply *GetReply) {
 		*reply = GetReply{Err: ErrWrongLeader}
 		return
 	}
-	DPrintf("KV%v | Get | Receieved start result from raft, index: %v\n", kv.me, index)
+	Debug(dKvGet, "KV%v | Get | Receieved start result from raft, index: %v\n", kv.me, index)
 
 	// Create channel and wait for response from channel
 	kv.mu.Lock()
@@ -73,24 +78,39 @@ func (kv *KVServer) Get(args *GetArgs, reply *GetReply) {
 	kv.indexToCh[index] = resultCh
 	kv.mu.Unlock()
 
+	Debug(dKvGet, "KV%v | Get | Waiting for message from resultCh: %+v\n", kv.me, resultCh)
+	var result Result
+	var ok bool
 	select {
-	case result, ok := <-resultCh:
-		DPrintf("KV%v | PutAppend | Received message from resultCh: %+v\n", kv.me, result)
-		if !ok || result.Err == ErrWrongLeader {
+	case result, ok = <-resultCh:
+		if !ok || result.Err == ErrWrongLeader || result.Op != op {
 			*reply = GetReply{
 				Err: ErrWrongLeader,
 			}
 		} else {
-			*reply = GetReply(result)
+			*reply = GetReply{
+				Err:   result.Err,
+				Value: result.Value,
+			}
 		}
 	case <-time.After(1000 * time.Millisecond):
 		*reply = GetReply{Err: ErrWrongLeader}
 	}
+
+	// Delete the used index
+	kv.mu.Lock()
+	delete(kv.indexToCh, index)
+	kv.mu.Unlock()
+	Debug(dKvGet, "KV%v | Get | Sending result to Clerk, resultCh: %v, index: %v, result: %+v\n", kv.me, resultCh, index, result)
 }
+
+// ***************************************
+// ********  Put/Append Handler  *********
+// ***************************************
 
 // PutAppend RPC handler
 func (kv *KVServer) PutAppend(args *PutAppendArgs, reply *PutAppendReply) {
-	// DPrintf("KV%v | PutAppend | Received RPC with args: %+v\n", kv.me, args)
+	// Debug(,"KV%v | PutAppend | Received RPC with args: %+v\n", kv.me, args)
 	// Your code here.
 
 	if kv.killed() {
@@ -115,22 +135,24 @@ func (kv *KVServer) PutAppend(args *PutAppendArgs, reply *PutAppendReply) {
 		return
 	}
 
-	DPrintf("KV%v | PutAppend | Receieved start result from raft, index: %v\n", kv.me, index)
-	DPrintf("KV%v | PutAppend | Raft: %+v,\n", kv.me, kv.rf)
+	Debug(dKvPutApp, "KV%v | PutAppend | Receieved start result from raft leader, index: %v\n", kv.me, index)
+	// Debug(dKvPutApp, "KV%v | PutAppend | Raft: %+v,\n", kv.me, kv.rf)
 
 	// Create channel and wait for response from channel
 	kv.mu.Lock()
 	resultCh := make(chan Result)
 	kv.indexToCh[index] = resultCh
+	Debug(dKvPutApp, "KV%v | resultCh | indexToCh:%+v, index:%v\n", kv.me, kv.indexToCh, index)
 	kv.mu.Unlock()
-	DPrintf("KV%v | resultCh | indexToCh:%+v, index:%v\n", kv.me, kv.indexToCh, index)
 
-	DPrintf("KV%v | PutAppend | Start waiting for resultCh message\n", kv.me)
+	Debug(dKvPutApp, "KV%v | PutAppend | Start waiting for resultCh message\n", kv.me)
+	var result Result
+	var ok bool
 	select {
-	case result, ok := <-resultCh:
-		DPrintf("KV%v | PutAppend | Received message from resultCh: %+v\n", kv.me, result)
+	case result, ok = <-resultCh:
+		Debug(dKvPutApp, "KV%v | PutAppend | Received message from resultCh: %+v\n", kv.me, result)
 		// if result.
-		if !ok || result.Err == ErrWrongLeader {
+		if !ok || result.Err == ErrWrongLeader || result.Op != op {
 			*reply = PutAppendReply{
 				Err: ErrWrongLeader,
 			}
@@ -140,75 +162,104 @@ func (kv *KVServer) PutAppend(args *PutAppendArgs, reply *PutAppendReply) {
 			}
 		}
 	case <-time.After(1000 * time.Millisecond):
-		reply.Err = ErrWrongLeader
+		*reply = PutAppendReply{
+			Err: ErrWrongLeader,
+		}
 	}
-	// DPrintf("KV%v | PutAppend | Replying to Clerk: %+v\n", kv.me, reply)
+	// Delete the used index
+	Debug(dKvPutApp, "KV%v | PutAppend | Sending result to Clerk, resultCh: %v, index: %v, result: %+v\n", kv.me, resultCh, index, result)
+	kv.mu.Lock()
+	delete(kv.indexToCh, index)
+	kv.mu.Unlock()
 }
+
+// ***************************************
+// ************    Helper   **************
+// ***************************************
 
 func (kv *KVServer) checkDuplicateL(client int64, opNum int) bool {
 	lastOpNum, ok := kv.lastCommand[client]
 	return ok && lastOpNum >= opNum
 }
 
+// ***************************************
+// ************     Apply    *************
+// ***************************************
+
+func (kv *KVServer) processCommandValid(m raft.ApplyMsg) Result {
+	op := m.Command.(Op)
+	var result Result
+
+	kv.mu.Lock()
+	switch op.OpType {
+	case "Get":
+		value, ok := kv.dataDict[op.Key]
+		if ok { // key exist
+			result = Result{
+				Err:   OK,
+				Value: value,
+				Op:    op,
+			}
+		} else { // key doesn't exist
+			result = Result{
+				Err:   ErrNoKey,
+				Value: "",
+				Op:    op,
+			}
+		}
+		Debug(dKvApGet, "KV%v | Apply Get | Applied Get: %+v, dataDict: %+v\n", kv.me, result, kv.dataDict)
+
+	case "Put":
+		if !kv.checkDuplicateL(op.Client, op.OpNum) {
+			kv.lastCommand[op.Client] = op.OpNum
+			kv.dataDict[op.Key] = op.Value
+		}
+		result = Result{
+			Err: OK,
+			Op:  op,
+		}
+		Debug(dKvApPut, "KV%v | Apply Put | Applied Put: %+v, dataDict: %+v\n", kv.me, result, kv.dataDict)
+
+	case "Append":
+		if !kv.checkDuplicateL(op.Client, op.OpNum) {
+			kv.lastCommand[op.Client] = op.OpNum
+			kv.dataDict[op.Key] += op.Value
+		}
+		result = Result{
+			Err: OK,
+			Op:  op,
+		}
+		Debug(dKvApApd, "KV%v | Apply Append | Applied Append: %+v, dataDict: %+v\n", kv.me, result, kv.dataDict)
+
+	}
+	kv.mu.Unlock()
+
+	return result
+}
+
+func (kv *KVServer) apply(index int, result Result) {
+	kv.mu.Lock()
+	resultCh, ok := kv.indexToCh[index]
+	kv.mu.Unlock()
+
+	Debug(dKvApplier, "KV%v | resultCh | resultCh:%v, ok:%v\n", kv.me, resultCh, ok)
+	if ok {
+		resultCh <- result
+		Debug(dKvApplier, "KV%v | applier | Sent result to resultCh: %+v\n", kv.me, resultCh)
+	}
+}
+
 func (kv *KVServer) applier() {
 	for {
-		DPrintf("KV%v | applier | Waiting for message on applych: %v\n", kv.me, kv.applyCh)
+		Debug(dKvApplier, "KV%v | applier | Waiting for message on applych: %v\n", kv.me, kv.applyCh)
 		m := <-kv.applyCh
-		DPrintf("KV%v | applier | Received message from applyCh: %+v\n", kv.me, m)
+		Debug(dKvApplier, "KV%v | applier | Received message from applyCh: %+v\n", kv.me, m)
 
 		if m.SnapshotValid {
 			continue
 		} else if m.CommandValid {
-			op := m.Command.(Op)
-			var result Result
-			DPrintf("KV%v | applier | 1\n", kv.me)
-
-			kv.mu.Lock()
-			DPrintf("KV%v | applier | 2\n", kv.me)
-			switch op.OpType {
-			case "Get":
-				value, ok := kv.dataDict[op.Key]
-				if ok { // key exist
-					result = Result{
-						Err:   OK,
-						Value: value,
-					}
-				} else { // key doesn't exist
-					result = Result{
-						Err:   ErrNoKey,
-						Value: "",
-					}
-				}
-			case "Put":
-				DPrintf("KV%v | applier | 3\n", kv.me)
-				if !kv.checkDuplicateL(op.Client, op.OpNum) {
-					kv.lastCommand[op.Client] = op.OpNum
-					kv.dataDict[op.Key] = op.Value
-				}
-				DPrintf("KV%v | applier | 4\n", kv.me)
-				result = Result{
-					Err: OK,
-				}
-			case "Append":
-				if !kv.checkDuplicateL(op.Client, op.OpNum) {
-					kv.lastCommand[op.Client] = op.OpNum
-					kv.dataDict[op.Key] += op.Value
-				}
-				result = Result{
-					Err: OK,
-				}
-			}
-			kv.mu.Unlock()
-
-			DPrintf("KV%v | applier | 5\n", kv.me)
-			resultCh, ok := kv.indexToCh[m.CommandIndex]
-
-			DPrintf("KV%v | resultCh | resultCh:%v\n", kv.me, resultCh)
-			if ok {
-				resultCh <- result
-			}
-			DPrintf("KV%v | applier | Sent result from applych: %+v\n", kv.me, kv.applyCh)
-
+			result := kv.processCommandValid(m)
+			kv.apply(m.CommandIndex, result)
 		} else {
 			continue
 		}
