@@ -33,7 +33,7 @@ func (rf *Raft) Snapshot(index int, snapshot []byte) {
 	defer rf.mu.Unlock()
 	// Your code here (2D).
 	// Nothing to snapshot
-	if index <= rf.LogRecord.Index0 || index > rf.lastLogIndexL() {
+	if index <= rf.LogRecord.Index0 || index > rf.lastLogIndex() {
 		return
 	}
 	Debug(dSnap, "S%d T%d, || Before snapshot: index: %v, log: %v.\n", rf.me, rf.currentTerm, rf.LogRecord.Index0, rf.LogRecord)
@@ -44,7 +44,7 @@ func (rf *Raft) Snapshot(index int, snapshot []byte) {
 
 	rf.persist(snapshot)
 	Debug(dSnap, "S%d T%d, || After snapshot: index: %v, log: %v.\n", rf.me, rf.currentTerm, rf.LogRecord.Index0, rf.LogRecord)
-	Debug(dSnap, "S%d T%d, rf.lastApplied:%v, rf.commitIndex:%v, rf.lastLogIndex:%v, rf.LastIncludedIndex:%v, rf.LastIncludedTerm", rf.me, rf.currentTerm, rf.lastApplied, rf.commitIndex, rf.lastLogIndexL(), rf.LastIncludedIndex, rf.LastIncludedTerm)
+	Debug(dSnap, "S%d T%d, rf.lastApplied:%v, rf.commitIndex:%v, rf.lastLogIndex:%v, rf.LastIncludedIndex:%v, rf.LastIncludedTerm", rf.me, rf.currentTerm, rf.lastApplied, rf.commitIndex, rf.lastLogIndex(), rf.LastIncludedIndex, rf.LastIncludedTerm)
 }
 
 // ***************************************
@@ -102,7 +102,7 @@ func (rf *Raft) InstallSnapshot(args *InstallSnapshotArgs, reply *InstallSnapsho
 		return
 	}
 
-	if rf.lastLogIndexL() <= args.LastIncludedIndex {
+	if rf.lastLogIndex() <= args.LastIncludedIndex {
 		// remove all logs
 		rf.LogRecord = mkLogEmpty(args.LastIncludedIndex)
 		Debug(dSnap, "S%d T%d, Replace with new LogRecord, lastLogIndex < lastIncludedIndex\n", rf.me, rf.currentTerm)

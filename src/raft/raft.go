@@ -130,7 +130,6 @@ func (rf *Raft) checkTermNumebrL(otherTerm int) bool {
 // term. the third return value is true if this server believes it is
 // the leader.
 func (rf *Raft) Start(command interface{}) (int, int, bool) {
-	// defer rf.tick() // Immedietely call tick() rather than wait for the 100ms
 	rf.mu.Lock()
 	defer rf.mu.Unlock()
 	isLeader := rf.status == LEADER
@@ -140,10 +139,10 @@ func (rf *Raft) Start(command interface{}) (int, int, bool) {
 		rf.LogRecord.append(newLog)
 		rf.matchIndex[rf.me] += 1
 		rf.persist(nil)
-		Debug(dClient, "S%d T%d, Start || Received and appended 1 log entry, lastLogIndex: %v.\n", rf.me, rf.currentTerm, rf.lastLogIndexL())
+		Debug(dClient, "S%d T%d, Start || Received and appended 1 log entry, lastLogIndex: %v.\n", rf.me, rf.currentTerm, rf.lastLogIndex())
 	}
 
-	return rf.lastLogIndexL(), rf.currentTerm, isLeader
+	return rf.lastLogIndex(), rf.currentTerm, isLeader
 }
 
 // ************************************
@@ -157,7 +156,7 @@ func (rf *Raft) tick() {
 
 	if rf.status == LEADER {
 		rf.lastContactTime = time.Now()
-		rf.broadcastLogsL()
+		go rf.broadcastLogsL()
 	}
 	if rf.timedOut() {
 		rf.lastContactTime = time.Now()
@@ -169,7 +168,7 @@ func (rf *Raft) ticker() {
 	for !rf.killed() {
 		// Your code here (2A)
 		rf.tick()
-		ms := 50 // Wait for 0.1 seconds
+		ms := 10 // Wait for 0.1 seconds
 		time.Sleep(time.Duration(ms) * time.Millisecond)
 	}
 }
@@ -178,7 +177,7 @@ func (rf *Raft) apply() {
 	rf.mu.Lock()
 	defer rf.mu.Unlock()
 
-	// Debug(dCommit, "S%d T%d, Prepare to apply!!! rf.lastApplied:%v, rf.commitIndex:%v, rf.lastApplied+1:%v, rf.lastLogIndexL():%v\n", rf.me, rf.currentTerm, rf.lastApplied, rf.commitIndex, rf.lastApplied+1, rf.lastLogIndexL())
+	// Debug(dCommit, "S%d T%d, Prepare to apply!!! rf.lastApplied:%v, rf.commitIndex:%v, rf.lastApplied+1:%v, rf.lastLogIndex():%v\n", rf.me, rf.currentTerm, rf.lastApplied, rf.commitIndex, rf.lastApplied+1, rf.lastLogIndex())
 
 	var msg ApplyMsg
 	if rf.lastApplied < rf.LastIncludedIndex {
@@ -190,7 +189,7 @@ func (rf *Raft) apply() {
 			SnapshotIndex: rf.LastIncludedIndex,
 		}
 		Debug(dSnap, "S%d T%d, || Applying Snapshot with SnapshotTerm: %v, SnapshotIndex: %v.\n", rf.me, rf.currentTerm, msg.SnapshotTerm, msg.SnapshotIndex)
-	} else if rf.lastApplied < rf.commitIndex && rf.lastApplied+1 <= rf.lastLogIndexL() {
+	} else if rf.lastApplied < rf.commitIndex && rf.lastApplied+1 <= rf.lastLogIndex() {
 		rf.lastApplied += 1
 		msg = ApplyMsg{
 			CommandValid: true,

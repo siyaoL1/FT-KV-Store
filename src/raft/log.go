@@ -17,15 +17,14 @@ type LogRecord struct {
 // ***********************************
 // ********** Raft Functions *********
 // ***********************************
-func (rf *Raft) lastLogIndexL() int {
+func (rf *Raft) lastLogIndex() int {
 	if rf.LogRecord.len() == 1 {
 		return rf.LastIncludedIndex
 	}
-
 	return rf.LogRecord.lastLogIndex()
 }
 
-func (rf *Raft) lastLogTermL() int {
+func (rf *Raft) lastLogTerm() int {
 	if rf.LogRecord.len() == 1 {
 		return rf.LastIncludedTerm
 	}
@@ -93,7 +92,7 @@ func (l LogRecord) lastLogEntry() Entry {
 
 func (l LogRecord) entry(logIndex int) Entry {
 	recordIndex := l.toRecordIndex(logIndex)
-	// fmt.Printf("logIndex: %v, recordIndex:%v\n", logIndex, recordIndex)
+	// Debug(dLog, "logIndex: %v, recordIndex:%v\n", logIndex, recordIndex)
 	return l.Log[recordIndex]
 }
 

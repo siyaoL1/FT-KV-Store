@@ -60,9 +60,8 @@ func (rf *Raft) broadcastLogsL() {
 		}
 
 		// When there's logs to replicate
-
-		if rf.lastLogIndexL() >= rf.nextIndex[server] {
-			args.Entries = make([]Entry, rf.lastLogIndexL()-rf.nextIndex[server]+1)
+		if rf.lastLogIndex() >= rf.nextIndex[server] {
+			args.Entries = make([]Entry, rf.lastLogIndex()-rf.nextIndex[server]+1)
 			// starting from the nextIndex which is prevIndex + 1
 			copy(args.Entries, rf.LogRecord.slice(rf.nextIndex[server]))
 		}
@@ -86,8 +85,6 @@ func (rf *Raft) broadcastLogsL() {
 // Send a AppendEntries RPC to a follower
 func (rf *Raft) sendAppendEntries(server int, args *AppendEntriesArgs, reply *AppendEntriesReply) bool {
 	// Debug(dLog, "S%d T%d, sending AppendEntries RPC to %v\n", rf.me, args.Term, server)
-	rf.mu.Lock()
-	defer rf.mu.Unlock()
 	ok := rf.peers[server].Call("Raft.AppendEntries", args, reply)
 
 	if !ok && args.Term == rf.currentTerm {
@@ -122,11 +119,11 @@ func (rf *Raft) AppendEntries(args *AppendEntriesArgs, reply *AppendEntriesReply
 
 	// Checks if the current log is inconsistent from leader's
 	// First case is Rule 2
-	if args.PrevLogIndex > rf.lastLogIndexL() { //
+	if args.PrevLogIndex > rf.lastLogIndex() { //
 		// Log is too short, Tell leader to backup
-		reply.XTerm = rf.lastLogTermL()
-		reply.XFirst = rf.LogRecord.firstOfTerm(reply.XTerm, rf.lastLogIndexL())
-		reply.XLen = rf.lastLogIndexL()
+		reply.XTerm = rf.lastLogTerm()
+		reply.XFirst = rf.LogRecord.firstOfTerm(reply.XTerm, rf.lastLogIndex())
+		reply.XLen = rf.lastLogIndex()
 		reply.Conflict = true
 		Debug(dLog, "S%d T%d, AppendEntry Conflict 1\n", rf.me, rf.currentTerm)
 	} else if args.PrevLogIndex == rf.LogRecord.startIndex() {
@@ -137,15 +134,15 @@ func (rf *Raft) AppendEntries(args *AppendEntriesArgs, reply *AppendEntriesReply
 		// conflict entry, need to tell leader to roll back
 		reply.XTerm = rf.LogRecord.term(args.PrevLogIndex)
 		reply.XFirst = rf.LogRecord.firstOfTerm(reply.XTerm, args.PrevLogIndex)
-		reply.XLen = rf.lastLogIndexL()
+		reply.XLen = rf.lastLogIndex()
 		reply.Conflict = true
 		Debug(dLog, "S%d T%d, AppendEntry Conflict 3\n", rf.me, rf.currentTerm)
 		Debug(dLog, "S%d T%d, || logs: %v, args: %+v.\n", rf.me, rf.currentTerm, rf.LogRecord, args)
 	} else if rf.LogRecord.len() == 1 && rf.LastIncludedIndex == args.PrevLogIndex && rf.LastIncludedTerm != args.PrevLogTerm {
 		// PrevLogIndex is the same as LastIncludedIndex
-		reply.XTerm = rf.lastLogTermL()
-		reply.XFirst = rf.lastLogIndexL()
-		reply.XLen = rf.lastLogIndexL()
+		reply.XTerm = rf.lastLogTerm()
+		reply.XFirst = rf.lastLogIndex()
+		reply.XLen = rf.lastLogIndex()
 		reply.Conflict = true
 		Debug(dLog, "S%d T%d, AppendEntry Conflict 4\n", rf.me, rf.currentTerm)
 		Debug(dLog, "S%d T%d, || logs: %v, args: %+v.\n", rf.me, rf.currentTerm, rf.LogRecord, args)
@@ -172,7 +169,7 @@ func (rf *Raft) updateLogL(args *AppendEntriesArgs, reply *AppendEntriesReply) {
 		index := args.PrevLogIndex + 1 + i
 		// If two logs have the same index and same term they are identical,
 		// this case they don't have the same term so we erase the log starting from that index.
-		if index <= rf.lastLogIndexL() && rf.LogRecord.term(index) != entry.Term {
+		if index <= rf.lastLogIndex() && rf.LogRecord.term(index) != entry.Term {
 			(&(rf.LogRecord)).cutend(index)
 		}
 	}
@@ -181,9 +178,9 @@ func (rf *Raft) updateLogL(args *AppendEntriesArgs, reply *AppendEntriesReply) {
 	for i, entry := range args.Entries {
 		// The index that new entry will be appended at
 		index := args.PrevLogIndex + 1 + i
-		if index == rf.lastLogIndexL()+1 {
+		if index == rf.lastLogIndex()+1 {
 			rf.LogRecord.append(entry)
-			Debug(dLog, "S%d T%d, || Append || Appended 1 log entry, lastLogIndex: %v.\n", rf.me, rf.currentTerm, rf.lastLogIndexL())
+			Debug(dLog, "S%d T%d, || Append || Appended 1 log entry, lastLogIndex: %v.\n", rf.me, rf.currentTerm, rf.lastLogIndex())
 		}
 		// if !reflect.DeepEqual(rf.LogRecord.entry(index).Command, entry.Command) {
 		// 	// Debug(dLog, "Entry error")
@@ -291,7 +288,7 @@ func (rf *Raft) advancedCommitL() {
 		start = rf.LogRecord.startIndex()
 	}
 
-	for index := start; index <= rf.lastLogIndexL(); index++ {
+	for index := start; index <= rf.lastLogIndex(); index++ {
 		if rf.LogRecord.term(index) != rf.currentTerm { // 5.4 (figure 8)
 			continue
 		}
