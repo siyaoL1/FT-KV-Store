@@ -53,8 +53,8 @@ func (rf *Raft) RequestVote(args *RequestVoteArgs, reply *RequestVoteReply) {
 	reply.VoteGranted = false
 
 	if rf.votedFor == -1 || rf.votedFor == args.CandidateID { // haven't vote or vote for it already
-		if (args.LastLogTerm == rf.lastLogTerm() && args.LastLogIndex >= rf.lastLogIndex()) ||
-			args.LastLogTerm > rf.lastLogTerm() {
+		if (args.LastLogTerm == rf.lastLogTermL() && args.LastLogIndex >= rf.lastLogIndexL()) ||
+			args.LastLogTerm > rf.lastLogTermL() {
 			rf.lastContactTime = time.Now()
 			rf.votedFor = args.CandidateID
 			reply.VoteGranted = true
@@ -64,7 +64,7 @@ func (rf *Raft) RequestVote(args *RequestVoteArgs, reply *RequestVoteReply) {
 
 	Debug(dVote, "S%d T%d, || logs: %v.\n", rf.me, rf.currentTerm, rf.LogRecord)
 	if !reply.VoteGranted {
-		Debug(dVote, "S%d T%d, Rejected vote to %d, rf.currentTerm: %v, rf.election.votedFor: %v, rf.lastLogTerm: %v, rf.lastLogIndex: %v, args.LastLogTerm: %v, args.LastLogIndex: %v\n", rf.me, rf.currentTerm, args.CandidateID, rf.currentTerm, rf.votedFor, rf.lastLogTerm(), rf.lastLogIndex(), args.LastLogTerm, args.LastLogIndex)
+		Debug(dVote, "S%d T%d, Rejected vote to %d, rf.currentTerm: %v, rf.election.votedFor: %v, rf.lastLogTerm: %v, rf.lastLogIndex: %v, args.LastLogTerm: %v, args.LastLogIndex: %v\n", rf.me, rf.currentTerm, args.CandidateID, rf.currentTerm, rf.votedFor, rf.lastLogTermL(), rf.lastLogIndexL(), args.LastLogTerm, args.LastLogIndex)
 	} else {
 		Debug(dVote, "S%d T%d, Granted vote to %d, rf.currentTerm: %v, rf.election.votedFor: %v, args.LastLogTerm: %v, args.LastLogIndex: %v\n", rf.me, rf.currentTerm, args.CandidateID, rf.currentTerm, rf.votedFor, args.LastLogTerm, args.LastLogIndex)
 	}
@@ -78,7 +78,7 @@ func (rf *Raft) becomeLeaderL() {
 	rf.status = LEADER
 
 	for i := range rf.nextIndex {
-		rf.nextIndex[i] = rf.lastLogIndex() + 1
+		rf.nextIndex[i] = rf.lastLogIndexL() + 1
 		Debug(dVote, "S%d T%d, Set server%v's nextIndex to %v", rf.me, rf.currentTerm, i, rf.nextIndex[i])
 		rf.matchIndex[i] = 0
 	}
@@ -161,8 +161,8 @@ func (rf *Raft) requestVotesL() {
 	args := RequestVoteArgs{
 		Term:         rf.currentTerm,
 		CandidateID:  rf.me,
-		LastLogIndex: rf.lastLogIndex(),
-		LastLogTerm:  rf.lastLogTerm(),
+		LastLogIndex: rf.lastLogIndexL(),
+		LastLogTerm:  rf.lastLogTermL(),
 	}
 	votes := 1
 	Debug(dVote, "S%d T%d, || logs: %v.\n", rf.me, rf.currentTerm, rf.LogRecord)
