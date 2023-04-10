@@ -142,7 +142,10 @@ func (rf *Raft) Start(command interface{}) (int, int, bool) {
 		Debug(dClient, "S%d T%d, Start || Received and appended 1 log entry, lastLogIndex: %v.\n", rf.me, rf.currentTerm, rf.lastLogIndex())
 	}
 
-	return rf.lastLogIndex(), rf.currentTerm, isLeader
+	lastLogIndex := rf.lastLogIndex()
+	go rf.tick()
+
+	return lastLogIndex, rf.currentTerm, isLeader
 }
 
 // ************************************
@@ -156,7 +159,7 @@ func (rf *Raft) tick() {
 
 	if rf.status == LEADER {
 		rf.lastContactTime = time.Now()
-		go rf.broadcastLogsL()
+		rf.broadcastLogsL()
 	}
 	if rf.timedOut() {
 		rf.lastContactTime = time.Now()
@@ -168,7 +171,7 @@ func (rf *Raft) ticker() {
 	for !rf.killed() {
 		// Your code here (2A)
 		rf.tick()
-		ms := 10 // Wait for 0.1 seconds
+		ms := 50 // Wait for 0.1 seconds
 		time.Sleep(time.Duration(ms) * time.Millisecond)
 	}
 }

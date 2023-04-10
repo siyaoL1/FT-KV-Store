@@ -83,17 +83,6 @@ func (rf *Raft) becomeLeaderL() {
 		rf.matchIndex[i] = 0
 	}
 	rf.broadcastLogsL()
-
-	// old code
-	// if rf.election.votesNumber[rf.currentTerm] > rf.numPeers/2 {
-	// 	Debug(dVote, "S%d T%d, || Wins Election  ||\n", rf.me, rf.currentTerm)
-	// 	rf.status = LEADER
-	// 	rf.election.votedFor = -1
-	// 	for i := 0; i < len(rf.nextIndex); i++ {
-	// 		rf.nextIndex[i] = rf.lastLogIndex + 1
-	// 		rf.matchIndex[i] = rf.lastLogIndex + 1
-	// 	}
-	// }
 }
 
 // Send a RequestVote RPC to a server.
