@@ -96,6 +96,16 @@ type Raft struct {
 // ********  Utility Function ********
 // ***********************************
 
+// return the current log size in bytes
+func (rf *Raft) GetStateSize() int {
+	return rf.persister.RaftStateSize()
+}
+
+// return the current log size in bytes
+func (rf *Raft) ReadRaftState() []byte {
+	return rf.persister.ReadRaftState()
+}
+
 // return currentTerm and whether this server
 // believes it is the leader.
 func (rf *Raft) GetState() (int, bool) {

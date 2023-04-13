@@ -1,0 +1,1 @@
+In FaRM, each transaction will have a validation phase after locking the record. The validation phase checks whether the object changed since it was read by the transaction. In this case, the object was modified by the first transaction. Hence the second transaction will abort the second transaction.

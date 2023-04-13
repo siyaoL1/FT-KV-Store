@@ -29,6 +29,7 @@ const (
 	dKvApGet   logTopic = "KAPG"
 	dKvApPut   logTopic = "KAPP"
 	dKvApApd   logTopic = "KAPA"
+	dKvSnap    logTopic = "KSNP"
 	// Old
 	dClient  logTopic = "CLNT"
 	dCommit  logTopic = "CMIT"

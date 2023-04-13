@@ -1,6 +1,8 @@
 package kvraft
 
 import (
+	"bytes"
+	"fmt"
 	"sync"
 	"sync/atomic"
 	"time"
@@ -40,6 +42,7 @@ type KVServer struct {
 	indexToCh   map[int]chan Result
 	dataDict    map[string]string
 	lastCommand map[int64]int // stores OpNum of the last
+	// lastApplied int           // last applied index
 }
 
 // ***************************************
@@ -183,7 +186,7 @@ func (kv *KVServer) checkDuplicateL(client int64, opNum int) bool {
 }
 
 // ***************************************
-// ************     Apply    *************
+// ************ CommandValid *************
 // ***************************************
 
 func (kv *KVServer) processCommandValid(m raft.ApplyMsg) Result {
@@ -191,6 +194,7 @@ func (kv *KVServer) processCommandValid(m raft.ApplyMsg) Result {
 	var result Result
 
 	kv.mu.Lock()
+	// kv.lastApplied = m.CommandIndex
 	switch op.OpType {
 	case "Get":
 		value, ok := kv.dataDict[op.Key]
@@ -211,6 +215,9 @@ func (kv *KVServer) processCommandValid(m raft.ApplyMsg) Result {
 
 	case "Put":
 		if !kv.checkDuplicateL(op.Client, op.OpNum) {
+			if kv.lastCommand == nil {
+				fmt.Printf("KV%v | lastCommand is nil\n", kv.me)
+			}
 			kv.lastCommand[op.Client] = op.OpNum
 			kv.dataDict[op.Key] = op.Value
 		}
@@ -237,6 +244,47 @@ func (kv *KVServer) processCommandValid(m raft.ApplyMsg) Result {
 	return result
 }
 
+// ***************************************
+// ************    Snapshot  *************
+// ***************************************
+func (kv *KVServer) checkSnapshot(index int) {
+	curr_size := kv.rf.GetStateSize()
+	if kv.maxraftstate != -1 && curr_size > kv.maxraftstate/2 {
+		Debug(dKvSnap, "KV%v | Snapshot | Raft state size: %v, maxraftstate: %v\n", kv.me, curr_size, kv.maxraftstate)
+		w := new(bytes.Buffer)
+		e := labgob.NewEncoder(w)
+		e.Encode(kv.dataDict)
+		e.Encode(kv.lastCommand)
+		// e.Encode(kv.lastApplied)
+		data := w.Bytes()
+		go kv.rf.Snapshot(index, data)
+		Debug(dKvSnap, "KV%v | Snapshot | Snapshoted, current Raft state size: %v\n", kv.me, index, data, kv.rf.GetStateSize())
+	}
+}
+
+func (kv *KVServer) installSnapshot(snapshot []byte) {
+	if snapshot == nil || len(snapshot) < 1 {
+		return
+	}
+	Debug(dKvSnap, "KV%v | Snapshot | Install snapshot, snapshot: %v\n", kv.me, snapshot)
+	r := bytes.NewBuffer(snapshot)
+	d := labgob.NewDecoder(r)
+	d.Decode(&kv.dataDict)
+	d.Decode(&kv.lastCommand)
+	// d.Decode(&kv.lastApplied)
+}
+
+// func (kv *KVServer) snapshotter() {
+// 	for {
+// 		kv.checkSnapshot(kv.lastApplied)
+// 		time.Sleep(100 * time.Millisecond)
+// 	}
+// }
+
+// ***************************************
+// ************     Apply    *************
+// ***************************************
+
 func (kv *KVServer) apply(index int, result Result) {
 	kv.mu.Lock()
 	resultCh, ok := kv.indexToCh[index]
@@ -256,10 +304,11 @@ func (kv *KVServer) applier() {
 		Debug(dKvApplier, "KV%v | applier | Received message from applyCh: %+v\n", kv.me, m)
 
 		if m.SnapshotValid {
-			continue
+			kv.installSnapshot(m.Snapshot)
 		} else if m.CommandValid {
 			result := kv.processCommandValid(m)
 			kv.apply(m.CommandIndex, result)
+			go kv.checkSnapshot(m.CommandIndex)
 		} else {
 			continue
 		}
@@ -315,9 +364,12 @@ func StartKVServer(servers []*labrpc.ClientEnd, me int, persister *raft.Persiste
 	kv.indexToCh = make(map[int]chan Result)
 	kv.dataDict = make(map[string]string)
 	kv.lastCommand = make(map[int64]int)
+	// kv.lastApplied = 0
 
 	// You may need initialization code here.
+	kv.installSnapshot(persister.ReadSnapshot())
 	go kv.applier()
+	// go kv.snapshotter()
 
 	return kv
 }

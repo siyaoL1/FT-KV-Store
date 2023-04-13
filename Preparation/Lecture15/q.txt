@@ -1,0 +1,1 @@
+This seems to be a really powerful platform. Is FaRM being used in the industry by companies? If not what are some common platforms that the data centers use to achieve distributed transactions?
