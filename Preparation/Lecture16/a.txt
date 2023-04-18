@@ -1,0 +1,1 @@
+DynamoDB utilizes the technique of partition splitting which detects a hot spot in a data and automatically split and redistributes data across multiple partitions. This way it can avoid one single hot spot to make the system unavialable.
