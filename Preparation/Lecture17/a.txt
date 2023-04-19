@@ -1,0 +1,1 @@
+Spark does a better job in real time processing where the low latency allows the real time processing with low delay.
