@@ -2,7 +2,6 @@ package raft
 
 import (
 	"bytes"
-	"fmt"
 
 	"6.5840/labgob"
 )
@@ -34,7 +33,7 @@ func (rf *Raft) Snapshot(index int, snapshot []byte) {
 	defer rf.mu.Unlock()
 	// Your code here (2D).
 	// Nothing to snapshot
-	fmt.Printf("Snapshot called")
+	// fmt.Printf("Snapshot called")
 	if index <= rf.LogRecord.Index0 || index > rf.lastLogIndex() {
 		return
 	}

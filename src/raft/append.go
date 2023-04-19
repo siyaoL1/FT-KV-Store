@@ -130,7 +130,13 @@ func (rf *Raft) AppendEntries(args *AppendEntriesArgs, reply *AppendEntriesReply
 		rf.updateLogL(args, reply)
 		reply.Success = true
 		Debug(dLog, "S%d T%d, AppendEntry Already Exist\n", rf.me, rf.currentTerm)
-	} else if rf.LogRecord.len() > 1 && rf.LogRecord.term(args.PrevLogIndex) != args.PrevLogTerm {
+	} else if args.PrevLogIndex < rf.LogRecord.startIndex() {
+		reply.XTerm = rf.lastLogTerm()
+		reply.XFirst = rf.lastLogIndex()
+		reply.XLen = rf.lastLogIndex()
+		reply.Conflict = false
+		Debug(dLog, "S%d T%d, AppendEntry prevLogIndex is in snapshot\n", rf.me, rf.currentTerm)
+	} else if rf.LogRecord.len() > 1 && rf.LogRecord.term(args.PrevLogIndex) != args.PrevLogTerm { // TODO: Here the term throws error
 		// conflict entry, need to tell leader to roll back
 		reply.XTerm = rf.LogRecord.term(args.PrevLogIndex)
 		reply.XFirst = rf.LogRecord.firstOfTerm(reply.XTerm, args.PrevLogIndex)
@@ -151,7 +157,7 @@ func (rf *Raft) AppendEntries(args *AppendEntriesArgs, reply *AppendEntriesReply
 		reply.Success = true
 	}
 
-	// Debug(dLog, "S%d T%d, || Current log: %v.||\n", rf.me, rf.currentTerm, rf.log)
+	Debug(dLog, "S%d T%d, || Current log: %v.||\n", rf.me, rf.currentTerm, rf.LogRecord)
 	rf.leaderID = args.LeaderID
 
 	rf.signalApplierL()
