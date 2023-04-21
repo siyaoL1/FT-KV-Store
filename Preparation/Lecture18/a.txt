@@ -1,0 +1,1 @@
+Having Gutter servers to be able to delete the keys directly will cause a higher workload or delete traffic on a small number of Gutter servers.

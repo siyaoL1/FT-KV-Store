@@ -32,7 +32,7 @@ RAFTTOPICS = {
 }
 
 KVTOPICS = {
-     # kvraft
+    # kvraft
     "CLRK": "#B8D8D8",
     "KGET": "#D8AA96",
     "KP&A": "#C7D3BF",
@@ -41,6 +41,18 @@ KVTOPICS = {
     "KAPP": "#B49A67",
     "KAPA": "#8E8DBE",
     "KSNP": "#005E7C",
+}
+
+SHARDCTLTOPICS = {
+    # shardctrler
+    # "CLRK": "#B8D8D8",
+    # "KGET": "#D8AA96",
+    # "KP&A": "#C7D3BF",
+    # "KAPL": "#F7B1AB",
+    # "KAPG": "#935FA7",
+    # "KAPP": "#B49A67",
+    # "KAPA": "#8E8DBE",
+    # "KSNP": "#005E7C",
 }
 
 # fmt: on
