@@ -2,8 +2,8 @@ package shardctrler
 
 import (
 	"encoding/json"
+	"sort"
 	"sync"
-	"time"
 
 	"6.5840/labgob"
 	"6.5840/labrpc"
@@ -38,6 +38,71 @@ type Result struct {
 }
 
 // ***************************************
+// ***********  Talk to Raft  ************
+// ***************************************
+
+func (sc *ShardCtrler) sendAndWaitForReply(op Op) Err {
+	sc.mu.Lock()
+	index, _, isLeader := sc.rf.Start(op)
+	sc.mu.Unlock()
+
+	var err Err = OK
+
+	// The Raft server is not leader
+	if !isLeader {
+		err = WRONGLEADER
+		return err
+	}
+
+	// Debug statement
+	if op.OpType == "Join" {
+		m, _ := json.Marshal(op.Args.(JoinArgs).Servers)
+		Debug(dScJoin, "SC%v | Join | Receieved start result from raft, servers: %+v\n", sc.me, string(m))
+	} else if op.OpType == "Leave" {
+		m, _ := json.Marshal(op.Args.(LeaveArgs).GIDs)
+		Debug(dScLeave, "SC%v | Leave | Receieved start result from raft, GIDs: %+v\n", sc.me, string(m))
+	} else if op.OpType == "Move" {
+		m, _ := json.Marshal(op.Args.(MoveArgs).GID)
+		Debug(dScMove, "SC%v | Move | Receieved start result from raft, GID: %+v\n", sc.me, string(m))
+	}
+
+	// Constructing result channel
+	sc.mu.Lock()
+	resultCh := make(chan Result)
+	sc.indexToCh[index] = resultCh
+	sc.mu.Unlock()
+
+	// Waiting for result
+	select {
+	case result, ok := <-resultCh:
+		// if !ok || result.Err != OK || result.Op.OpNum != op.OpNum {
+		if !ok {
+			err = WRONGRESULT
+			return err
+		} else {
+			err = result.Err
+		}
+		// case <-time.After(200 * time.Millisecond):
+		// 	err = TIMEOUT
+	}
+	sc.mu.Lock()
+	delete(sc.indexToCh, index)
+	sc.mu.Unlock()
+
+	// Debug statement
+	if op.OpType == "Join" {
+		Debug(dScJoin, "SC%v | Join | Sending reply to Clerk, resultCh: %v, index: %v\n", sc.me, resultCh, index)
+	} else if op.OpType == "Leave" {
+		Debug(dScLeave, "SC%v | Leave | Sending reply to Clerk, resultCh: %v, index: %v\n", sc.me, resultCh, index)
+	} else if op.OpType == "Move" {
+		Debug(dScMove, "SC%v | Move | Sending reply to Clerk, resultCh: %v, index: %v\n", sc.me, resultCh, index)
+	} else if op.OpType == "Query" {
+		Debug(dScQuery, "SC%v | Query | Sending reply to Clerk, resultCh: %v, index: %v\n", sc.me, resultCh, index)
+	}
+	return err
+}
+
+// ***************************************
 // ************    Join     **************
 // ***************************************
 
@@ -49,40 +114,7 @@ func (sc *ShardCtrler) Join(args *JoinArgs, reply *JoinReply) {
 		Client: args.Client,
 		Args:   *args,
 	}
-
-	index, _, isLeader := sc.rf.Start(op)
-
-	// Init reply
-	reply.WrongLeader = false
-	reply.Err = OK
-
-	// The Raft server is not leader
-	if !isLeader {
-		reply.WrongLeader = true
-		return
-	}
-	m, _ := json.Marshal(op.Args.(JoinArgs).Servers)
-	Debug(dScJoin, "SC%v | Join | Receieved start result from raft, servers: %+v\n", sc.me, string(m))
-
-	// Constructing result channel
-	sc.mu.Lock()
-	resultCh := make(chan Result)
-	sc.indexToCh[index] = resultCh
-	sc.mu.Unlock()
-
-	// Waiting for result
-	select {
-	case result, ok := <-resultCh:
-		if !ok {
-			reply.Err = CHCLOSED
-			return
-		} else {
-			reply.Err = result.Err
-		}
-	case <-time.After(100 * time.Millisecond):
-		reply.Err = TIMEOUT
-	}
-	Debug(dScQuery, "SC%v | Join | Sending reply to Clerk, resultCh: %v, index: %v\n", sc.me, resultCh, index)
+	reply.Err = sc.sendAndWaitForReply(op)
 }
 
 // ***************************************
@@ -96,40 +128,7 @@ func (sc *ShardCtrler) Leave(args *LeaveArgs, reply *LeaveReply) {
 		Client: args.Client,
 		Args:   *args,
 	}
-
-	index, _, isLeader := sc.rf.Start(op)
-
-	// Init reply
-	reply.WrongLeader = false
-	reply.Err = OK
-
-	// The Raft server is not leader
-	if !isLeader {
-		reply.WrongLeader = true
-		return
-	}
-	m, _ := json.Marshal(op.Args.(LeaveArgs).GIDs)
-	Debug(dScJoin, "SC%v | Leave | Receieved start result from raft, GIDs: %+v\n", sc.me, string(m))
-
-	// Constructing result channel
-	sc.mu.Lock()
-	resultCh := make(chan Result)
-	sc.indexToCh[index] = resultCh
-	sc.mu.Unlock()
-
-	// Waiting for result
-	select {
-	case result, ok := <-resultCh:
-		if !ok {
-			reply.Err = CHCLOSED
-			return
-		} else {
-			reply.Err = result.Err
-		}
-	case <-time.After(100 * time.Millisecond):
-		reply.Err = TIMEOUT
-	}
-	Debug(dScQuery, "SC%v | Leave | Sending reply to Clerk, resultCh: %v, index: %v\n", sc.me, resultCh, index)
+	reply.Err = sc.sendAndWaitForReply(op)
 }
 
 // ***************************************
@@ -142,41 +141,7 @@ func (sc *ShardCtrler) Move(args *MoveArgs, reply *MoveReply) {
 		Client: args.Client,
 		Args:   *args,
 	}
-
-	index, _, isLeader := sc.rf.Start(op)
-
-	// Init reply
-	reply.WrongLeader = false
-	reply.Err = OK
-
-	// The Raft server is not leader
-	if !isLeader {
-		reply.WrongLeader = true
-		return
-	}
-	m, _ := json.Marshal(op.Args.(MoveArgs).GID)
-	Debug(dScJoin, "SC%v | Move | Receieved start result from raft, GID: %+v\n", sc.me, string(m))
-
-	// Constructing result channel
-	sc.mu.Lock()
-	resultCh := make(chan Result)
-	sc.indexToCh[index] = resultCh
-	sc.mu.Unlock()
-
-	// Waiting for result
-	select {
-	case result, ok := <-resultCh:
-		if !ok {
-			reply.Err = CHCLOSED
-			return
-		} else {
-			reply.Err = result.Err
-		}
-	case <-time.After(100 * time.Millisecond):
-		reply.Err = TIMEOUT
-	}
-	Debug(dScQuery, "SC%v | Move | Sending reply to Clerk, resultCh: %v, index: %v\n", sc.me, resultCh, index)
-
+	reply.Err = sc.sendAndWaitForReply(op)
 }
 
 // ***************************************
@@ -189,39 +154,6 @@ func (sc *ShardCtrler) Query(args *QueryArgs, reply *QueryReply) {
 		OpType: "Query",
 		OpNum:  args.Num,
 	}
-
-	index, _, isLeader := sc.rf.Start(op)
-
-	// Init reply
-	reply.WrongLeader = false
-	reply.Err = OK
-
-	// The Raft server is not leader
-	if !isLeader {
-		reply.WrongLeader = true
-		return
-	}
-	Debug(dScQuery, "SC%v | Query | Receieved start result from raft, index: %v\n", sc.me, index)
-
-	// Constructing result channel
-	sc.mu.Lock()
-	resultCh := make(chan Result)
-	sc.indexToCh[index] = resultCh
-	sc.mu.Unlock()
-
-	// Waiting for result
-	select {
-	case result, ok := <-resultCh:
-		if !ok {
-			reply.Err = CHCLOSED
-			return
-		} else {
-			reply.Err = result.Err
-		}
-	case <-time.After(100 * time.Millisecond):
-		reply.Err = TIMEOUT
-	}
-
 	// Get the corresponding config
 	sc.mu.Lock()
 	if args.Num == -1 || args.Num >= len(sc.configs) {
@@ -230,7 +162,7 @@ func (sc *ShardCtrler) Query(args *QueryArgs, reply *QueryReply) {
 		reply.Config = sc.configs[args.Num]
 	}
 	sc.mu.Unlock()
-	Debug(dScQuery, "SC%v | Query | Sending reply to Clerk, resultCh: %v, index: %v, config: %+v\n", sc.me, resultCh, index, reply.Config)
+	reply.Err = sc.sendAndWaitForReply(op)
 }
 
 // ***************************************
@@ -256,30 +188,60 @@ func (sc *ShardCtrler) createConfigL() {
 	for gid, servers := range oldConfig.Groups {
 		newConfig.Groups[gid] = servers
 	}
-	newConfig.Shards = oldConfig.Shards
+	copy(newConfig.Shards[:], oldConfig.Shards[:])
 }
 
 // ***************************************
 // ************ CommandValid *************
 // ***************************************
-func (sc *ShardCtrler) mostAndLeastShardsL(member map[int][]int) (int, int) {
-	// Get the group has the most and least number of shards
-	maxGroup := -1
-	minGroup := -1
-	maxShards := 0
-	minShards := NShards + 1
-	for group, shards := range member {
-		if len(shards) > maxShards {
+func (sc *ShardCtrler) getMaxShardGroupL(member map[int][]int) int {
+	keys := make([]int, 0, len(member))
+	for k := range member {
+		keys = append(keys, k)
+	}
+	sort.Ints(keys)
+
+	maxGroup := 0
+	maxShard := -1
+	for _, group := range keys {
+		shards := member[group]
+		if len(shards) > maxShard {
 			maxGroup = group
-			maxShards = len(shards)
-		}
-		if len(shards) < minShards || minShards == 0 {
-			minGroup = group
-			minShards = len(shards)
+			maxShard = len(shards)
 		}
 	}
 
-	return maxGroup, minGroup
+	return maxGroup
+}
+
+func (sc *ShardCtrler) getMinShardGroupL(member map[int][]int) int {
+	keys := make([]int, 0, len(member))
+	for k := range member {
+		keys = append(keys, k)
+	}
+	sort.Ints(keys)
+
+	minGroup := 0
+	minShard := NShards + 1
+	for _, group := range keys {
+		shards := member[group]
+		if len(shards) < minShard {
+			minGroup = group
+			minShard = len(shards)
+		}
+	}
+
+	return minGroup
+}
+
+func (sc *ShardCtrler) getUnassignedShardsL(shards [NShards]int) []int {
+	unassigned := make([]int, 0)
+	for i, shard := range shards {
+		if shard == 0 {
+			unassigned = append(unassigned, i)
+		}
+	}
+	return unassigned
 }
 
 func (sc *ShardCtrler) balanceShardsL(config *Config) {
@@ -289,27 +251,49 @@ func (sc *ShardCtrler) balanceShardsL(config *Config) {
 		member[group] = make([]int, 0)
 	}
 	for i, group := range config.Shards {
+		if group == 0 {
+			continue
+		}
 		member[group] = append(member[group], i)
 	}
-	m, _ := json.Marshal(config.Groups)
-	Debug(dScApJoin, "SC%v | Apply Join | before balance config:%+v, groups:%+v\n", sc.me, config, string(m))
-	maxGroup, minGroup := sc.mostAndLeastShardsL(member)
-	Debug(dScApJoin, "SC%v | Apply Join | maxGroup:%v, minGroup:%v\n", sc.me, maxGroup, minGroup)
+	g, _ := json.Marshal(config.Groups)
+	m, _ := json.Marshal(member)
+	Debug(dScGeneral, "SC%v | Rebalance | before balance config:%+v, groups:%+v, member:%+v\n", sc.me, config, string(g), string(m))
 
-	// more than 1 group && not the same group && group has more than one difference
-	for maxGroup != -1 && maxGroup != minGroup && len(member[maxGroup])-len(member[minGroup]) > 1 {
-		// Move one shard over
+	unassigned := sc.getUnassignedShardsL(config.Shards)
+	if len(unassigned) > 0 {
+		Debug(dScGeneral, "SC%v | Rebalance | found unassigned shards:%+v\n", sc.me, unassigned)
+		// assign unassigned shards to groups with the least shards
+		for _, shard := range unassigned {
+			minGroup := sc.getMinShardGroupL(member)
+			config.Shards[shard] = minGroup
+			member[minGroup] = append(member[minGroup], shard)
+		}
+		Debug(dScGeneral, "SC%v | Rebalance | assigned unassigned shards, config.Shards:%+v\n", sc.me, config.Shards)
+	}
+
+	// Rebalance shards
+	maxGroup := sc.getMaxShardGroupL(member)
+	minGroup := sc.getMinShardGroupL(member)
+	m, _ = json.Marshal(member)
+	Debug(dScGeneral, "SC%v | Rebalance | member:%+v, shards:%+v\n", sc.me, string(m), config.Shards)
+	for len(member[maxGroup]) > len(member[minGroup])+1 {
+		// Move one shard from maxGroup to minGroup
 		shard := member[maxGroup][0]
 		member[maxGroup] = member[maxGroup][1:]
 		member[minGroup] = append(member[minGroup], shard)
+		// update config
 		config.Shards[shard] = minGroup
-
-		maxGroup, minGroup = sc.mostAndLeastShardsL(member)
-
-		m, _ := json.Marshal(config.Groups)
-		Debug(dScApJoin, "SC%v | Apply Join | balancing config:%+v, groups:%+v\n", sc.me, config, string(m))
-		Debug(dScApJoin, "SC%v | Apply Join | maxGroup:%v, minGroup:%v\n", sc.me, maxGroup, minGroup)
+		// update maxGroup and minGroup
+		maxGroup = sc.getMaxShardGroupL(member)
+		minGroup = sc.getMinShardGroupL(member)
+		g, _ = json.Marshal(config.Groups)
+		m, _ = json.Marshal(member)
+		Debug(dScGeneral, "SC%v | Rebalance | member:%+v, shards:%+v\n", sc.me, string(m), config.Shards)
 	}
+	g, _ = json.Marshal(config.Groups)
+	m, _ = json.Marshal(member)
+	Debug(dScGeneral, "SC%v | Rebalance | after balance config:%+v, member:%+v, shards:%+v\n", sc.me, config, config.Shards)
 }
 
 func (sc *ShardCtrler) processCommandValid(m raft.ApplyMsg) Result {
@@ -328,19 +312,8 @@ func (sc *ShardCtrler) processCommandValid(m raft.ApplyMsg) Result {
 			for gid, servers := range op.Args.(JoinArgs).Servers {
 				newConfig.Groups[gid] = servers
 			}
-			// The first group, assign all shards to it
-			if len(newConfig.Groups) == 1 {
-				var gid int
-				for group := range newConfig.Groups {
-					gid = group
-				}
-				for i, _ := range newConfig.Shards {
-					newConfig.Shards[i] = gid
-				}
-			} else {
-				// Rebalance
-				sc.balanceShardsL(newConfig)
-			}
+			// Rebalance
+			sc.balanceShardsL(newConfig)
 		}
 		result = Result{Err: OK, Op: op}
 		Debug(dScApJoin, "SC%v | Apply Join | result:%+v, config:%+v\n", sc.me, result, sc.lastConfigL())
@@ -351,22 +324,18 @@ func (sc *ShardCtrler) processCommandValid(m raft.ApplyMsg) Result {
 			newConfig := sc.lastConfigL()
 			// Remove group
 			for _, gid := range op.Args.(LeaveArgs).GIDs {
+				// Remove from Groups
 				delete(newConfig.Groups, gid)
+				// Remove from Shards
+				for i, g := range newConfig.Shards {
+					if g == gid {
+						newConfig.Shards[i] = 0
+					}
+				}
 			}
 
-			// Only one group left, assign all shards to it
-			if len(newConfig.Groups) == 1 {
-				var gid int
-				for group := range newConfig.Groups {
-					gid = group
-				}
-				for i, _ := range newConfig.Shards {
-					newConfig.Shards[i] = gid
-				}
-			} else {
-				// Rebalance
-				sc.balanceShardsL(newConfig)
-			}
+			// Rebalance
+			sc.balanceShardsL(newConfig)
 		}
 		result = Result{Err: OK, Op: op}
 		Debug(dScApLeave, "SC%v | Apply Leave | : %+v\n", sc.me, result)
@@ -387,6 +356,7 @@ func (sc *ShardCtrler) processCommandValid(m raft.ApplyMsg) Result {
 		result = Result{Err: OK, Op: op}
 		Debug(dScApQuery, "SC%v | Apply Query | : %+v\n", sc.me, result)
 	}
+
 	bla, _ := json.Marshal(sc.lastConfigL().Groups)
 	Debug(dScApplier, "SC%v | Applier | After Apply, config:%+v, groups:%+v\n", sc.me, sc.lastConfigL(), string(bla))
 
@@ -447,7 +417,7 @@ func StartServer(servers []*labrpc.ClientEnd, me int, persister *raft.Persister)
 	sc.indexToCh = make(map[int]chan Result)
 	sc.lastCommand = make(map[int64]int)
 	// init first config
-	sc.balanceShardsL(&sc.configs[0])
+	// sc.balanceShardsL(&sc.configs[0])
 
 	go sc.applier()
 

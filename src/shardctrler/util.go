@@ -9,7 +9,7 @@ import (
 )
 
 // Debugging
-const debug = true
+const debug = false
 
 func DPrintf(format string, a ...interface{}) (n int, err error) {
 	if debug {
@@ -26,7 +26,7 @@ const (
 	dScLeave   logTopic = "LEAV"
 	dScMove    logTopic = "MOVE"
 	dScQuery   logTopic = "QUER"
-	dScConfig  logTopic = "CONF"
+	dScGeneral logTopic = "CONF"
 	dScApplier logTopic = "SAPL"
 	dScApQuery logTopic = "SAQY"
 	dScApJoin  logTopic = "SAJN"
