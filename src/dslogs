@@ -45,19 +45,22 @@ KVTOPICS = {
 
 SHARDCTLTOPICS = {
     # shardctrler
-    # "CLRK": "#B8D8D8",
-    # "KGET": "#D8AA96",
-    # "KP&A": "#C7D3BF",
-    # "KAPL": "#F7B1AB",
-    # "KAPG": "#935FA7",
-    # "KAPP": "#B49A67",
-    # "KAPA": "#8E8DBE",
-    # "KSNP": "#005E7C",
+    "JOIN": "#967D69",
+    "LEAV": "#92B9BD",
+    "MOVE": "#A8D4AD",
+    "QUER": "#F2F79E",
+    "CONF": "#E8EC67",
+    "SAPL": "#7B9E89",
+    "SAQY": "#CE6D8B",
+    "SAJN": "#F5CB5C",
+    "SALE": "#5E4B56",
+    "SAMV": "#4ECDC4",
+    "CLNT": "#A882DD",
 }
 
 # fmt: on
 
-TOPICS = {**RAFTTOPICS, **KVTOPICS}
+TOPICS = {**RAFTTOPICS, **KVTOPICS, **SHARDCTLTOPICS}
 
 def list_topics(value: Optional[str]):
     if value is None:
@@ -106,7 +109,7 @@ def main(
             if topic not in ["TEST", "CLRK"]:
                 if topic in RAFTTOPICS:
                     i = int(msg[1])
-                if topic in KVTOPICS:
+                if topic in KVTOPICS or topic in SHARDCTLTOPICS:
                     i = int(msg[2])
 
             # Colorize output by using rich syntax when needed

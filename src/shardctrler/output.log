@@ -1,0 +1,813 @@
+000010 SAJN SC0 | Apply Join | before balance config:&{Num:0 Shards:[0 0 0 0 0 0 0 0 0 0] Groups:map[]}, groups:{}
+000016 SAJN SC0 | Apply Join | maxGroup:0, minGroup:0
+000017 SAPL SC0 | applier | Waiting for message on applych: 0xc0000223c0
+000020 SAJN SC1 | Apply Join | before balance config:&{Num:0 Shards:[0 0 0 0 0 0 0 0 0 0] Groups:map[]}, groups:{}
+000020 SAJN SC1 | Apply Join | maxGroup:0, minGroup:0
+000020 SAJN SC2 | Apply Join | before balance config:&{Num:0 Shards:[0 0 0 0 0 0 0 0 0 0] Groups:map[]}, groups:{}
+000020 SAJN SC2 | Apply Join | maxGroup:0, minGroup:0
+000021 SAPL SC2 | applier | Waiting for message on applych: 0xc000022540
+000020 SAPL SC1 | applier | Waiting for message on applych: 0xc0000224e0
+Test: Basic leave/join ...
+007155 QUER SC2 | Query | Receieved start result from raft, index: 1
+007186 SAPL SC2 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Query OpNum:-1 Client:0 Args:<nil>} CommandIndex:1 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+007200 SAQY SC2 | Apply Query | : {Err:OK Op:{OpType:Query OpNum:-1 Client:0 Args:<nil>}}
+007201 SAPL SC2 | Applier | After Apply, config:&{Num:0 Shards:[0 0 0 0 0 0 0 0 0 0] Groups:map[]}, groups:{}
+007201 SAPL SC2 | resultCh | resultCh:0xc0000a05a0, ok:true
+007201 SAPL SC2 | applier | Sent result to resultCh: 0xc0000a05a0
+007203 SAPL SC2 | applier | Waiting for message on applych: 0xc000022540
+007206 QUER SC2 | Query | Sending reply to Clerk, resultCh: 0xc0000a05a0, index: 1, config: {Num:0 Shards:[0 0 0 0 0 0 0 0 0 0] Groups:map[]}
+007222 QUER SC2 | Query | Receieved start result from raft, index: 2
+007297 SAPL SC0 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Query OpNum:-1 Client:0 Args:<nil>} CommandIndex:1 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+007300 SAQY SC0 | Apply Query | : {Err:OK Op:{OpType:Query OpNum:-1 Client:0 Args:<nil>}}
+007301 SAPL SC0 | Applier | After Apply, config:&{Num:0 Shards:[0 0 0 0 0 0 0 0 0 0] Groups:map[]}, groups:{}
+007301 SAPL SC0 | resultCh | resultCh:<nil>, ok:false
+007301 SAPL SC0 | applier | Waiting for message on applych: 0xc0000223c0
+007302 SAPL SC2 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Query OpNum:-1 Client:0 Args:<nil>} CommandIndex:2 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+007302 SAQY SC2 | Apply Query | : {Err:OK Op:{OpType:Query OpNum:-1 Client:0 Args:<nil>}}
+007302 SAPL SC2 | Applier | After Apply, config:&{Num:0 Shards:[0 0 0 0 0 0 0 0 0 0] Groups:map[]}, groups:{}
+007302 SAPL SC2 | resultCh | resultCh:0xc000023980, ok:true
+007302 SAPL SC2 | applier | Sent result to resultCh: 0xc000023980
+007303 SAPL SC2 | applier | Waiting for message on applych: 0xc000022540
+007303 QUER SC2 | Query | Sending reply to Clerk, resultCh: 0xc000023980, index: 2, config: {Num:0 Shards:[0 0 0 0 0 0 0 0 0 0] Groups:map[]}
+007314 SAPL SC1 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Query OpNum:-1 Client:0 Args:<nil>} CommandIndex:1 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+check 1 ...
+007319 SAQY SC1 | Apply Query | : {Err:OK Op:{OpType:Query OpNum:-1 Client:0 Args:<nil>}}
+007319 SAPL SC1 | Applier | After Apply, config:&{Num:0 Shards:[0 0 0 0 0 0 0 0 0 0] Groups:map[]}, groups:{}
+007319 SAPL SC1 | resultCh | resultCh:<nil>, ok:false
+007319 SAPL SC1 | applier | Waiting for message on applych: 0xc0000224e0
+007328 JOIN SC2 | Join | Receieved start result from raft, servers: {"1":["x","y","z"]}
+007402 SAPL SC0 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Query OpNum:-1 Client:0 Args:<nil>} CommandIndex:2 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+007403 SAQY SC0 | Apply Query | : {Err:OK Op:{OpType:Query OpNum:-1 Client:0 Args:<nil>}}
+007403 SAPL SC0 | Applier | After Apply, config:&{Num:0 Shards:[0 0 0 0 0 0 0 0 0 0] Groups:map[]}, groups:{}
+007404 SAPL SC0 | resultCh | resultCh:<nil>, ok:false
+007404 SAPL SC0 | applier | Waiting for message on applych: 0xc0000223c0
+007402 SAPL SC2 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Join OpNum:3 Client:1352681749166510257 Args:{Servers:map[1:[x y z]] Client:1352681749166510257 OpNum:3}} CommandIndex:3 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+007407 SAJN SC2 | Apply Join | result:{Err:OK Op:{OpType:Join OpNum:3 Client:1352681749166510257 Args:{Servers:map[1:[x y z]] Client:1352681749166510257 OpNum:3}}}, config:&{Num:1 Shards:[1 1 1 1 1 1 1 1 1 1] Groups:map[1:[x y z]]}
+007407 SAPL SC2 | Applier | After Apply, config:&{Num:1 Shards:[1 1 1 1 1 1 1 1 1 1] Groups:map[1:[x y z]]}, groups:{"1":["x","y","z"]}
+007407 SAPL SC2 | resultCh | resultCh:0xc000023f80, ok:true
+007408 SAPL SC2 | applier | Sent result to resultCh: 0xc000023f80
+007408 SAPL SC2 | applier | Waiting for message on applych: 0xc000022540
+007410 QUER SC2 | Join | Sending reply to Clerk, resultCh: 0xc000023f80, index: 3
+007414 SAPL SC1 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Query OpNum:-1 Client:0 Args:<nil>} CommandIndex:2 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+007415 SAQY SC1 | Apply Query | : {Err:OK Op:{OpType:Query OpNum:-1 Client:0 Args:<nil>}}
+007415 SAPL SC1 | Applier | After Apply, config:&{Num:0 Shards:[0 0 0 0 0 0 0 0 0 0] Groups:map[]}, groups:{}
+007415 SAPL SC1 | resultCh | resultCh:<nil>, ok:false
+007415 SAPL SC1 | applier | Waiting for message on applych: 0xc0000224e0
+007418 QUER SC2 | Query | Receieved start result from raft, index: 4
+007513 SAPL SC2 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Query OpNum:-1 Client:0 Args:<nil>} CommandIndex:4 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+007515 SAQY SC2 | Apply Query | : {Err:OK Op:{OpType:Query OpNum:-1 Client:0 Args:<nil>}}
+007512 SAPL SC0 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Join OpNum:3 Client:1352681749166510257 Args:{Servers:map[1:[x y z]] Client:1352681749166510257 OpNum:3}} CommandIndex:3 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+007516 SAPL SC2 | Applier | After Apply, config:&{Num:1 Shards:[1 1 1 1 1 1 1 1 1 1] Groups:map[1:[x y z]]}, groups:{"1":["x","y","z"]}
+007516 SAJN SC0 | Apply Join | result:{Err:OK Op:{OpType:Join OpNum:3 Client:1352681749166510257 Args:{Servers:map[1:[x y z]] Client:1352681749166510257 OpNum:3}}}, config:&{Num:1 Shards:[1 1 1 1 1 1 1 1 1 1] Groups:map[1:[x y z]]}
+007516 SAPL SC0 | Applier | After Apply, config:&{Num:1 Shards:[1 1 1 1 1 1 1 1 1 1] Groups:map[1:[x y z]]}, groups:{"1":["x","y","z"]}
+007517 SAPL SC0 | resultCh | resultCh:<nil>, ok:false
+007517 SAPL SC0 | applier | Waiting for message on applych: 0xc0000223c0
+007516 SAPL SC1 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Join OpNum:3 Client:1352681749166510257 Args:{Servers:map[1:[x y z]] Client:1352681749166510257 OpNum:3}} CommandIndex:3 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+007520 SAJN SC1 | Apply Join | result:{Err:OK Op:{OpType:Join OpNum:3 Client:1352681749166510257 Args:{Servers:map[1:[x y z]] Client:1352681749166510257 OpNum:3}}}, config:&{Num:1 Shards:[1 1 1 1 1 1 1 1 1 1] Groups:map[1:[x y z]]}
+007520 SAPL SC1 | Applier | After Apply, config:&{Num:1 Shards:[1 1 1 1 1 1 1 1 1 1] Groups:map[1:[x y z]]}, groups:{"1":["x","y","z"]}
+007520 SAPL SC1 | resultCh | resultCh:<nil>, ok:false
+007520 SAPL SC1 | applier | Waiting for message on applych: 0xc0000224e0
+007516 SAPL SC2 | resultCh | resultCh:0xc0002e02a0, ok:true
+007521 SAPL SC2 | applier | Sent result to resultCh: 0xc0002e02a0
+007521 SAPL SC2 | applier | Waiting for message on applych: 0xc000022540
+007521 QUER SC2 | Query | Sending reply to Clerk, resultCh: 0xc0002e02a0, index: 4, config: {Num:1 Shards:[1 1 1 1 1 1 1 1 1 1] Groups:map[1:[x y z]]}
+check 2 ...
+007529 QUER SC2 | Query | Receieved start result from raft, index: 5
+007612 SAPL SC0 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Query OpNum:-1 Client:0 Args:<nil>} CommandIndex:4 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+007615 SAQY SC0 | Apply Query | : {Err:OK Op:{OpType:Query OpNum:-1 Client:0 Args:<nil>}}
+007615 SAPL SC0 | Applier | After Apply, config:&{Num:1 Shards:[1 1 1 1 1 1 1 1 1 1] Groups:map[1:[x y z]]}, groups:{"1":["x","y","z"]}
+007616 SAPL SC0 | resultCh | resultCh:<nil>, ok:false
+007616 SAPL SC0 | applier | Waiting for message on applych: 0xc0000223c0
+007616 SAPL SC2 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Query OpNum:-1 Client:0 Args:<nil>} CommandIndex:5 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+007616 SAQY SC2 | Apply Query | : {Err:OK Op:{OpType:Query OpNum:-1 Client:0 Args:<nil>}}
+007616 SAPL SC2 | Applier | After Apply, config:&{Num:1 Shards:[1 1 1 1 1 1 1 1 1 1] Groups:map[1:[x y z]]}, groups:{"1":["x","y","z"]}
+007617 SAPL SC2 | resultCh | resultCh:0xc0000a0e40, ok:true
+007617 SAPL SC2 | applier | Sent result to resultCh: 0xc0000a0e40
+007617 SAPL SC2 | applier | Waiting for message on applych: 0xc000022540
+007617 SAPL SC1 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Query OpNum:-1 Client:0 Args:<nil>} CommandIndex:4 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+007617 SAQY SC1 | Apply Query | : {Err:OK Op:{OpType:Query OpNum:-1 Client:0 Args:<nil>}}
+007617 SAPL SC1 | Applier | After Apply, config:&{Num:1 Shards:[1 1 1 1 1 1 1 1 1 1] Groups:map[1:[x y z]]}, groups:{"1":["x","y","z"]}
+007617 SAPL SC1 | resultCh | resultCh:<nil>, ok:false
+007617 SAPL SC1 | applier | Waiting for message on applych: 0xc0000224e0
+007618 QUER SC2 | Query | Sending reply to Clerk, resultCh: 0xc0000a0e40, index: 5, config: {Num:1 Shards:[1 1 1 1 1 1 1 1 1 1] Groups:map[1:[x y z]]}
+007624 JOIN SC2 | Join | Receieved start result from raft, servers: {"2":["a","b","c"]}
+007714 SAPL SC0 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Query OpNum:-1 Client:0 Args:<nil>} CommandIndex:5 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+007716 SAQY SC0 | Apply Query | : {Err:OK Op:{OpType:Query OpNum:-1 Client:0 Args:<nil>}}
+007717 SAPL SC0 | Applier | After Apply, config:&{Num:1 Shards:[1 1 1 1 1 1 1 1 1 1] Groups:map[1:[x y z]]}, groups:{"1":["x","y","z"]}
+007717 SAPL SC0 | resultCh | resultCh:<nil>, ok:false
+007718 SAPL SC0 | applier | Waiting for message on applych: 0xc0000223c0
+007718 SAPL SC1 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Query OpNum:-1 Client:0 Args:<nil>} CommandIndex:5 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+007718 SAQY SC1 | Apply Query | : {Err:OK Op:{OpType:Query OpNum:-1 Client:0 Args:<nil>}}
+007718 SAPL SC1 | Applier | After Apply, config:&{Num:1 Shards:[1 1 1 1 1 1 1 1 1 1] Groups:map[1:[x y z]]}, groups:{"1":["x","y","z"]}
+007719 SAPL SC1 | resultCh | resultCh:<nil>, ok:false
+007719 SAPL SC1 | applier | Waiting for message on applych: 0xc0000224e0
+007719 SAPL SC2 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Join OpNum:6 Client:1352681749166510257 Args:{Servers:map[2:[a b c]] Client:1352681749166510257 OpNum:6}} CommandIndex:6 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+007719 SAJN SC2 | Apply Join | before balance config:&{Num:2 Shards:[1 1 1 1 1 1 1 1 1 1] Groups:map[1:[x y z] 2:[a b c]]}, groups:{"1":["x","y","z"],"2":["a","b","c"]}
+007722 SAJN SC2 | Apply Join | maxGroup:1, minGroup:2
+007722 SAJN SC2 | Apply Join | balancing config:&{Num:2 Shards:[2 1 1 1 1 1 1 1 1 1] Groups:map[1:[x y z] 2:[a b c]]}, groups:{"1":["x","y","z"],"2":["a","b","c"]}
+007722 SAJN SC2 | Apply Join | maxGroup:1, minGroup:2
+007722 SAJN SC2 | Apply Join | balancing config:&{Num:2 Shards:[2 2 1 1 1 1 1 1 1 1] Groups:map[1:[x y z] 2:[a b c]]}, groups:{"1":["x","y","z"],"2":["a","b","c"]}
+007722 SAJN SC2 | Apply Join | maxGroup:1, minGroup:2
+007722 SAJN SC2 | Apply Join | balancing config:&{Num:2 Shards:[2 2 2 1 1 1 1 1 1 1] Groups:map[1:[x y z] 2:[a b c]]}, groups:{"1":["x","y","z"],"2":["a","b","c"]}
+007722 SAJN SC2 | Apply Join | maxGroup:1, minGroup:2
+007723 SAJN SC2 | Apply Join | balancing config:&{Num:2 Shards:[2 2 2 2 1 1 1 1 1 1] Groups:map[1:[x y z] 2:[a b c]]}, groups:{"1":["x","y","z"],"2":["a","b","c"]}
+007723 SAJN SC2 | Apply Join | maxGroup:1, minGroup:2
+007723 SAJN SC2 | Apply Join | balancing config:&{Num:2 Shards:[2 2 2 2 2 1 1 1 1 1] Groups:map[1:[x y z] 2:[a b c]]}, groups:{"1":["x","y","z"],"2":["a","b","c"]}
+007724 SAJN SC2 | Apply Join | maxGroup:2, minGroup:2
+007724 SAJN SC2 | Apply Join | result:{Err:OK Op:{OpType:Join OpNum:6 Client:1352681749166510257 Args:{Servers:map[2:[a b c]] Client:1352681749166510257 OpNum:6}}}, config:&{Num:2 Shards:[2 2 2 2 2 1 1 1 1 1] Groups:map[1:[x y z] 2:[a b c]]}
+007724 SAPL SC2 | Applier | After Apply, config:&{Num:2 Shards:[2 2 2 2 2 1 1 1 1 1] Groups:map[1:[x y z] 2:[a b c]]}, groups:{"1":["x","y","z"],"2":["a","b","c"]}
+007724 SAPL SC2 | resultCh | resultCh:0xc0000a1320, ok:true
+007725 SAPL SC2 | applier | Sent result to resultCh: 0xc0000a1320
+007725 SAPL SC2 | applier | Waiting for message on applych: 0xc000022540
+007725 QUER SC2 | Join | Sending reply to Clerk, resultCh: 0xc0000a1320, index: 6
+007736 QUER SC2 | Query | Receieved start result from raft, index: 7
+007816 SAPL SC0 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Join OpNum:6 Client:1352681749166510257 Args:{Servers:map[2:[a b c]] Client:1352681749166510257 OpNum:6}} CommandIndex:6 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+007817 SAJN SC0 | Apply Join | before balance config:&{Num:2 Shards:[1 1 1 1 1 1 1 1 1 1] Groups:map[1:[x y z] 2:[a b c]]}, groups:{"1":["x","y","z"],"2":["a","b","c"]}
+007817 SAJN SC0 | Apply Join | maxGroup:1, minGroup:2
+007818 SAJN SC0 | Apply Join | balancing config:&{Num:2 Shards:[2 1 1 1 1 1 1 1 1 1] Groups:map[1:[x y z] 2:[a b c]]}, groups:{"1":["x","y","z"],"2":["a","b","c"]}
+007818 SAJN SC0 | Apply Join | maxGroup:1, minGroup:2
+007818 SAJN SC0 | Apply Join | balancing config:&{Num:2 Shards:[2 2 1 1 1 1 1 1 1 1] Groups:map[1:[x y z] 2:[a b c]]}, groups:{"1":["x","y","z"],"2":["a","b","c"]}
+007818 SAJN SC0 | Apply Join | maxGroup:1, minGroup:2
+007819 SAJN SC0 | Apply Join | balancing config:&{Num:2 Shards:[2 2 2 1 1 1 1 1 1 1] Groups:map[1:[x y z] 2:[a b c]]}, groups:{"1":["x","y","z"],"2":["a","b","c"]}
+007819 SAJN SC0 | Apply Join | maxGroup:1, minGroup:2
+007819 SAJN SC0 | Apply Join | balancing config:&{Num:2 Shards:[2 2 2 2 1 1 1 1 1 1] Groups:map[1:[x y z] 2:[a b c]]}, groups:{"1":["x","y","z"],"2":["a","b","c"]}
+007819 SAJN SC0 | Apply Join | maxGroup:1, minGroup:2
+007819 SAJN SC0 | Apply Join | balancing config:&{Num:2 Shards:[2 2 2 2 2 1 1 1 1 1] Groups:map[1:[x y z] 2:[a b c]]}, groups:{"1":["x","y","z"],"2":["a","b","c"]}
+007820 SAJN SC0 | Apply Join | maxGroup:1, minGroup:1
+007820 SAJN SC0 | Apply Join | result:{Err:OK Op:{OpType:Join OpNum:6 Client:1352681749166510257 Args:{Servers:map[2:[a b c]] Client:1352681749166510257 OpNum:6}}}, config:&{Num:2 Shards:[2 2 2 2 2 1 1 1 1 1] Groups:map[1:[x y z] 2:[a b c]]}
+007820 SAPL SC1 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Join OpNum:6 Client:1352681749166510257 Args:{Servers:map[2:[a b c]] Client:1352681749166510257 OpNum:6}} CommandIndex:6 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+007820 SAJN SC1 | Apply Join | before balance config:&{Num:2 Shards:[1 1 1 1 1 1 1 1 1 1] Groups:map[1:[x y z] 2:[a b c]]}, groups:{"1":["x","y","z"],"2":["a","b","c"]}
+007821 SAJN SC1 | Apply Join | maxGroup:1, minGroup:1
+007821 SAJN SC1 | Apply Join | result:{Err:OK Op:{OpType:Join OpNum:6 Client:1352681749166510257 Args:{Servers:map[2:[a b c]] Client:1352681749166510257 OpNum:6}}}, config:&{Num:2 Shards:[1 1 1 1 1 1 1 1 1 1] Groups:map[1:[x y z] 2:[a b c]]}
+007821 SAPL SC1 | Applier | After Apply, config:&{Num:2 Shards:[1 1 1 1 1 1 1 1 1 1] Groups:map[1:[x y z] 2:[a b c]]}, groups:{"1":["x","y","z"],"2":["a","b","c"]}
+007821 SAPL SC1 | resultCh | resultCh:<nil>, ok:false
+007821 SAPL SC1 | applier | Waiting for message on applych: 0xc0000224e0
+007820 SAPL SC0 | Applier | After Apply, config:&{Num:2 Shards:[2 2 2 2 2 1 1 1 1 1] Groups:map[1:[x y z] 2:[a b c]]}, groups:{"1":["x","y","z"],"2":["a","b","c"]}
+007823 SAPL SC0 | resultCh | resultCh:<nil>, ok:false
+007823 SAPL SC0 | applier | Waiting for message on applych: 0xc0000223c0
+007820 SAPL SC2 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Query OpNum:-1 Client:0 Args:<nil>} CommandIndex:7 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+007824 SAQY SC2 | Apply Query | : {Err:OK Op:{OpType:Query OpNum:-1 Client:0 Args:<nil>}}
+007824 SAPL SC2 | Applier | After Apply, config:&{Num:2 Shards:[2 2 2 2 2 1 1 1 1 1] Groups:map[1:[x y z] 2:[a b c]]}, groups:{"1":["x","y","z"],"2":["a","b","c"]}
+007824 SAPL SC2 | resultCh | resultCh:0xc0000a19e0, ok:true
+007824 SAPL SC2 | applier | Sent result to resultCh: 0xc0000a19e0
+007824 SAPL SC2 | applier | Waiting for message on applych: 0xc000022540
+007824 QUER SC2 | Query | Sending reply to Clerk, resultCh: 0xc0000a19e0, index: 7, config: {Num:2 Shards:[2 2 2 2 2 1 1 1 1 1] Groups:map[1:[x y z] 2:[a b c]]}
+check 3 ...
+007832 QUER SC2 | Query | Receieved start result from raft, index: 8
+007926 SAPL SC0 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Query OpNum:-1 Client:0 Args:<nil>} CommandIndex:7 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+007928 SAQY SC0 | Apply Query | : {Err:OK Op:{OpType:Query OpNum:-1 Client:0 Args:<nil>}}
+007927 SAPL SC1 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Query OpNum:-1 Client:0 Args:<nil>} CommandIndex:7 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+007928 SAPL SC0 | Applier | After Apply, config:&{Num:2 Shards:[2 2 2 2 2 1 1 1 1 1] Groups:map[1:[x y z] 2:[a b c]]}, groups:{"1":["x","y","z"],"2":["a","b","c"]}
+007928 SAPL SC0 | resultCh | resultCh:<nil>, ok:false
+007929 SAPL SC0 | applier | Waiting for message on applych: 0xc0000223c0
+007928 SAQY SC1 | Apply Query | : {Err:OK Op:{OpType:Query OpNum:-1 Client:0 Args:<nil>}}
+007927 SAPL SC2 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Query OpNum:-1 Client:0 Args:<nil>} CommandIndex:8 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+007929 SAQY SC2 | Apply Query | : {Err:OK Op:{OpType:Query OpNum:-1 Client:0 Args:<nil>}}
+007929 SAPL SC2 | Applier | After Apply, config:&{Num:2 Shards:[2 2 2 2 2 1 1 1 1 1] Groups:map[1:[x y z] 2:[a b c]]}, groups:{"1":["x","y","z"],"2":["a","b","c"]}
+007929 SAPL SC2 | resultCh | resultCh:0xc0001bede0, ok:true
+007930 SAPL SC2 | applier | Sent result to resultCh: 0xc0001bede0
+007930 SAPL SC2 | applier | Waiting for message on applych: 0xc000022540
+007930 QUER SC2 | Query | Sending reply to Clerk, resultCh: 0xc0001bede0, index: 8, config: {Num:2 Shards:[2 2 2 2 2 1 1 1 1 1] Groups:map[1:[x y z] 2:[a b c]]}
+007933 SAPL SC1 | Applier | After Apply, config:&{Num:2 Shards:[1 1 1 1 1 1 1 1 1 1] Groups:map[1:[x y z] 2:[a b c]]}, groups:{"1":["x","y","z"],"2":["a","b","c"]}
+007933 SAPL SC1 | resultCh | resultCh:<nil>, ok:false
+007933 SAPL SC1 | applier | Waiting for message on applych: 0xc0000224e0
+007936 QUER SC2 | Query | Receieved start result from raft, index: 9
+008038 SAPL SC2 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Query OpNum:-1 Client:0 Args:<nil>} CommandIndex:9 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+008040 SAQY SC2 | Apply Query | : {Err:OK Op:{OpType:Query OpNum:-1 Client:0 Args:<nil>}}
+008040 SAPL SC1 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Query OpNum:-1 Client:0 Args:<nil>} CommandIndex:8 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+008041 SAQY SC1 | Apply Query | : {Err:OK Op:{OpType:Query OpNum:-1 Client:0 Args:<nil>}}
+008041 SAPL SC2 | Applier | After Apply, config:&{Num:2 Shards:[2 2 2 2 2 1 1 1 1 1] Groups:map[1:[x y z] 2:[a b c]]}, groups:{"1":["x","y","z"],"2":["a","b","c"]}
+008041 SAPL SC1 | Applier | After Apply, config:&{Num:2 Shards:[1 1 1 1 1 1 1 1 1 1] Groups:map[1:[x y z] 2:[a b c]]}, groups:{"1":["x","y","z"],"2":["a","b","c"]}
+008042 SAPL SC1 | resultCh | resultCh:<nil>, ok:false
+008042 SAPL SC1 | applier | Waiting for message on applych: 0xc0000224e0
+008041 SAPL SC2 | resultCh | resultCh:0xc0001bf200, ok:true
+008042 SAPL SC2 | applier | Sent result to resultCh: 0xc0001bf200
+008042 SAPL SC2 | applier | Waiting for message on applych: 0xc000022540
+008041 SAPL SC0 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Query OpNum:-1 Client:0 Args:<nil>} CommandIndex:8 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+008043 SAQY SC0 | Apply Query | : {Err:OK Op:{OpType:Query OpNum:-1 Client:0 Args:<nil>}}
+008043 QUER SC2 | Query | Sending reply to Clerk, resultCh: 0xc0001bf200, index: 9, config: {Num:2 Shards:[2 2 2 2 2 1 1 1 1 1] Groups:map[1:[x y z] 2:[a b c]]}
+008043 SAPL SC0 | Applier | After Apply, config:&{Num:2 Shards:[2 2 2 2 2 1 1 1 1 1] Groups:map[1:[x y z] 2:[a b c]]}, groups:{"1":["x","y","z"],"2":["a","b","c"]}
+008043 SAPL SC0 | resultCh | resultCh:<nil>, ok:false
+008043 SAPL SC0 | applier | Waiting for message on applych: 0xc0000223c0
+008062 JOIN SC2 | Leave | Receieved start result from raft, GIDs: [1]
+008139 SAPL SC2 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Leave OpNum:0 Client:0 Args:{GIDs:[1] Client:0 OpNum:0}} CommandIndex:10 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+008141 SALE SC2 | Apply Leave | : {Err:OK Op:{OpType:Leave OpNum:0 Client:0 Args:{GIDs:[1] Client:0 OpNum:0}}}
+008141 SAPL SC1 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Query OpNum:-1 Client:0 Args:<nil>} CommandIndex:9 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+008141 SAQY SC1 | Apply Query | : {Err:OK Op:{OpType:Query OpNum:-1 Client:0 Args:<nil>}}
+008141 SAPL SC2 | Applier | After Apply, config:&{Num:3 Shards:[2 2 2 2 2 2 2 2 2 2] Groups:map[2:[a b c]]}, groups:{"2":["a","b","c"]}
+008141 SAPL SC1 | Applier | After Apply, config:&{Num:2 Shards:[1 1 1 1 1 1 1 1 1 1] Groups:map[1:[x y z] 2:[a b c]]}, groups:{"1":["x","y","z"],"2":["a","b","c"]}
+008142 SAPL SC1 | resultCh | resultCh:<nil>, ok:false
+008142 SAPL SC2 | resultCh | resultCh:0xc000378180, ok:true
+008142 SAPL SC2 | applier | Sent result to resultCh: 0xc000378180
+008142 SAPL SC2 | applier | Waiting for message on applych: 0xc000022540
+008142 SAPL SC0 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Query OpNum:-1 Client:0 Args:<nil>} CommandIndex:9 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+008142 SAQY SC0 | Apply Query | : {Err:OK Op:{OpType:Query OpNum:-1 Client:0 Args:<nil>}}
+008142 SAPL SC0 | Applier | After Apply, config:&{Num:2 Shards:[2 2 2 2 2 1 1 1 1 1] Groups:map[1:[x y z] 2:[a b c]]}, groups:{"1":["x","y","z"],"2":["a","b","c"]}
+008143 SAPL SC0 | resultCh | resultCh:<nil>, ok:false
+008143 SAPL SC0 | applier | Waiting for message on applych: 0xc0000223c0
+008142 SAPL SC1 | applier | Waiting for message on applych: 0xc0000224e0
+008143 QUER SC2 | Leave | Sending reply to Clerk, resultCh: 0xc000378180, index: 10
+008154 QUER SC2 | Query | Receieved start result from raft, index: 11
+008241 SAPL SC2 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Query OpNum:-1 Client:0 Args:<nil>} CommandIndex:11 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+008243 SAQY SC2 | Apply Query | : {Err:OK Op:{OpType:Query OpNum:-1 Client:0 Args:<nil>}}
+008241 SAPL SC1 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Leave OpNum:0 Client:0 Args:{GIDs:[1] Client:0 OpNum:0}} CommandIndex:10 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+008244 SAPL SC2 | Applier | After Apply, config:&{Num:3 Shards:[2 2 2 2 2 2 2 2 2 2] Groups:map[2:[a b c]]}, groups:{"2":["a","b","c"]}
+008244 SAPL SC2 | resultCh | resultCh:0xc0001bf860, ok:true
+008244 SAPL SC2 | applier | Sent result to resultCh: 0xc0001bf860
+008244 SAPL SC2 | applier | Waiting for message on applych: 0xc000022540
+008244 SALE SC1 | Apply Leave | : {Err:OK Op:{OpType:Leave OpNum:0 Client:0 Args:{GIDs:[1] Client:0 OpNum:0}}}
+008247 SAPL SC1 | Applier | After Apply, config:&{Num:3 Shards:[2 2 2 2 2 2 2 2 2 2] Groups:map[2:[a b c]]}, groups:{"2":["a","b","c"]}
+008248 SAPL SC1 | resultCh | resultCh:<nil>, ok:false
+008248 SAPL SC1 | applier | Waiting for message on applych: 0xc0000224e0
+008242 SAPL SC0 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Leave OpNum:0 Client:0 Args:{GIDs:[1] Client:0 OpNum:0}} CommandIndex:10 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+008244 QUER SC2 | Query | Sending reply to Clerk, resultCh: 0xc0001bf860, index: 11, config: {Num:3 Shards:[2 2 2 2 2 2 2 2 2 2] Groups:map[2:[a b c]]}
+008248 SALE SC0 | Apply Leave | : {Err:OK Op:{OpType:Leave OpNum:0 Client:0 Args:{GIDs:[1] Client:0 OpNum:0}}}
+008249 SAPL SC0 | Applier | After Apply, config:&{Num:3 Shards:[2 2 2 2 2 2 2 2 2 2] Groups:map[2:[a b c]]}, groups:{"2":["a","b","c"]}
+008250 SAPL SC0 | resultCh | resultCh:<nil>, ok:false
+008250 SAPL SC0 | applier | Waiting for message on applych: 0xc0000223c0
+008256 QUER SC2 | Query | Receieved start result from raft, index: 12
+008343 SAPL SC0 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Query OpNum:-1 Client:0 Args:<nil>} CommandIndex:11 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+008345 SAQY SC0 | Apply Query | : {Err:OK Op:{OpType:Query OpNum:-1 Client:0 Args:<nil>}}
+008350 SAPL SC0 | Applier | After Apply, config:&{Num:3 Shards:[2 2 2 2 2 2 2 2 2 2] Groups:map[2:[a b c]]}, groups:{"2":["a","b","c"]}
+008351 SAPL SC0 | resultCh | resultCh:<nil>, ok:false
+008351 SAPL SC0 | applier | Waiting for message on applych: 0xc0000223c0
+008343 SAPL SC2 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Query OpNum:-1 Client:0 Args:<nil>} CommandIndex:12 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+008351 SAQY SC2 | Apply Query | : {Err:OK Op:{OpType:Query OpNum:-1 Client:0 Args:<nil>}}
+008351 SAPL SC2 | Applier | After Apply, config:&{Num:3 Shards:[2 2 2 2 2 2 2 2 2 2] Groups:map[2:[a b c]]}, groups:{"2":["a","b","c"]}
+008352 SAPL SC2 | resultCh | resultCh:0xc0001bfc80, ok:true
+008352 SAPL SC2 | applier | Sent result to resultCh: 0xc0001bfc80
+008352 SAPL SC2 | applier | Waiting for message on applych: 0xc000022540
+008344 SAPL SC1 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Query OpNum:-1 Client:0 Args:<nil>} CommandIndex:11 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+008352 SAQY SC1 | Apply Query | : {Err:OK Op:{OpType:Query OpNum:-1 Client:0 Args:<nil>}}
+008352 SAPL SC1 | Applier | After Apply, config:&{Num:3 Shards:[2 2 2 2 2 2 2 2 2 2] Groups:map[2:[a b c]]}, groups:{"2":["a","b","c"]}
+008352 QUER SC2 | Query | Sending reply to Clerk, resultCh: 0xc0001bfc80, index: 12, config: {Num:3 Shards:[2 2 2 2 2 2 2 2 2 2] Groups:map[2:[a b c]]}
+008353 SAPL SC1 | resultCh | resultCh:<nil>, ok:false
+008355 SAPL SC1 | applier | Waiting for message on applych: 0xc0000224e0
+008369 JOIN SC2 | Leave | Receieved start result from raft, GIDs: [2]
+008449 SAPL SC0 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Query OpNum:-1 Client:0 Args:<nil>} CommandIndex:12 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+008451 SAQY SC0 | Apply Query | : {Err:OK Op:{OpType:Query OpNum:-1 Client:0 Args:<nil>}}
+008450 SAPL SC1 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Query OpNum:-1 Client:0 Args:<nil>} CommandIndex:12 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+008451 SAPL SC0 | Applier | After Apply, config:&{Num:3 Shards:[2 2 2 2 2 2 2 2 2 2] Groups:map[2:[a b c]]}, groups:{"2":["a","b","c"]}
+008452 SAPL SC0 | resultCh | resultCh:<nil>, ok:false
+008452 SAPL SC0 | applier | Waiting for message on applych: 0xc0000223c0
+008452 SAQY SC1 | Apply Query | : {Err:OK Op:{OpType:Query OpNum:-1 Client:0 Args:<nil>}}
+008452 SAPL SC1 | Applier | After Apply, config:&{Num:3 Shards:[2 2 2 2 2 2 2 2 2 2] Groups:map[2:[a b c]]}, groups:{"2":["a","b","c"]}
+008453 SAPL SC1 | resultCh | resultCh:<nil>, ok:false
+008451 SAPL SC2 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Leave OpNum:0 Client:0 Args:{GIDs:[2] Client:0 OpNum:0}} CommandIndex:13 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+008453 SALE SC2 | Apply Leave | : {Err:OK Op:{OpType:Leave OpNum:0 Client:0 Args:{GIDs:[2] Client:0 OpNum:0}}}
+008453 SAPL SC1 | applier | Waiting for message on applych: 0xc0000224e0
+008454 SAPL SC2 | Applier | After Apply, config:&{Num:3 Shards:[2 2 2 2 2 2 2 2 2 2] Groups:map[2:[a b c]]}, groups:{"2":["a","b","c"]}
+008456 SAPL SC2 | resultCh | resultCh:0xc0002e12c0, ok:true
+008456 SAPL SC2 | applier | Sent result to resultCh: 0xc0002e12c0
+008457 SAPL SC2 | applier | Waiting for message on applych: 0xc000022540
+008457 QUER SC2 | Leave | Sending reply to Clerk, resultCh: 0xc0002e12c0, index: 13
+008467 QUER SC2 | Query | Receieved start result from raft, index: 14
+008549 SAPL SC0 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Leave OpNum:0 Client:0 Args:{GIDs:[2] Client:0 OpNum:0}} CommandIndex:13 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+008551 SAPL SC1 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Leave OpNum:0 Client:0 Args:{GIDs:[2] Client:0 OpNum:0}} CommandIndex:13 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+008552 SALE SC1 | Apply Leave | : {Err:OK Op:{OpType:Leave OpNum:0 Client:0 Args:{GIDs:[2] Client:0 OpNum:0}}}
+008552 SAPL SC1 | Applier | After Apply, config:&{Num:3 Shards:[2 2 2 2 2 2 2 2 2 2] Groups:map[2:[a b c]]}, groups:{"2":["a","b","c"]}
+008552 SAPL SC1 | resultCh | resultCh:<nil>, ok:false
+008553 SAPL SC1 | applier | Waiting for message on applych: 0xc0000224e0
+008551 SALE SC0 | Apply Leave | : {Err:OK Op:{OpType:Leave OpNum:0 Client:0 Args:{GIDs:[2] Client:0 OpNum:0}}}
+008553 SAPL SC0 | Applier | After Apply, config:&{Num:3 Shards:[2 2 2 2 2 2 2 2 2 2] Groups:map[2:[a b c]]}, groups:{"2":["a","b","c"]}
+008553 SAPL SC0 | resultCh | resultCh:<nil>, ok:false
+008553 SAPL SC0 | applier | Waiting for message on applych: 0xc0000223c0
+008551 SAPL SC2 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Query OpNum:-1 Client:0 Args:<nil>} CommandIndex:14 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+008554 SAQY SC2 | Apply Query | : {Err:OK Op:{OpType:Query OpNum:-1 Client:0 Args:<nil>}}
+008554 SAPL SC2 | Applier | After Apply, config:&{Num:3 Shards:[2 2 2 2 2 2 2 2 2 2] Groups:map[2:[a b c]]}, groups:{"2":["a","b","c"]}
+008554 SAPL SC2 | resultCh | resultCh:0xc00020cfc0, ok:true
+008554 SAPL SC2 | applier | Sent result to resultCh: 0xc00020cfc0
+008555 SAPL SC2 | applier | Waiting for message on applych: 0xc000022540
+008555 QUER SC2 | Query | Sending reply to Clerk, resultCh: 0xc00020cfc0, index: 14, config: {Num:3 Shards:[2 2 2 2 2 2 2 2 2 2] Groups:map[2:[a b c]]}
+  ... Passed
+Test: Historical queries ...
+008652 SAPL SC1 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Query OpNum:-1 Client:0 Args:<nil>} CommandIndex:14 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+008654 SAQY SC1 | Apply Query | : {Err:OK Op:{OpType:Query OpNum:-1 Client:0 Args:<nil>}}
+008654 SAPL SC1 | Applier | After Apply, config:&{Num:3 Shards:[2 2 2 2 2 2 2 2 2 2] Groups:map[2:[a b c]]}, groups:{"2":["a","b","c"]}
+008654 SAPL SC1 | resultCh | resultCh:<nil>, ok:false
+008655 SAPL SC1 | applier | Waiting for message on applych: 0xc0000224e0
+008881 QUER SC2 | Query | Receieved start result from raft, index: 15
+008959 SAPL SC2 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Query OpNum:0 Client:0 Args:<nil>} CommandIndex:15 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+008960 SAQY SC2 | Apply Query | : {Err:OK Op:{OpType:Query OpNum:0 Client:0 Args:<nil>}}
+008960 SAPL SC2 | Applier | After Apply, config:&{Num:3 Shards:[2 2 2 2 2 2 2 2 2 2] Groups:map[2:[a b c]]}, groups:{"2":["a","b","c"]}
+008961 SAPL SC2 | resultCh | resultCh:0xc00020d260, ok:true
+008961 SAPL SC2 | applier | Sent result to resultCh: 0xc00020d260
+008961 SAPL SC2 | applier | Waiting for message on applych: 0xc000022540
+008961 QUER SC2 | Query | Sending reply to Clerk, resultCh: 0xc00020d260, index: 15, config: {Num:0 Shards:[0 0 0 0 0 0 0 0 0 0] Groups:map[]}
+009160 SAPL SC1 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Query OpNum:0 Client:0 Args:<nil>} CommandIndex:15 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+009163 SAQY SC1 | Apply Query | : {Err:OK Op:{OpType:Query OpNum:0 Client:0 Args:<nil>}}
+009163 SAPL SC1 | Applier | After Apply, config:&{Num:3 Shards:[2 2 2 2 2 2 2 2 2 2] Groups:map[2:[a b c]]}, groups:{"2":["a","b","c"]}
+009164 SAPL SC1 | resultCh | resultCh:<nil>, ok:false
+009164 SAPL SC1 | applier | Waiting for message on applych: 0xc0000224e0
+009882 QUER SC2 | Query | Receieved start result from raft, index: 16
+009999 SAPL SC2 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Query OpNum:1 Client:0 Args:<nil>} CommandIndex:16 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+010001 SAQY SC2 | Apply Query | : {Err:OK Op:{OpType:Query OpNum:1 Client:0 Args:<nil>}}
+010002 SAPL SC2 | Applier | After Apply, config:&{Num:3 Shards:[2 2 2 2 2 2 2 2 2 2] Groups:map[2:[a b c]]}, groups:{"2":["a","b","c"]}
+010002 SAPL SC2 | resultCh | resultCh:0xc0003781e0, ok:true
+010003 SAPL SC2 | applier | Sent result to resultCh: 0xc0003781e0
+010003 SAPL SC2 | applier | Waiting for message on applych: 0xc000022540
+010003 QUER SC2 | Query | Sending reply to Clerk, resultCh: 0xc0003781e0, index: 16, config: {Num:1 Shards:[1 1 1 1 1 1 1 1 1 1] Groups:map[1:[x y z]]}
+010215 SAPL SC1 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Query OpNum:1 Client:0 Args:<nil>} CommandIndex:16 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+010218 SAQY SC1 | Apply Query | : {Err:OK Op:{OpType:Query OpNum:1 Client:0 Args:<nil>}}
+010218 SAPL SC1 | Applier | After Apply, config:&{Num:3 Shards:[2 2 2 2 2 2 2 2 2 2] Groups:map[2:[a b c]]}, groups:{"2":["a","b","c"]}
+010218 SAPL SC1 | resultCh | resultCh:<nil>, ok:false
+010219 SAPL SC1 | applier | Waiting for message on applych: 0xc0000224e0
+010311 QUER SC2 | Query | Receieved start result from raft, index: 17
+010423 SAPL SC2 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Query OpNum:2 Client:0 Args:<nil>} CommandIndex:17 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+010426 SAQY SC2 | Apply Query | : {Err:OK Op:{OpType:Query OpNum:2 Client:0 Args:<nil>}}
+010426 SAPL SC2 | Applier | After Apply, config:&{Num:3 Shards:[2 2 2 2 2 2 2 2 2 2] Groups:map[2:[a b c]]}, groups:{"2":["a","b","c"]}
+010426 SAPL SC2 | resultCh | resultCh:0xc00020c4e0, ok:true
+010427 SAPL SC2 | applier | Sent result to resultCh: 0xc00020c4e0
+010427 SAPL SC2 | applier | Waiting for message on applych: 0xc000022540
+010427 QUER SC2 | Query | Sending reply to Clerk, resultCh: 0xc00020c4e0, index: 17, config: {Num:2 Shards:[2 2 2 2 2 1 1 1 1 1] Groups:map[1:[x y z] 2:[a b c]]}
+010734 SAPL SC1 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Query OpNum:2 Client:0 Args:<nil>} CommandIndex:17 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+010737 SAQY SC1 | Apply Query | : {Err:OK Op:{OpType:Query OpNum:2 Client:0 Args:<nil>}}
+010737 SAPL SC1 | Applier | After Apply, config:&{Num:3 Shards:[2 2 2 2 2 2 2 2 2 2] Groups:map[2:[a b c]]}, groups:{"2":["a","b","c"]}
+010738 SAPL SC1 | resultCh | resultCh:<nil>, ok:false
+010738 SAPL SC1 | applier | Waiting for message on applych: 0xc0000224e0
+010938 QUER SC2 | Query | Receieved start result from raft, index: 18
+011041 SAPL SC2 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Query OpNum:0 Client:0 Args:<nil>} CommandIndex:18 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+011044 SAQY SC2 | Apply Query | : {Err:OK Op:{OpType:Query OpNum:0 Client:0 Args:<nil>}}
+011045 SAPL SC2 | Applier | After Apply, config:&{Num:3 Shards:[2 2 2 2 2 2 2 2 2 2] Groups:map[2:[a b c]]}, groups:{"2":["a","b","c"]}
+011045 SAPL SC2 | resultCh | resultCh:0xc00020c840, ok:true
+011048 SAPL SC2 | applier | Sent result to resultCh: 0xc00020c840
+011048 SAPL SC2 | applier | Waiting for message on applych: 0xc000022540
+011048 QUER SC2 | Query | Sending reply to Clerk, resultCh: 0xc00020c840, index: 18, config: {Num:0 Shards:[0 0 0 0 0 0 0 0 0 0] Groups:map[]}
+011257 SAPL SC1 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Query OpNum:0 Client:0 Args:<nil>} CommandIndex:18 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+011259 SAQY SC1 | Apply Query | : {Err:OK Op:{OpType:Query OpNum:0 Client:0 Args:<nil>}}
+011260 SAPL SC1 | Applier | After Apply, config:&{Num:3 Shards:[2 2 2 2 2 2 2 2 2 2] Groups:map[2:[a b c]]}, groups:{"2":["a","b","c"]}
+011260 SAPL SC1 | resultCh | resultCh:<nil>, ok:false
+011260 SAPL SC1 | applier | Waiting for message on applych: 0xc0000224e0
+011658 QUER SC2 | Query | Receieved start result from raft, index: 19
+011671 SAPL SC2 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Query OpNum:3 Client:0 Args:<nil>} CommandIndex:19 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+011672 SAQY SC2 | Apply Query | : {Err:OK Op:{OpType:Query OpNum:3 Client:0 Args:<nil>}}
+011672 SAPL SC2 | Applier | After Apply, config:&{Num:3 Shards:[2 2 2 2 2 2 2 2 2 2] Groups:map[2:[a b c]]}, groups:{"2":["a","b","c"]}
+011673 SAPL SC2 | resultCh | resultCh:0xc0002e0060, ok:true
+011673 SAPL SC2 | applier | Sent result to resultCh: 0xc0002e0060
+011673 SAPL SC2 | applier | Waiting for message on applych: 0xc000022540
+011673 QUER SC2 | Query | Sending reply to Clerk, resultCh: 0xc0002e0060, index: 19, config: {Num:3 Shards:[2 2 2 2 2 2 2 2 2 2] Groups:map[2:[a b c]]}
+012204 SAPL SC1 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Query OpNum:3 Client:0 Args:<nil>} CommandIndex:19 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+012207 SAQY SC1 | Apply Query | : {Err:OK Op:{OpType:Query OpNum:3 Client:0 Args:<nil>}}
+012207 SAPL SC1 | Applier | After Apply, config:&{Num:3 Shards:[2 2 2 2 2 2 2 2 2 2] Groups:map[2:[a b c]]}, groups:{"2":["a","b","c"]}
+012208 SAPL SC1 | resultCh | resultCh:<nil>, ok:false
+012208 SAPL SC1 | applier | Waiting for message on applych: 0xc0000224e0
+012542 QUER SC2 | Query | Receieved start result from raft, index: 20
+012632 SAPL SC2 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Query OpNum:3 Client:0 Args:<nil>} CommandIndex:20 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+012633 SAQY SC2 | Apply Query | : {Err:OK Op:{OpType:Query OpNum:3 Client:0 Args:<nil>}}
+012634 SAPL SC2 | Applier | After Apply, config:&{Num:3 Shards:[2 2 2 2 2 2 2 2 2 2] Groups:map[2:[a b c]]}, groups:{"2":["a","b","c"]}
+012634 SAPL SC2 | resultCh | resultCh:0xc00020ce40, ok:true
+012634 SAPL SC2 | applier | Sent result to resultCh: 0xc00020ce40
+012634 SAPL SC2 | applier | Waiting for message on applych: 0xc000022540
+012635 QUER SC2 | Query | Sending reply to Clerk, resultCh: 0xc00020ce40, index: 20, config: {Num:3 Shards:[2 2 2 2 2 2 2 2 2 2] Groups:map[2:[a b c]]}
+labgob warning: Decoding into a non-default variable/field int may not work
+012643 SAJN SC0 | Apply Join | before balance config:&{Num:0 Shards:[0 0 0 0 0 0 0 0 0 0] Groups:map[]}, groups:{}
+012643 SAJN SC0 | Apply Join | maxGroup:0, minGroup:0
+012643 SAPL SC0 | applier | Waiting for message on applych: 0xc0003f6de0
+012652 QUER SC2 | Query | Receieved start result from raft, index: 21
+012741 SAPL SC2 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Query OpNum:0 Client:0 Args:<nil>} CommandIndex:21 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+012744 SAQY SC2 | Apply Query | : {Err:OK Op:{OpType:Query OpNum:0 Client:0 Args:<nil>}}
+012744 SAPL SC0 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Query OpNum:-1 Client:0 Args:<nil>} CommandIndex:1 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+012747 SAQY SC0 | Apply Query | : {Err:OK Op:{OpType:Query OpNum:-1 Client:0 Args:<nil>}}
+012747 SAPL SC0 | Applier | After Apply, config:&{Num:0 Shards:[0 0 0 0 0 0 0 0 0 0] Groups:map[]}, groups:{}
+012748 SAPL SC0 | resultCh | resultCh:<nil>, ok:false
+012748 SAPL SC0 | applier | Waiting for message on applych: 0xc0003f6de0
+012744 SAPL SC2 | Applier | After Apply, config:&{Num:3 Shards:[2 2 2 2 2 2 2 2 2 2] Groups:map[2:[a b c]]}, groups:{"2":["a","b","c"]}
+012748 SAPL SC2 | resultCh | resultCh:0xc0003f7020, ok:true
+012748 SAPL SC2 | applier | Sent result to resultCh: 0xc0003f7020
+012748 SAPL SC2 | applier | Waiting for message on applych: 0xc000022540
+012749 QUER SC2 | Query | Sending reply to Clerk, resultCh: 0xc0003f7020, index: 21, config: {Num:0 Shards:[0 0 0 0 0 0 0 0 0 0] Groups:map[]}
+012757 QUER SC2 | Query | Receieved start result from raft, index: 22
+012852 SAPL SC0 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Query OpNum:-1 Client:0 Args:<nil>} CommandIndex:2 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+012854 SAQY SC0 | Apply Query | : {Err:OK Op:{OpType:Query OpNum:-1 Client:0 Args:<nil>}}
+012852 SAPL SC2 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Query OpNum:1 Client:0 Args:<nil>} CommandIndex:22 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+012854 SAPL SC0 | Applier | After Apply, config:&{Num:0 Shards:[0 0 0 0 0 0 0 0 0 0] Groups:map[]}, groups:{}
+012855 SAPL SC0 | resultCh | resultCh:<nil>, ok:false
+012855 SAPL SC0 | applier | Waiting for message on applych: 0xc0003f6de0
+012855 SAQY SC2 | Apply Query | : {Err:OK Op:{OpType:Query OpNum:1 Client:0 Args:<nil>}}
+012856 SAPL SC2 | Applier | After Apply, config:&{Num:3 Shards:[2 2 2 2 2 2 2 2 2 2] Groups:map[2:[a b c]]}, groups:{"2":["a","b","c"]}
+012856 SAPL SC2 | resultCh | resultCh:0xc0003f74a0, ok:true
+012856 SAPL SC2 | applier | Sent result to resultCh: 0xc0003f74a0
+012856 SAPL SC2 | applier | Waiting for message on applych: 0xc000022540
+012856 QUER SC2 | Query | Sending reply to Clerk, resultCh: 0xc0003f74a0, index: 22, config: {Num:1 Shards:[1 1 1 1 1 1 1 1 1 1] Groups:map[1:[x y z]]}
+012867 QUER SC2 | Query | Receieved start result from raft, index: 23
+012956 SAPL SC2 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Query OpNum:2 Client:0 Args:<nil>} CommandIndex:23 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+012959 SAQY SC2 | Apply Query | : {Err:OK Op:{OpType:Query OpNum:2 Client:0 Args:<nil>}}
+012959 SAPL SC2 | Applier | After Apply, config:&{Num:3 Shards:[2 2 2 2 2 2 2 2 2 2] Groups:map[2:[a b c]]}, groups:{"2":["a","b","c"]}
+012960 SAPL SC2 | resultCh | resultCh:0xc00020d5c0, ok:true
+012956 SAPL SC0 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Join OpNum:3 Client:1352681749166510257 Args:{Servers:map[1:[x y z]] Client:1352681749166510257 OpNum:3}} CommandIndex:3 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+012960 QUER SC2 | Query | Sending reply to Clerk, resultCh: 0xc00020d5c0, index: 23, config: {Num:2 Shards:[2 2 2 2 2 1 1 1 1 1] Groups:map[1:[x y z] 2:[a b c]]}
+012960 SAJN SC0 | Apply Join | result:{Err:OK Op:{OpType:Join OpNum:3 Client:1352681749166510257 Args:{Servers:map[1:[x y z]] Client:1352681749166510257 OpNum:3}}}, config:&{Num:1 Shards:[1 1 1 1 1 1 1 1 1 1] Groups:map[1:[x y z]]}
+012962 SAPL SC0 | Applier | After Apply, config:&{Num:1 Shards:[1 1 1 1 1 1 1 1 1 1] Groups:map[1:[x y z]]}, groups:{"1":["x","y","z"]}
+012962 SAPL SC0 | resultCh | resultCh:<nil>, ok:false
+012962 SAPL SC0 | applier | Waiting for message on applych: 0xc0003f6de0
+012960 SAPL SC2 | applier | Sent result to resultCh: 0xc00020d5c0
+012963 SAPL SC2 | applier | Waiting for message on applych: 0xc000022540
+012974 QUER SC2 | Query | Receieved start result from raft, index: 24
+013062 SAPL SC2 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Query OpNum:0 Client:0 Args:<nil>} CommandIndex:24 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+013064 SAQY SC2 | Apply Query | : {Err:OK Op:{OpType:Query OpNum:0 Client:0 Args:<nil>}}
+013065 SAPL SC2 | Applier | After Apply, config:&{Num:3 Shards:[2 2 2 2 2 2 2 2 2 2] Groups:map[2:[a b c]]}, groups:{"2":["a","b","c"]}
+013065 SAPL SC2 | resultCh | resultCh:0xc0003f7800, ok:true
+013062 SAPL SC0 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Query OpNum:-1 Client:0 Args:<nil>} CommandIndex:4 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+013066 SAQY SC0 | Apply Query | : {Err:OK Op:{OpType:Query OpNum:-1 Client:0 Args:<nil>}}
+013066 SAPL SC0 | Applier | After Apply, config:&{Num:1 Shards:[1 1 1 1 1 1 1 1 1 1] Groups:map[1:[x y z]]}, groups:{"1":["x","y","z"]}
+013067 SAPL SC0 | resultCh | resultCh:<nil>, ok:false
+013067 SAPL SC0 | applier | Waiting for message on applych: 0xc0003f6de0
+013065 SAPL SC2 | applier | Sent result to resultCh: 0xc0003f7800
+013067 QUER SC2 | Query | Sending reply to Clerk, resultCh: 0xc0003f7800, index: 24, config: {Num:0 Shards:[0 0 0 0 0 0 0 0 0 0] Groups:map[]}
+013067 SAPL SC2 | applier | Waiting for message on applych: 0xc000022540
+013080 QUER SC2 | Query | Receieved start result from raft, index: 25
+013162 SAPL SC2 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Query OpNum:3 Client:0 Args:<nil>} CommandIndex:25 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+013164 SAQY SC2 | Apply Query | : {Err:OK Op:{OpType:Query OpNum:3 Client:0 Args:<nil>}}
+013166 SAPL SC2 | Applier | After Apply, config:&{Num:3 Shards:[2 2 2 2 2 2 2 2 2 2] Groups:map[2:[a b c]]}, groups:{"2":["a","b","c"]}
+013167 SAPL SC2 | resultCh | resultCh:0xc00020d920, ok:true
+013167 SAPL SC2 | applier | Sent result to resultCh: 0xc00020d920
+013167 SAPL SC2 | applier | Waiting for message on applych: 0xc000022540
+013167 QUER SC2 | Query | Sending reply to Clerk, resultCh: 0xc00020d920, index: 25, config: {Num:3 Shards:[2 2 2 2 2 2 2 2 2 2] Groups:map[2:[a b c]]}
+013168 SAPL SC0 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Query OpNum:-1 Client:0 Args:<nil>} CommandIndex:5 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+013168 SAQY SC0 | Apply Query | : {Err:OK Op:{OpType:Query OpNum:-1 Client:0 Args:<nil>}}
+013168 SAPL SC0 | Applier | After Apply, config:&{Num:1 Shards:[1 1 1 1 1 1 1 1 1 1] Groups:map[1:[x y z]]}, groups:{"1":["x","y","z"]}
+013168 SAPL SC0 | resultCh | resultCh:<nil>, ok:false
+013169 SAPL SC0 | applier | Waiting for message on applych: 0xc0003f6de0
+013175 QUER SC2 | Query | Receieved start result from raft, index: 26
+013269 SAPL SC0 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Join OpNum:6 Client:1352681749166510257 Args:{Servers:map[2:[a b c]] Client:1352681749166510257 OpNum:6}} CommandIndex:6 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+013271 SAJN SC0 | Apply Join | before balance config:&{Num:2 Shards:[1 1 1 1 1 1 1 1 1 1] Groups:map[1:[x y z] 2:[a b c]]}, groups:{"1":["x","y","z"],"2":["a","b","c"]}
+013271 SAJN SC0 | Apply Join | maxGroup:1, minGroup:2
+013272 SAJN SC0 | Apply Join | balancing config:&{Num:2 Shards:[2 1 1 1 1 1 1 1 1 1] Groups:map[1:[x y z] 2:[a b c]]}, groups:{"1":["x","y","z"],"2":["a","b","c"]}
+013272 SAJN SC0 | Apply Join | maxGroup:1, minGroup:2
+013272 SAJN SC0 | Apply Join | balancing config:&{Num:2 Shards:[2 2 1 1 1 1 1 1 1 1] Groups:map[1:[x y z] 2:[a b c]]}, groups:{"1":["x","y","z"],"2":["a","b","c"]}
+013273 SAJN SC0 | Apply Join | maxGroup:1, minGroup:2
+013273 SAJN SC0 | Apply Join | balancing config:&{Num:2 Shards:[2 2 2 1 1 1 1 1 1 1] Groups:map[1:[x y z] 2:[a b c]]}, groups:{"1":["x","y","z"],"2":["a","b","c"]}
+013273 SAJN SC0 | Apply Join | maxGroup:1, minGroup:2
+013274 SAJN SC0 | Apply Join | balancing config:&{Num:2 Shards:[2 2 2 2 1 1 1 1 1 1] Groups:map[1:[x y z] 2:[a b c]]}, groups:{"1":["x","y","z"],"2":["a","b","c"]}
+013275 SAJN SC0 | Apply Join | maxGroup:1, minGroup:2
+013275 SAJN SC0 | Apply Join | balancing config:&{Num:2 Shards:[2 2 2 2 2 1 1 1 1 1] Groups:map[1:[x y z] 2:[a b c]]}, groups:{"1":["x","y","z"],"2":["a","b","c"]}
+013276 SAJN SC0 | Apply Join | maxGroup:1, minGroup:1
+013276 SAJN SC0 | Apply Join | result:{Err:OK Op:{OpType:Join OpNum:6 Client:1352681749166510257 Args:{Servers:map[2:[a b c]] Client:1352681749166510257 OpNum:6}}}, config:&{Num:2 Shards:[2 2 2 2 2 1 1 1 1 1] Groups:map[1:[x y z] 2:[a b c]]}
+013277 SAPL SC0 | Applier | After Apply, config:&{Num:2 Shards:[2 2 2 2 2 1 1 1 1 1] Groups:map[1:[x y z] 2:[a b c]]}, groups:{"1":["x","y","z"],"2":["a","b","c"]}
+013277 SAPL SC0 | resultCh | resultCh:<nil>, ok:false
+013277 SAPL SC0 | applier | Waiting for message on applych: 0xc0003f6de0
+013279 SAPL SC2 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Query OpNum:3 Client:0 Args:<nil>} CommandIndex:26 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+013279 SAQY SC2 | Apply Query | : {Err:OK Op:{OpType:Query OpNum:3 Client:0 Args:<nil>}}
+013280 SAPL SC2 | Applier | After Apply, config:&{Num:3 Shards:[2 2 2 2 2 2 2 2 2 2] Groups:map[2:[a b c]]}, groups:{"2":["a","b","c"]}
+013280 SAPL SC2 | resultCh | resultCh:0xc00020dc20, ok:true
+013280 SAPL SC2 | applier | Sent result to resultCh: 0xc00020dc20
+013281 SAPL SC2 | applier | Waiting for message on applych: 0xc000022540
+013281 QUER SC2 | Query | Sending reply to Clerk, resultCh: 0xc00020dc20, index: 26, config: {Num:3 Shards:[2 2 2 2 2 2 2 2 2 2] Groups:map[2:[a b c]]}
+013289 SAJN SC1 | Apply Join | before balance config:&{Num:0 Shards:[0 0 0 0 0 0 0 0 0 0] Groups:map[]}, groups:{}
+013290 SAJN SC1 | Apply Join | maxGroup:0, minGroup:0
+013295 SAPL SC1 | applier | Waiting for message on applych: 0xc00020dd40
+013379 SAPL SC0 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Query OpNum:-1 Client:0 Args:<nil>} CommandIndex:7 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+013381 SAQY SC0 | Apply Query | : {Err:OK Op:{OpType:Query OpNum:-1 Client:0 Args:<nil>}}
+013382 SAPL SC0 | Applier | After Apply, config:&{Num:2 Shards:[2 2 2 2 2 1 1 1 1 1] Groups:map[1:[x y z] 2:[a b c]]}, groups:{"1":["x","y","z"],"2":["a","b","c"]}
+013382 SAPL SC0 | resultCh | resultCh:<nil>, ok:false
+013382 SAPL SC0 | applier | Waiting for message on applych: 0xc0003f6de0
+013484 SAPL SC0 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Query OpNum:-1 Client:0 Args:<nil>} CommandIndex:8 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+013485 SAQY SC0 | Apply Query | : {Err:OK Op:{OpType:Query OpNum:-1 Client:0 Args:<nil>}}
+013485 SAPL SC0 | Applier | After Apply, config:&{Num:2 Shards:[2 2 2 2 2 1 1 1 1 1] Groups:map[1:[x y z] 2:[a b c]]}, groups:{"1":["x","y","z"],"2":["a","b","c"]}
+013486 SAPL SC0 | resultCh | resultCh:<nil>, ok:false
+013486 SAPL SC0 | applier | Waiting for message on applych: 0xc0003f6de0
+013588 SAPL SC0 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Query OpNum:-1 Client:0 Args:<nil>} CommandIndex:9 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+013593 SAQY SC0 | Apply Query | : {Err:OK Op:{OpType:Query OpNum:-1 Client:0 Args:<nil>}}
+013594 SAPL SC0 | Applier | After Apply, config:&{Num:2 Shards:[2 2 2 2 2 1 1 1 1 1] Groups:map[1:[x y z] 2:[a b c]]}, groups:{"1":["x","y","z"],"2":["a","b","c"]}
+013594 SAPL SC0 | resultCh | resultCh:<nil>, ok:false
+013594 SAPL SC0 | applier | Waiting for message on applych: 0xc0003f6de0
+013692 SAPL SC0 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Leave OpNum:0 Client:0 Args:{GIDs:[1] Client:0 OpNum:0}} CommandIndex:10 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+013694 SALE SC0 | Apply Leave | : {Err:OK Op:{OpType:Leave OpNum:0 Client:0 Args:{GIDs:[1] Client:0 OpNum:0}}}
+013694 SAPL SC0 | Applier | After Apply, config:&{Num:3 Shards:[2 2 2 2 2 2 2 2 2 2] Groups:map[2:[a b c]]}, groups:{"2":["a","b","c"]}
+013696 SAPL SC0 | resultCh | resultCh:<nil>, ok:false
+013696 SAPL SC0 | applier | Waiting for message on applych: 0xc0003f6de0
+013794 SAPL SC0 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Query OpNum:-1 Client:0 Args:<nil>} CommandIndex:11 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+013801 SAQY SC0 | Apply Query | : {Err:OK Op:{OpType:Query OpNum:-1 Client:0 Args:<nil>}}
+013801 SAPL SC0 | Applier | After Apply, config:&{Num:3 Shards:[2 2 2 2 2 2 2 2 2 2] Groups:map[2:[a b c]]}, groups:{"2":["a","b","c"]}
+013802 SAPL SC0 | resultCh | resultCh:<nil>, ok:false
+013802 SAPL SC0 | applier | Waiting for message on applych: 0xc0003f6de0
+013895 SAPL SC0 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Query OpNum:-1 Client:0 Args:<nil>} CommandIndex:12 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+013897 SAQY SC0 | Apply Query | : {Err:OK Op:{OpType:Query OpNum:-1 Client:0 Args:<nil>}}
+013898 SAPL SC0 | Applier | After Apply, config:&{Num:3 Shards:[2 2 2 2 2 2 2 2 2 2] Groups:map[2:[a b c]]}, groups:{"2":["a","b","c"]}
+013898 SAPL SC0 | resultCh | resultCh:<nil>, ok:false
+013898 SAPL SC0 | applier | Waiting for message on applych: 0xc0003f6de0
+013996 SAPL SC0 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Leave OpNum:0 Client:0 Args:{GIDs:[2] Client:0 OpNum:0}} CommandIndex:13 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+013998 SALE SC0 | Apply Leave | : {Err:OK Op:{OpType:Leave OpNum:0 Client:0 Args:{GIDs:[2] Client:0 OpNum:0}}}
+013998 SAPL SC0 | Applier | After Apply, config:&{Num:3 Shards:[2 2 2 2 2 2 2 2 2 2] Groups:map[2:[a b c]]}, groups:{"2":["a","b","c"]}
+013999 SAPL SC0 | resultCh | resultCh:<nil>, ok:false
+013999 SAPL SC0 | applier | Waiting for message on applych: 0xc0003f6de0
+014098 SAPL SC0 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Query OpNum:-1 Client:0 Args:<nil>} CommandIndex:14 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+014100 SAQY SC0 | Apply Query | : {Err:OK Op:{OpType:Query OpNum:-1 Client:0 Args:<nil>}}
+014100 SAPL SC0 | Applier | After Apply, config:&{Num:3 Shards:[2 2 2 2 2 2 2 2 2 2] Groups:map[2:[a b c]]}, groups:{"2":["a","b","c"]}
+014101 SAPL SC0 | resultCh | resultCh:<nil>, ok:false
+014101 SAPL SC0 | applier | Waiting for message on applych: 0xc0003f6de0
+014199 SAPL SC0 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Query OpNum:0 Client:0 Args:<nil>} CommandIndex:15 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+014201 SAQY SC0 | Apply Query | : {Err:OK Op:{OpType:Query OpNum:0 Client:0 Args:<nil>}}
+014202 SAPL SC0 | Applier | After Apply, config:&{Num:3 Shards:[2 2 2 2 2 2 2 2 2 2] Groups:map[2:[a b c]]}, groups:{"2":["a","b","c"]}
+014202 SAPL SC0 | resultCh | resultCh:<nil>, ok:false
+014203 SAPL SC0 | applier | Waiting for message on applych: 0xc0003f6de0
+014300 SAPL SC0 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Query OpNum:1 Client:0 Args:<nil>} CommandIndex:16 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+014302 SAQY SC0 | Apply Query | : {Err:OK Op:{OpType:Query OpNum:1 Client:0 Args:<nil>}}
+014302 SAPL SC0 | Applier | After Apply, config:&{Num:3 Shards:[2 2 2 2 2 2 2 2 2 2] Groups:map[2:[a b c]]}, groups:{"2":["a","b","c"]}
+014303 SAPL SC0 | resultCh | resultCh:<nil>, ok:false
+014303 SAPL SC0 | applier | Waiting for message on applych: 0xc0003f6de0
+014404 SAPL SC0 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Query OpNum:2 Client:0 Args:<nil>} CommandIndex:17 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+014408 SAQY SC0 | Apply Query | : {Err:OK Op:{OpType:Query OpNum:2 Client:0 Args:<nil>}}
+014408 SAPL SC0 | Applier | After Apply, config:&{Num:3 Shards:[2 2 2 2 2 2 2 2 2 2] Groups:map[2:[a b c]]}, groups:{"2":["a","b","c"]}
+014409 SAPL SC0 | resultCh | resultCh:<nil>, ok:false
+014409 SAPL SC0 | applier | Waiting for message on applych: 0xc0003f6de0
+014513 SAPL SC0 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Query OpNum:0 Client:0 Args:<nil>} CommandIndex:18 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+014515 SAQY SC0 | Apply Query | : {Err:OK Op:{OpType:Query OpNum:0 Client:0 Args:<nil>}}
+014517 SAPL SC0 | Applier | After Apply, config:&{Num:3 Shards:[2 2 2 2 2 2 2 2 2 2] Groups:map[2:[a b c]]}, groups:{"2":["a","b","c"]}
+014517 SAPL SC0 | resultCh | resultCh:<nil>, ok:false
+014517 SAPL SC0 | applier | Waiting for message on applych: 0xc0003f6de0
+014626 SAPL SC0 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Query OpNum:3 Client:0 Args:<nil>} CommandIndex:19 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+014628 SAQY SC0 | Apply Query | : {Err:OK Op:{OpType:Query OpNum:3 Client:0 Args:<nil>}}
+014628 SAPL SC0 | Applier | After Apply, config:&{Num:3 Shards:[2 2 2 2 2 2 2 2 2 2] Groups:map[2:[a b c]]}, groups:{"2":["a","b","c"]}
+014629 SAPL SC0 | resultCh | resultCh:<nil>, ok:false
+014629 SAPL SC0 | applier | Waiting for message on applych: 0xc0003f6de0
+014733 SAPL SC0 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Query OpNum:3 Client:0 Args:<nil>} CommandIndex:20 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+014735 SAQY SC0 | Apply Query | : {Err:OK Op:{OpType:Query OpNum:3 Client:0 Args:<nil>}}
+014735 SAPL SC0 | Applier | After Apply, config:&{Num:3 Shards:[2 2 2 2 2 2 2 2 2 2] Groups:map[2:[a b c]]}, groups:{"2":["a","b","c"]}
+014736 SAPL SC0 | resultCh | resultCh:<nil>, ok:false
+014736 SAPL SC0 | applier | Waiting for message on applych: 0xc0003f6de0
+014833 SAPL SC0 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Query OpNum:0 Client:0 Args:<nil>} CommandIndex:21 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+014835 SAQY SC0 | Apply Query | : {Err:OK Op:{OpType:Query OpNum:0 Client:0 Args:<nil>}}
+014836 SAPL SC0 | Applier | After Apply, config:&{Num:3 Shards:[2 2 2 2 2 2 2 2 2 2] Groups:map[2:[a b c]]}, groups:{"2":["a","b","c"]}
+014837 SAPL SC0 | resultCh | resultCh:<nil>, ok:false
+014837 SAPL SC0 | applier | Waiting for message on applych: 0xc0003f6de0
+014940 SAPL SC0 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Query OpNum:1 Client:0 Args:<nil>} CommandIndex:22 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+014942 SAQY SC0 | Apply Query | : {Err:OK Op:{OpType:Query OpNum:1 Client:0 Args:<nil>}}
+014943 SAPL SC0 | Applier | After Apply, config:&{Num:3 Shards:[2 2 2 2 2 2 2 2 2 2] Groups:map[2:[a b c]]}, groups:{"2":["a","b","c"]}
+014944 SAPL SC0 | resultCh | resultCh:<nil>, ok:false
+014944 SAPL SC0 | applier | Waiting for message on applych: 0xc0003f6de0
+015053 SAPL SC0 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Query OpNum:2 Client:0 Args:<nil>} CommandIndex:23 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+015055 SAQY SC0 | Apply Query | : {Err:OK Op:{OpType:Query OpNum:2 Client:0 Args:<nil>}}
+015055 SAPL SC0 | Applier | After Apply, config:&{Num:3 Shards:[2 2 2 2 2 2 2 2 2 2] Groups:map[2:[a b c]]}, groups:{"2":["a","b","c"]}
+015056 SAPL SC0 | resultCh | resultCh:<nil>, ok:false
+015056 SAPL SC0 | applier | Waiting for message on applych: 0xc0003f6de0
+015162 SAPL SC0 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Query OpNum:0 Client:0 Args:<nil>} CommandIndex:24 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+015164 SAQY SC0 | Apply Query | : {Err:OK Op:{OpType:Query OpNum:0 Client:0 Args:<nil>}}
+015165 SAPL SC0 | Applier | After Apply, config:&{Num:3 Shards:[2 2 2 2 2 2 2 2 2 2] Groups:map[2:[a b c]]}, groups:{"2":["a","b","c"]}
+015165 SAPL SC0 | resultCh | resultCh:<nil>, ok:false
+015166 SAPL SC0 | applier | Waiting for message on applych: 0xc0003f6de0
+015272 SAPL SC0 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Query OpNum:3 Client:0 Args:<nil>} CommandIndex:25 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+015275 SAQY SC0 | Apply Query | : {Err:OK Op:{OpType:Query OpNum:3 Client:0 Args:<nil>}}
+015276 SAPL SC0 | Applier | After Apply, config:&{Num:3 Shards:[2 2 2 2 2 2 2 2 2 2] Groups:map[2:[a b c]]}, groups:{"2":["a","b","c"]}
+015276 SAPL SC0 | resultCh | resultCh:<nil>, ok:false
+015276 SAPL SC0 | applier | Waiting for message on applych: 0xc0003f6de0
+019762 SAPL SC1 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Query OpNum:-1 Client:0 Args:<nil>} CommandIndex:1 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+019768 SAQY SC1 | Apply Query | : {Err:OK Op:{OpType:Query OpNum:-1 Client:0 Args:<nil>}}
+019768 SAPL SC1 | Applier | After Apply, config:&{Num:0 Shards:[0 0 0 0 0 0 0 0 0 0] Groups:map[]}, groups:{}
+019769 SAPL SC1 | resultCh | resultCh:<nil>, ok:false
+019769 SAPL SC1 | applier | Waiting for message on applych: 0xc00020dd40
+019861 SAPL SC1 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Query OpNum:-1 Client:0 Args:<nil>} CommandIndex:2 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+019863 SAQY SC1 | Apply Query | : {Err:OK Op:{OpType:Query OpNum:-1 Client:0 Args:<nil>}}
+019864 SAPL SC1 | Applier | After Apply, config:&{Num:0 Shards:[0 0 0 0 0 0 0 0 0 0] Groups:map[]}, groups:{}
+019864 SAPL SC1 | resultCh | resultCh:<nil>, ok:false
+019864 SAPL SC1 | applier | Waiting for message on applych: 0xc00020dd40
+019972 SAPL SC1 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Join OpNum:3 Client:1352681749166510257 Args:{Servers:map[1:[x y z]] Client:1352681749166510257 OpNum:3}} CommandIndex:3 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+019976 SAJN SC1 | Apply Join | result:{Err:OK Op:{OpType:Join OpNum:3 Client:1352681749166510257 Args:{Servers:map[1:[x y z]] Client:1352681749166510257 OpNum:3}}}, config:&{Num:1 Shards:[1 1 1 1 1 1 1 1 1 1] Groups:map[1:[x y z]]}
+019977 SAPL SC1 | Applier | After Apply, config:&{Num:1 Shards:[1 1 1 1 1 1 1 1 1 1] Groups:map[1:[x y z]]}, groups:{"1":["x","y","z"]}
+019977 SAPL SC1 | resultCh | resultCh:<nil>, ok:false
+019977 SAPL SC1 | applier | Waiting for message on applych: 0xc00020dd40
+020080 SAPL SC1 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Query OpNum:-1 Client:0 Args:<nil>} CommandIndex:4 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+020082 SAQY SC1 | Apply Query | : {Err:OK Op:{OpType:Query OpNum:-1 Client:0 Args:<nil>}}
+020082 SAPL SC1 | Applier | After Apply, config:&{Num:1 Shards:[1 1 1 1 1 1 1 1 1 1] Groups:map[1:[x y z]]}, groups:{"1":["x","y","z"]}
+020083 SAPL SC1 | resultCh | resultCh:<nil>, ok:false
+020083 SAPL SC1 | applier | Waiting for message on applych: 0xc00020dd40
+020188 SAPL SC1 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Query OpNum:-1 Client:0 Args:<nil>} CommandIndex:5 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+020191 SAQY SC1 | Apply Query | : {Err:OK Op:{OpType:Query OpNum:-1 Client:0 Args:<nil>}}
+020202 SAPL SC1 | Applier | After Apply, config:&{Num:1 Shards:[1 1 1 1 1 1 1 1 1 1] Groups:map[1:[x y z]]}, groups:{"1":["x","y","z"]}
+020203 SAPL SC1 | resultCh | resultCh:<nil>, ok:false
+020203 SAPL SC1 | applier | Waiting for message on applych: 0xc00020dd40
+020290 SAPL SC1 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Join OpNum:6 Client:1352681749166510257 Args:{Servers:map[2:[a b c]] Client:1352681749166510257 OpNum:6}} CommandIndex:6 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+020293 SAJN SC1 | Apply Join | before balance config:&{Num:2 Shards:[1 1 1 1 1 1 1 1 1 1] Groups:map[1:[x y z] 2:[a b c]]}, groups:{"1":["x","y","z"],"2":["a","b","c"]}
+020293 SAJN SC1 | Apply Join | maxGroup:1, minGroup:1
+020294 SAJN SC1 | Apply Join | result:{Err:OK Op:{OpType:Join OpNum:6 Client:1352681749166510257 Args:{Servers:map[2:[a b c]] Client:1352681749166510257 OpNum:6}}}, config:&{Num:2 Shards:[1 1 1 1 1 1 1 1 1 1] Groups:map[1:[x y z] 2:[a b c]]}
+020295 SAPL SC1 | Applier | After Apply, config:&{Num:2 Shards:[1 1 1 1 1 1 1 1 1 1] Groups:map[1:[x y z] 2:[a b c]]}, groups:{"1":["x","y","z"],"2":["a","b","c"]}
+020295 SAPL SC1 | resultCh | resultCh:<nil>, ok:false
+020296 SAPL SC1 | applier | Waiting for message on applych: 0xc00020dd40
+020393 SAPL SC1 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Query OpNum:-1 Client:0 Args:<nil>} CommandIndex:7 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+020395 SAQY SC1 | Apply Query | : {Err:OK Op:{OpType:Query OpNum:-1 Client:0 Args:<nil>}}
+020406 SAPL SC1 | Applier | After Apply, config:&{Num:2 Shards:[1 1 1 1 1 1 1 1 1 1] Groups:map[1:[x y z] 2:[a b c]]}, groups:{"1":["x","y","z"],"2":["a","b","c"]}
+020407 SAPL SC1 | resultCh | resultCh:<nil>, ok:false
+020407 SAPL SC1 | applier | Waiting for message on applych: 0xc00020dd40
+020498 SAPL SC1 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Query OpNum:-1 Client:0 Args:<nil>} CommandIndex:8 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+020500 SAQY SC1 | Apply Query | : {Err:OK Op:{OpType:Query OpNum:-1 Client:0 Args:<nil>}}
+020501 SAPL SC1 | Applier | After Apply, config:&{Num:2 Shards:[1 1 1 1 1 1 1 1 1 1] Groups:map[1:[x y z] 2:[a b c]]}, groups:{"1":["x","y","z"],"2":["a","b","c"]}
+020501 SAPL SC1 | resultCh | resultCh:<nil>, ok:false
+020501 SAPL SC1 | applier | Waiting for message on applych: 0xc00020dd40
+020611 SAPL SC1 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Query OpNum:-1 Client:0 Args:<nil>} CommandIndex:9 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+020614 SAQY SC1 | Apply Query | : {Err:OK Op:{OpType:Query OpNum:-1 Client:0 Args:<nil>}}
+020614 SAPL SC1 | Applier | After Apply, config:&{Num:2 Shards:[1 1 1 1 1 1 1 1 1 1] Groups:map[1:[x y z] 2:[a b c]]}, groups:{"1":["x","y","z"],"2":["a","b","c"]}
+020616 SAPL SC1 | resultCh | resultCh:<nil>, ok:false
+020616 SAPL SC1 | applier | Waiting for message on applych: 0xc00020dd40
+020716 SAPL SC1 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Leave OpNum:0 Client:0 Args:{GIDs:[1] Client:0 OpNum:0}} CommandIndex:10 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+020721 SALE SC1 | Apply Leave | : {Err:OK Op:{OpType:Leave OpNum:0 Client:0 Args:{GIDs:[1] Client:0 OpNum:0}}}
+020722 SAPL SC1 | Applier | After Apply, config:&{Num:3 Shards:[2 2 2 2 2 2 2 2 2 2] Groups:map[2:[a b c]]}, groups:{"2":["a","b","c"]}
+020722 SAPL SC1 | resultCh | resultCh:<nil>, ok:false
+020722 SAPL SC1 | applier | Waiting for message on applych: 0xc00020dd40
+020775 QUER SC0 | Query | Receieved start result from raft, index: 27
+020822 SAPL SC1 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Query OpNum:-1 Client:0 Args:<nil>} CommandIndex:11 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+020824 SAQY SC1 | Apply Query | : {Err:OK Op:{OpType:Query OpNum:-1 Client:0 Args:<nil>}}
+020825 SAPL SC1 | Applier | After Apply, config:&{Num:3 Shards:[2 2 2 2 2 2 2 2 2 2] Groups:map[2:[a b c]]}, groups:{"2":["a","b","c"]}
+020826 SAPL SC1 | resultCh | resultCh:<nil>, ok:false
+020826 SAPL SC1 | applier | Waiting for message on applych: 0xc00020dd40
+020823 SAPL SC0 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Query OpNum:3 Client:0 Args:<nil>} CommandIndex:26 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+020826 SAQY SC0 | Apply Query | : {Err:OK Op:{OpType:Query OpNum:3 Client:0 Args:<nil>}}
+020827 SAPL SC0 | Applier | After Apply, config:&{Num:3 Shards:[2 2 2 2 2 2 2 2 2 2] Groups:map[2:[a b c]]}, groups:{"2":["a","b","c"]}
+020827 SAPL SC0 | resultCh | resultCh:<nil>, ok:false
+020827 SAPL SC0 | applier | Waiting for message on applych: 0xc0003f6de0
+020926 SAPL SC1 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Query OpNum:-1 Client:0 Args:<nil>} CommandIndex:12 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+020929 SAQY SC1 | Apply Query | : {Err:OK Op:{OpType:Query OpNum:-1 Client:0 Args:<nil>}}
+020930 SAPL SC1 | Applier | After Apply, config:&{Num:3 Shards:[2 2 2 2 2 2 2 2 2 2] Groups:map[2:[a b c]]}, groups:{"2":["a","b","c"]}
+020930 SAPL SC1 | resultCh | resultCh:<nil>, ok:false
+020930 SAPL SC1 | applier | Waiting for message on applych: 0xc00020dd40
+020927 SAPL SC0 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Query OpNum:0 Client:0 Args:<nil>} CommandIndex:27 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+020931 SAQY SC0 | Apply Query | : {Err:OK Op:{OpType:Query OpNum:0 Client:0 Args:<nil>}}
+020931 SAPL SC0 | Applier | After Apply, config:&{Num:3 Shards:[2 2 2 2 2 2 2 2 2 2] Groups:map[2:[a b c]]}, groups:{"2":["a","b","c"]}
+020931 SAPL SC0 | resultCh | resultCh:0xc0002e1620, ok:true
+020932 SAPL SC0 | applier | Sent result to resultCh: 0xc0002e1620
+020932 SAPL SC0 | applier | Waiting for message on applych: 0xc0003f6de0
+020932 QUER SC0 | Query | Sending reply to Clerk, resultCh: 0xc0002e1620, index: 27, config: {Num:0 Shards:[0 0 0 0 0 0 0 0 0 0] Groups:map[]}
+020940 QUER SC0 | Query | Receieved start result from raft, index: 28
+021033 SAPL SC0 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Query OpNum:1 Client:0 Args:<nil>} CommandIndex:28 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+021035 SAQY SC0 | Apply Query | : {Err:OK Op:{OpType:Query OpNum:1 Client:0 Args:<nil>}}
+021033 SAPL SC1 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Leave OpNum:0 Client:0 Args:{GIDs:[2] Client:0 OpNum:0}} CommandIndex:13 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+021036 SALE SC1 | Apply Leave | : {Err:OK Op:{OpType:Leave OpNum:0 Client:0 Args:{GIDs:[2] Client:0 OpNum:0}}}
+021036 SAPL SC0 | Applier | After Apply, config:&{Num:3 Shards:[2 2 2 2 2 2 2 2 2 2] Groups:map[2:[a b c]]}, groups:{"2":["a","b","c"]}
+021037 SAPL SC0 | resultCh | resultCh:0xc0000a0ba0, ok:true
+021037 SAPL SC1 | Applier | After Apply, config:&{Num:3 Shards:[2 2 2 2 2 2 2 2 2 2] Groups:map[2:[a b c]]}, groups:{"2":["a","b","c"]}
+021038 SAPL SC1 | resultCh | resultCh:<nil>, ok:false
+021038 SAPL SC1 | applier | Waiting for message on applych: 0xc00020dd40
+021038 QUER SC0 | Query | Sending reply to Clerk, resultCh: 0xc0000a0ba0, index: 28, config: {Num:1 Shards:[1 1 1 1 1 1 1 1 1 1] Groups:map[1:[x y z]]}
+021037 SAPL SC0 | applier | Sent result to resultCh: 0xc0000a0ba0
+021039 SAPL SC0 | applier | Waiting for message on applych: 0xc0003f6de0
+021048 QUER SC0 | Query | Receieved start result from raft, index: 29
+021144 SAPL SC1 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Query OpNum:-1 Client:0 Args:<nil>} CommandIndex:14 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+021150 SAQY SC1 | Apply Query | : {Err:OK Op:{OpType:Query OpNum:-1 Client:0 Args:<nil>}}
+021150 SAPL SC1 | Applier | After Apply, config:&{Num:3 Shards:[2 2 2 2 2 2 2 2 2 2] Groups:map[2:[a b c]]}, groups:{"2":["a","b","c"]}
+021144 SAPL SC0 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Query OpNum:2 Client:0 Args:<nil>} CommandIndex:29 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+021151 SAQY SC0 | Apply Query | : {Err:OK Op:{OpType:Query OpNum:2 Client:0 Args:<nil>}}
+021151 SAPL SC0 | Applier | After Apply, config:&{Num:3 Shards:[2 2 2 2 2 2 2 2 2 2] Groups:map[2:[a b c]]}, groups:{"2":["a","b","c"]}
+021151 SAPL SC1 | resultCh | resultCh:<nil>, ok:false
+021152 SAPL SC1 | applier | Waiting for message on applych: 0xc00020dd40
+021152 SAPL SC0 | resultCh | resultCh:0xc0000a0d20, ok:true
+021153 SAPL SC0 | applier | Sent result to resultCh: 0xc0000a0d20
+021153 SAPL SC0 | applier | Waiting for message on applych: 0xc0003f6de0
+021153 QUER SC0 | Query | Sending reply to Clerk, resultCh: 0xc0000a0d20, index: 29, config: {Num:2 Shards:[2 2 2 2 2 1 1 1 1 1] Groups:map[1:[x y z] 2:[a b c]]}
+021162 QUER SC0 | Query | Receieved start result from raft, index: 30
+021249 SAPL SC0 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Query OpNum:0 Client:0 Args:<nil>} CommandIndex:30 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+021251 SAQY SC0 | Apply Query | : {Err:OK Op:{OpType:Query OpNum:0 Client:0 Args:<nil>}}
+021251 SAPL SC0 | Applier | After Apply, config:&{Num:3 Shards:[2 2 2 2 2 2 2 2 2 2] Groups:map[2:[a b c]]}, groups:{"2":["a","b","c"]}
+021252 SAPL SC0 | resultCh | resultCh:0xc000023080, ok:true
+021252 SAPL SC0 | applier | Sent result to resultCh: 0xc000023080
+021252 SAPL SC0 | applier | Waiting for message on applych: 0xc0003f6de0
+021252 QUER SC0 | Query | Sending reply to Clerk, resultCh: 0xc000023080, index: 30, config: {Num:0 Shards:[0 0 0 0 0 0 0 0 0 0] Groups:map[]}
+021250 SAPL SC1 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Query OpNum:0 Client:0 Args:<nil>} CommandIndex:15 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+021255 SAQY SC1 | Apply Query | : {Err:OK Op:{OpType:Query OpNum:0 Client:0 Args:<nil>}}
+021255 SAPL SC1 | Applier | After Apply, config:&{Num:3 Shards:[2 2 2 2 2 2 2 2 2 2] Groups:map[2:[a b c]]}, groups:{"2":["a","b","c"]}
+021256 SAPL SC1 | resultCh | resultCh:<nil>, ok:false
+021256 SAPL SC1 | applier | Waiting for message on applych: 0xc00020dd40
+021258 QUER SC0 | Query | Receieved start result from raft, index: 31
+021359 SAPL SC1 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Query OpNum:1 Client:0 Args:<nil>} CommandIndex:16 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+021362 SAQY SC1 | Apply Query | : {Err:OK Op:{OpType:Query OpNum:1 Client:0 Args:<nil>}}
+021362 SAPL SC1 | Applier | After Apply, config:&{Num:3 Shards:[2 2 2 2 2 2 2 2 2 2] Groups:map[2:[a b c]]}, groups:{"2":["a","b","c"]}
+021363 SAPL SC1 | resultCh | resultCh:<nil>, ok:false
+021363 SAPL SC1 | applier | Waiting for message on applych: 0xc00020dd40
+021360 SAPL SC0 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Query OpNum:3 Client:0 Args:<nil>} CommandIndex:31 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+021363 SAQY SC0 | Apply Query | : {Err:OK Op:{OpType:Query OpNum:3 Client:0 Args:<nil>}}
+021364 SAPL SC0 | Applier | After Apply, config:&{Num:3 Shards:[2 2 2 2 2 2 2 2 2 2] Groups:map[2:[a b c]]}, groups:{"2":["a","b","c"]}
+021364 SAPL SC0 | resultCh | resultCh:0xc0000a1020, ok:true
+021364 SAPL SC0 | applier | Sent result to resultCh: 0xc0000a1020
+021364 SAPL SC0 | applier | Waiting for message on applych: 0xc0003f6de0
+021365 QUER SC0 | Query | Sending reply to Clerk, resultCh: 0xc0000a1020, index: 31, config: {Num:3 Shards:[2 2 2 2 2 2 2 2 2 2] Groups:map[2:[a b c]]}
+021373 QUER SC0 | Query | Receieved start result from raft, index: 32
+021463 SAPL SC1 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Query OpNum:2 Client:0 Args:<nil>} CommandIndex:17 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+021466 SAQY SC1 | Apply Query | : {Err:OK Op:{OpType:Query OpNum:2 Client:0 Args:<nil>}}
+021463 SAPL SC0 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Query OpNum:3 Client:0 Args:<nil>} CommandIndex:32 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+021466 SAQY SC0 | Apply Query | : {Err:OK Op:{OpType:Query OpNum:3 Client:0 Args:<nil>}}
+021466 SAPL SC1 | Applier | After Apply, config:&{Num:3 Shards:[2 2 2 2 2 2 2 2 2 2] Groups:map[2:[a b c]]}, groups:{"2":["a","b","c"]}
+021467 SAPL SC1 | resultCh | resultCh:<nil>, ok:false
+021467 SAPL SC1 | applier | Waiting for message on applych: 0xc00020dd40
+021467 SAPL SC0 | Applier | After Apply, config:&{Num:3 Shards:[2 2 2 2 2 2 2 2 2 2] Groups:map[2:[a b c]]}, groups:{"2":["a","b","c"]}
+021467 SAPL SC0 | resultCh | resultCh:0xc0002e1e60, ok:true
+021467 SAPL SC0 | applier | Sent result to resultCh: 0xc0002e1e60
+021467 SAPL SC0 | applier | Waiting for message on applych: 0xc0003f6de0
+021467 QUER SC0 | Query | Sending reply to Clerk, resultCh: 0xc0002e1e60, index: 32, config: {Num:3 Shards:[2 2 2 2 2 2 2 2 2 2] Groups:map[2:[a b c]]}
+021473 SAJN SC2 | Apply Join | before balance config:&{Num:0 Shards:[0 0 0 0 0 0 0 0 0 0] Groups:map[]}, groups:{}
+021474 SAJN SC2 | Apply Join | maxGroup:0, minGroup:0
+021474 SAPL SC2 | applier | Waiting for message on applych: 0xc000023440
+  ... Passed
+Test: Move ...
+021493 JOIN SC0 | Join | Receieved start result from raft, servers: {"503":["3a","3b","3c"]}
+021573 SAPL SC1 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Query OpNum:0 Client:0 Args:<nil>} CommandIndex:18 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+021576 SAQY SC1 | Apply Query | : {Err:OK Op:{OpType:Query OpNum:0 Client:0 Args:<nil>}}
+021573 SAPL SC0 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Join OpNum:31 Client:1352681749166510257 Args:{Servers:map[503:[3a 3b 3c]] Client:1352681749166510257 OpNum:31}} CommandIndex:33 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+021576 SAJN SC0 | Apply Join | before balance config:&{Num:4 Shards:[2 2 2 2 2 2 2 2 2 2] Groups:map[2:[a b c] 503:[3a 3b 3c]]}, groups:{"2":["a","b","c"],"503":["3a","3b","3c"]}
+021577 SAJN SC0 | Apply Join | maxGroup:2, minGroup:503
+021577 SAJN SC0 | Apply Join | balancing config:&{Num:4 Shards:[503 2 2 2 2 2 2 2 2 2] Groups:map[2:[a b c] 503:[3a 3b 3c]]}, groups:{"2":["a","b","c"],"503":["3a","3b","3c"]}
+021577 SAJN SC0 | Apply Join | maxGroup:2, minGroup:503
+021574 SAPL SC2 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Query OpNum:-1 Client:0 Args:<nil>} CommandIndex:1 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+021578 SAQY SC2 | Apply Query | : {Err:OK Op:{OpType:Query OpNum:-1 Client:0 Args:<nil>}}
+021578 SAPL SC2 | Applier | After Apply, config:&{Num:0 Shards:[0 0 0 0 0 0 0 0 0 0] Groups:map[]}, groups:{}
+021578 SAPL SC2 | resultCh | resultCh:<nil>, ok:false
+021576 SAPL SC1 | Applier | After Apply, config:&{Num:3 Shards:[2 2 2 2 2 2 2 2 2 2] Groups:map[2:[a b c]]}, groups:{"2":["a","b","c"]}
+021578 SAPL SC1 | resultCh | resultCh:<nil>, ok:false
+021579 SAPL SC1 | applier | Waiting for message on applych: 0xc00020dd40
+021578 SAJN SC0 | Apply Join | balancing config:&{Num:4 Shards:[503 503 2 2 2 2 2 2 2 2] Groups:map[2:[a b c] 503:[3a 3b 3c]]}, groups:{"2":["a","b","c"],"503":["3a","3b","3c"]}
+021578 SAPL SC2 | applier | Waiting for message on applych: 0xc000023440
+021582 SAJN SC0 | Apply Join | maxGroup:2, minGroup:503
+021584 SAJN SC0 | Apply Join | balancing config:&{Num:4 Shards:[503 503 503 2 2 2 2 2 2 2] Groups:map[2:[a b c] 503:[3a 3b 3c]]}, groups:{"2":["a","b","c"],"503":["3a","3b","3c"]}
+021585 SAJN SC0 | Apply Join | maxGroup:2, minGroup:503
+021585 SAJN SC0 | Apply Join | balancing config:&{Num:4 Shards:[503 503 503 503 2 2 2 2 2 2] Groups:map[2:[a b c] 503:[3a 3b 3c]]}, groups:{"2":["a","b","c"],"503":["3a","3b","3c"]}
+021585 SAJN SC0 | Apply Join | maxGroup:2, minGroup:503
+021585 SAJN SC0 | Apply Join | balancing config:&{Num:4 Shards:[503 503 503 503 503 2 2 2 2 2] Groups:map[2:[a b c] 503:[3a 3b 3c]]}, groups:{"2":["a","b","c"],"503":["3a","3b","3c"]}
+021585 SAJN SC0 | Apply Join | maxGroup:2, minGroup:2
+021586 SAJN SC0 | Apply Join | result:{Err:OK Op:{OpType:Join OpNum:31 Client:1352681749166510257 Args:{Servers:map[503:[3a 3b 3c]] Client:1352681749166510257 OpNum:31}}}, config:&{Num:4 Shards:[503 503 503 503 503 2 2 2 2 2] Groups:map[2:[a b c] 503:[3a 3b 3c]]}
+021586 SAPL SC0 | Applier | After Apply, config:&{Num:4 Shards:[503 503 503 503 503 2 2 2 2 2] Groups:map[2:[a b c] 503:[3a 3b 3c]]}, groups:{"2":["a","b","c"],"503":["3a","3b","3c"]}
+021586 SAPL SC0 | resultCh | resultCh:0xc000023620, ok:true
+021586 SAPL SC0 | applier | Sent result to resultCh: 0xc000023620
+021587 SAPL SC0 | applier | Waiting for message on applych: 0xc0003f6de0
+021587 QUER SC0 | Join | Sending reply to Clerk, resultCh: 0xc000023620, index: 33
+021597 JOIN SC0 | Join | Receieved start result from raft, servers: {"504":["4a","4b","4c"]}
+021682 SAPL SC1 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Query OpNum:3 Client:0 Args:<nil>} CommandIndex:19 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+021685 SAQY SC1 | Apply Query | : {Err:OK Op:{OpType:Query OpNum:3 Client:0 Args:<nil>}}
+021685 SAPL SC1 | Applier | After Apply, config:&{Num:3 Shards:[2 2 2 2 2 2 2 2 2 2] Groups:map[2:[a b c]]}, groups:{"2":["a","b","c"]}
+021682 SAPL SC2 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Query OpNum:-1 Client:0 Args:<nil>} CommandIndex:2 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+021686 SAQY SC2 | Apply Query | : {Err:OK Op:{OpType:Query OpNum:-1 Client:0 Args:<nil>}}
+021683 SAPL SC0 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Join OpNum:32 Client:1352681749166510257 Args:{Servers:map[504:[4a 4b 4c]] Client:1352681749166510257 OpNum:32}} CommandIndex:34 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+021686 SAPL SC2 | Applier | After Apply, config:&{Num:0 Shards:[0 0 0 0 0 0 0 0 0 0] Groups:map[]}, groups:{}
+021687 SAPL SC2 | resultCh | resultCh:<nil>, ok:false
+021687 SAPL SC2 | applier | Waiting for message on applych: 0xc000023440
+021687 SAJN SC0 | Apply Join | before balance config:&{Num:5 Shards:[503 503 503 503 503 2 2 2 2 2] Groups:map[2:[a b c] 503:[3a 3b 3c] 504:[4a 4b 4c]]}, groups:{"2":["a","b","c"],"503":["3a","3b","3c"],"504":["4a","4b","4c"]}
+021687 SAJN SC0 | Apply Join | maxGroup:2, minGroup:504
+021687 SAJN SC0 | Apply Join | balancing config:&{Num:5 Shards:[503 503 503 503 503 504 2 2 2 2] Groups:map[2:[a b c] 503:[3a 3b 3c] 504:[4a 4b 4c]]}, groups:{"2":["a","b","c"],"503":["3a","3b","3c"],"504":["4a","4b","4c"]}
+021687 SAJN SC0 | Apply Join | maxGroup:503, minGroup:504
+021686 SAPL SC1 | resultCh | resultCh:<nil>, ok:false
+021688 SAPL SC1 | applier | Waiting for message on applych: 0xc00020dd40
+021688 SAJN SC0 | Apply Join | balancing config:&{Num:5 Shards:[504 503 503 503 503 504 2 2 2 2] Groups:map[2:[a b c] 503:[3a 3b 3c] 504:[4a 4b 4c]]}, groups:{"2":["a","b","c"],"503":["3a","3b","3c"],"504":["4a","4b","4c"]}
+021688 SAJN SC0 | Apply Join | maxGroup:2, minGroup:504
+021688 SAJN SC0 | Apply Join | balancing config:&{Num:5 Shards:[504 503 503 503 503 504 504 2 2 2] Groups:map[2:[a b c] 503:[3a 3b 3c] 504:[4a 4b 4c]]}, groups:{"2":["a","b","c"],"503":["3a","3b","3c"],"504":["4a","4b","4c"]}
+021688 SAJN SC0 | Apply Join | maxGroup:503, minGroup:2
+021688 SAJN SC0 | Apply Join | result:{Err:OK Op:{OpType:Join OpNum:32 Client:1352681749166510257 Args:{Servers:map[504:[4a 4b 4c]] Client:1352681749166510257 OpNum:32}}}, config:&{Num:5 Shards:[504 503 503 503 503 504 504 2 2 2] Groups:map[2:[a b c] 503:[3a 3b 3c] 504:[4a 4b 4c]]}
+021689 SAPL SC0 | Applier | After Apply, config:&{Num:5 Shards:[504 503 503 503 503 504 504 2 2 2] Groups:map[2:[a b c] 503:[3a 3b 3c] 504:[4a 4b 4c]]}, groups:{"2":["a","b","c"],"503":["3a","3b","3c"],"504":["4a","4b","4c"]}
+021689 SAPL SC0 | resultCh | resultCh:0xc000023a40, ok:true
+021689 SAPL SC0 | applier | Sent result to resultCh: 0xc000023a40
+021689 SAPL SC0 | applier | Waiting for message on applych: 0xc0003f6de0
+021689 QUER SC0 | Join | Sending reply to Clerk, resultCh: 0xc000023a40, index: 34
+021696 QUER SC0 | Query | Receieved start result from raft, index: 35
+021783 SAPL SC0 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Query OpNum:-1 Client:0 Args:<nil>} CommandIndex:35 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+021785 SAQY SC0 | Apply Query | : {Err:OK Op:{OpType:Query OpNum:-1 Client:0 Args:<nil>}}
+021786 SAPL SC0 | Applier | After Apply, config:&{Num:5 Shards:[504 503 503 503 503 504 504 2 2 2] Groups:map[2:[a b c] 503:[3a 3b 3c] 504:[4a 4b 4c]]}, groups:{"2":["a","b","c"],"503":["3a","3b","3c"],"504":["4a","4b","4c"]}
+021786 SAPL SC0 | resultCh | resultCh:0xc0000a0300, ok:true
+021786 SAPL SC0 | applier | Sent result to resultCh: 0xc0000a0300
+021787 SAPL SC0 | applier | Waiting for message on applych: 0xc0003f6de0
+021786 SAPL SC1 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Query OpNum:3 Client:0 Args:<nil>} CommandIndex:20 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+021787 SAQY SC1 | Apply Query | : {Err:OK Op:{OpType:Query OpNum:3 Client:0 Args:<nil>}}
+021787 QUER SC0 | Query | Sending reply to Clerk, resultCh: 0xc0000a0300, index: 35, config: {Num:5 Shards:[504 503 503 503 503 504 504 2 2 2] Groups:map[2:[a b c] 503:[3a 3b 3c] 504:[4a 4b 4c]]}
+021787 SAPL SC1 | Applier | After Apply, config:&{Num:3 Shards:[2 2 2 2 2 2 2 2 2 2] Groups:map[2:[a b c]]}, groups:{"2":["a","b","c"]}
+021792 SAPL SC1 | resultCh | resultCh:<nil>, ok:false
+021792 SAPL SC1 | applier | Waiting for message on applych: 0xc00020dd40
+021787 SAPL SC2 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Join OpNum:3 Client:1352681749166510257 Args:{Servers:map[1:[x y z]] Client:1352681749166510257 OpNum:3}} CommandIndex:3 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+021792 SAJN SC2 | Apply Join | result:{Err:OK Op:{OpType:Join OpNum:3 Client:1352681749166510257 Args:{Servers:map[1:[x y z]] Client:1352681749166510257 OpNum:3}}}, config:&{Num:1 Shards:[1 1 1 1 1 1 1 1 1 1] Groups:map[1:[x y z]]}
+021793 SAPL SC2 | Applier | After Apply, config:&{Num:1 Shards:[1 1 1 1 1 1 1 1 1 1] Groups:map[1:[x y z]]}, groups:{"1":["x","y","z"]}
+021793 SAPL SC2 | resultCh | resultCh:<nil>, ok:false
+021793 SAPL SC2 | applier | Waiting for message on applych: 0xc000023440
+021798 JOIN SC0 | Move | Receieved start result from raft, GID: 503
+021891 SAPL SC2 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Query OpNum:-1 Client:0 Args:<nil>} CommandIndex:4 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+021893 SAQY SC2 | Apply Query | : {Err:OK Op:{OpType:Query OpNum:-1 Client:0 Args:<nil>}}
+021894 SAPL SC2 | Applier | After Apply, config:&{Num:1 Shards:[1 1 1 1 1 1 1 1 1 1] Groups:map[1:[x y z]]}, groups:{"1":["x","y","z"]}
+021894 SAPL SC2 | resultCh | resultCh:<nil>, ok:false
+021894 SAPL SC2 | applier | Waiting for message on applych: 0xc000023440
+021891 SAPL SC1 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Query OpNum:0 Client:0 Args:<nil>} CommandIndex:21 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+021895 SAQY SC1 | Apply Query | : {Err:OK Op:{OpType:Query OpNum:0 Client:0 Args:<nil>}}
+021892 SAPL SC0 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Move OpNum:0 Client:0 Args:{Shard:0 GID:503 Client:0 OpNum:0}} CommandIndex:36 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+021896 SAPL SC1 | Applier | After Apply, config:&{Num:3 Shards:[2 2 2 2 2 2 2 2 2 2] Groups:map[2:[a b c]]}, groups:{"2":["a","b","c"]}
+021896 SAPL SC1 | resultCh | resultCh:<nil>, ok:false
+021896 SAPL SC1 | applier | Waiting for message on applych: 0xc00020dd40
+021896 SAMV SC0 | Apply Move | : {Err:OK Op:{OpType:Move OpNum:0 Client:0 Args:{Shard:0 GID:503 Client:0 OpNum:0}}}
+021900 SAPL SC0 | Applier | After Apply, config:&{Num:5 Shards:[504 503 503 503 503 504 504 2 2 2] Groups:map[2:[a b c] 503:[3a 3b 3c] 504:[4a 4b 4c]]}, groups:{"2":["a","b","c"],"503":["3a","3b","3c"],"504":["4a","4b","4c"]}
+021900 SAPL SC0 | resultCh | resultCh:0xc0001be300, ok:true
+021900 SAPL SC0 | applier | Sent result to resultCh: 0xc0001be300
+021901 SAPL SC0 | applier | Waiting for message on applych: 0xc0003f6de0
+021902 QUER SC0 | Move | Sending reply to Clerk, resultCh: 0xc0001be300, index: 36
+021913 QUER SC0 | Query | Receieved start result from raft, index: 37
+021993 SAPL SC0 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Query OpNum:-1 Client:0 Args:<nil>} CommandIndex:37 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+021995 SAQY SC0 | Apply Query | : {Err:OK Op:{OpType:Query OpNum:-1 Client:0 Args:<nil>}}
+021993 SAPL SC1 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Query OpNum:1 Client:0 Args:<nil>} CommandIndex:22 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+021996 SAQY SC1 | Apply Query | : {Err:OK Op:{OpType:Query OpNum:1 Client:0 Args:<nil>}}
+021996 SAPL SC1 | Applier | After Apply, config:&{Num:3 Shards:[2 2 2 2 2 2 2 2 2 2] Groups:map[2:[a b c]]}, groups:{"2":["a","b","c"]}
+021997 SAPL SC1 | resultCh | resultCh:<nil>, ok:false
+021997 SAPL SC1 | applier | Waiting for message on applych: 0xc00020dd40
+021993 SAPL SC2 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Query OpNum:-1 Client:0 Args:<nil>} CommandIndex:5 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+021997 SAQY SC2 | Apply Query | : {Err:OK Op:{OpType:Query OpNum:-1 Client:0 Args:<nil>}}
+021996 SAPL SC0 | Applier | After Apply, config:&{Num:5 Shards:[504 503 503 503 503 504 504 2 2 2] Groups:map[2:[a b c] 503:[3a 3b 3c] 504:[4a 4b 4c]]}, groups:{"2":["a","b","c"],"503":["3a","3b","3c"],"504":["4a","4b","4c"]}
+021998 SAPL SC0 | resultCh | resultCh:0xc0001be660, ok:true
+021998 SAPL SC0 | applier | Sent result to resultCh: 0xc0001be660
+021998 SAPL SC0 | applier | Waiting for message on applych: 0xc0003f6de0
+021997 SAPL SC2 | Applier | After Apply, config:&{Num:1 Shards:[1 1 1 1 1 1 1 1 1 1] Groups:map[1:[x y z]]}, groups:{"1":["x","y","z"]}
+021998 QUER SC0 | Query | Sending reply to Clerk, resultCh: 0xc0001be660, index: 37, config: {Num:5 Shards:[504 503 503 503 503 504 504 2 2 2] Groups:map[2:[a b c] 503:[3a 3b 3c] 504:[4a 4b 4c]]}
+021998 SAPL SC2 | resultCh | resultCh:<nil>, ok:false
+021999 SAPL SC2 | applier | Waiting for message on applych: 0xc000023440
+--- FAIL: TestBasic (2.20s)
+    test_test.go:152: Move should increase Config.Num
+FAIL
+exit status 1
+FAIL	6.5840/shardctrler	2.493s

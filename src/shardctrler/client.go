@@ -4,15 +4,14 @@ package shardctrler
 // Shardctrler clerk.
 //
 
-import "6.5840/labrpc"
-import "time"
-import "crypto/rand"
-import "math/big"
+import (
+	"crypto/rand"
+	"math/big"
+	"sync"
+	"time"
 
-type Clerk struct {
-	servers []*labrpc.ClientEnd
-	// Your data here.
-}
+	"6.5840/labrpc"
+)
 
 func nrand() int64 {
 	max := big.NewInt(int64(1) << 62)
@@ -21,17 +20,44 @@ func nrand() int64 {
 	return x
 }
 
+// ***************************************
+// ********         Clerk 		  ********
+// ***************************************
+
+type Clerk struct {
+	servers []*labrpc.ClientEnd
+	// Your data here.
+	me     int64
+	mu     sync.Mutex
+	leader int
+	opNum  int
+}
+
 func MakeClerk(servers []*labrpc.ClientEnd) *Clerk {
 	ck := new(Clerk)
 	ck.servers = servers
 	// Your code here.
+	ck.me = nrand()
+	ck.mu = sync.Mutex{}
+	ck.leader = 0
+	ck.opNum = 0
 	return ck
 }
 
+// ***************************************
+// **********    Query RPC    ************
+// ***************************************
+
 func (ck *Clerk) Query(num int) Config {
-	args := &QueryArgs{}
-	// Your code here.
-	args.Num = num
+	ck.mu.Lock()
+	ck.opNum += 1
+	args := &QueryArgs{
+		Num:    num,
+		Client: ck.me,
+		OpNum:  ck.opNum,
+	}
+	ck.mu.Unlock()
+
 	for {
 		// try each known server.
 		for _, srv := range ck.servers {
@@ -45,10 +71,19 @@ func (ck *Clerk) Query(num int) Config {
 	}
 }
 
+// ***************************************
+// ************    Join RPC    ***********
+// ***************************************
+
 func (ck *Clerk) Join(servers map[int][]string) {
-	args := &JoinArgs{}
-	// Your code here.
-	args.Servers = servers
+	ck.mu.Lock()
+	ck.opNum += 1
+	args := &JoinArgs{
+		Servers: servers,
+		Client:  ck.me,
+		OpNum:   ck.opNum,
+	}
+	ck.mu.Unlock()
 
 	for {
 		// try each known server.
@@ -62,6 +97,10 @@ func (ck *Clerk) Join(servers map[int][]string) {
 		time.Sleep(100 * time.Millisecond)
 	}
 }
+
+// ***************************************
+// ***********    Leave RPC    ***********
+// ***************************************
 
 func (ck *Clerk) Leave(gids []int) {
 	args := &LeaveArgs{}
@@ -80,6 +119,10 @@ func (ck *Clerk) Leave(gids []int) {
 		time.Sleep(100 * time.Millisecond)
 	}
 }
+
+// ***************************************
+// ***********    Move RPC    ************
+// ***************************************
 
 func (ck *Clerk) Move(shard int, gid int) {
 	args := &MoveArgs{}
