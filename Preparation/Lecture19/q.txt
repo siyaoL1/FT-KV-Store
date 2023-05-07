@@ -1,0 +1,1 @@
+I had a bit trouble understanding the consistency model discussed in the paper, specifically why is zookie a valid approach?

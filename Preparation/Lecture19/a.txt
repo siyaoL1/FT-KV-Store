@@ -1,0 +1,2 @@
+The order of magnitude difference might be due to some different reasons. For example, not all client requests might need a in-memory lookup such as if a client is currently holding permission of access in memory, it would not need to perform a in-memory lookup again for the access. 
+Another reason is that not all of the request are sent one by one. Multiple requests could be sent at once.
