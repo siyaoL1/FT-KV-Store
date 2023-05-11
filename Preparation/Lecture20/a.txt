@@ -1,0 +1,4 @@
+There could be issue of request ordering, message loss or delays, and increased network traffic.
+
+For example:
+When the primary node sends a PREPARE message for a client request with a specific sequence number, but some of the replicas are faulty and do not multicast COMMIT messages as expected. This could cause the remaining replicas to delay processing the request, potentially causing timeouts for the client and slowing down the system.

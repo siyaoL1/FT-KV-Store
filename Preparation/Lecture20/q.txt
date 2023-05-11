@@ -1,0 +1,1 @@
+How do we deal with lost messages in this case?

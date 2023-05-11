@@ -1,1 +1,3 @@
 This application seems to be pretty usful in terms of keeping data safe. Are there any company currently deploying similar protocols?
+
+I had a bit trouble understanding the consistency model discussed in the paper, specifically why is zookie a valid approach?
