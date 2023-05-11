@@ -1,0 +1,30 @@
+Test: static shards ...
+000018 KAPL KV0 | applier | Waiting for message on applych: 0xc0000225a0
+000019 KAPL KV0 | applier | Waiting for message on applych: 0xc0000226c0
+000032 KAPL KV1 | applier | Waiting for message on applych: 0xc000022720
+000361 KAPL KV1 | applier | Waiting for message on applych: 0xc000022600
+000487 KAPL KV2 | applier | Waiting for message on applych: 0xc000022780
+000863 KAPL KV0 | applier | Waiting for message on applych: 0xc0000227e0
+000966 KAPL KV2 | applier | Waiting for message on applych: 0xc000022660
+001216 KAPL KV1 | applier | Waiting for message on applych: 0xc000022840
+001556 KAPL KV2 | applier | Waiting for message on applych: 0xc0000228a0
+010531 CLRK C28 | PutAppend | key:0 | value:2aS9eNwEzzWyKQsOLejw | op:Put
+011412 KCFG KV2 | Config | Previous config: { Config Num: 0 , Shards: [0 0 0 0 0 0 0 0 0 0], Groups: null }, Current config: { Config Num: 1 , Shards: [100 100 100 100 100 100 100 100 100 100], Groups: {"100":["server-100-0","server-100-1","server-100-2"]} }, prevConfigNum: 0, currConfigNum: 1
+011784 KCFG KV1 | Config | Previous config: { Config Num: 0 , Shards: [0 0 0 0 0 0 0 0 0 0], Groups: null }, Current config: { Config Num: 2 , Shards: [101 101 101 101 101 100 100 100 100 100], Groups: {"100":["server-100-0","server-100-1","server-100-2"],"101":["server-101-0","server-101-1","server-101-2"]} }, prevConfigNum: 0, currConfigNum: 2
+013402 KCFG KV2 | Config | Previous config: { Config Num: 0 , Shards: [0 0 0 0 0 0 0 0 0 0], Groups: null }, Current config: { Config Num: 2 , Shards: [101 101 101 101 101 100 100 100 100 100], Groups: {"100":["server-100-0","server-100-1","server-100-2"],"101":["server-101-0","server-101-1","server-101-2"]} }, prevConfigNum: 0, currConfigNum: 2
+015959 KCFG KV2 | Config | Previous config: { Config Num: 1 , Shards: [100 100 100 100 100 100 100 100 100 100], Groups: {"100":["server-100-0","server-100-1","server-100-2"]} }, Current config: { Config Num: 2 , Shards: [101 101 101 101 101 100 100 100 100 100], Groups: {"100":["server-100-0","server-100-1","server-100-2"],"101":["server-101-0","server-101-1","server-101-2"]} }, prevConfigNum: 1, currConfigNum: 2
+015963 KP&A KV2 | PutAppend | Receieved start result from raft leader, index: 1
+015963 KP&A KV2 | resultCh | indexToCh:map[1:0xc0000cd8c0], index:1
+015965 KP&A KV2 | PutAppend | Start waiting for resultCh message
+016081 KAPL KV2 | applier | Received message from applyCh: {CommandValid:true Command:{OpType:Put Key:0 Value:2aS9eNwEzzWyKQsOLejw OpNum:1 Client:4511582102704975928} CommandIndex:1 SnapshotValid:false Snapshot:[] SnapshotTerm:0 SnapshotIndex:0}
+panic: assignment to entry in nil map
+
+goroutine 27 [running]:
+6.5840/shardkv.(*ShardKV).processCommandValid(0xc00012c540, {0x1, {0x1224580, 0xc0001e4a00}, 0x1, 0x0, {0x0, 0x0, 0x0}, 0x0, ...})
+	/Users/siyaoli/Workspace/Harvard/MIT6.5840/src/shardkv/server.go:221 +0x465
+6.5840/shardkv.(*ShardKV).applier(0xc00012c540)
+	/Users/siyaoli/Workspace/Harvard/MIT6.5840/src/shardkv/server.go:288 +0x225
+created by 6.5840/shardkv.StartServer
+	/Users/siyaoli/Workspace/Harvard/MIT6.5840/src/shardkv/server.go:411 +0x3f8
+exit status 2
+FAIL	6.5840/shardkv	1.863s

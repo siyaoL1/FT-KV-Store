@@ -1,0 +1,1 @@
+ fetch-modify consistency could be broke by a malicious server, but fork consistency would still be maintained. Because all updates are eventually seen by replicas, although some replicas do not perform fetch operations before modification.

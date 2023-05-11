@@ -41,6 +41,7 @@ KVTOPICS = {
     "KAPP": "#B49A67",
     "KAPA": "#8E8DBE",
     "KSNP": "#005E7C",
+    "KCFG": "#F2F79E",
 }
 
 SHARDCTLTOPICS = {

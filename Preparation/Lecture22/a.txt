@@ -1,0 +1,1 @@
+I tried to set up a Ethereum wallet using MetaMask. It is my first time using web3 related product so the initial passcode writing down experience is prety cool. However, I didn't get to actually make a smart transaction. 
