@@ -22,7 +22,9 @@ type logTopic string
 
 const (
 	// ShardKV
-	dKvConfig logTopic = "KCFG"
+	dKvConfig    logTopic = "KCFG"
+	dKvSendShard logTopic = "KSND"
+	dKvRecvShard logTopic = "KRCV"
 	// ShardCtrler
 	dScJoin    logTopic = "JOIN"
 	dScLeave   logTopic = "LEAV"

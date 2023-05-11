@@ -1,0 +1,7 @@
+Similar to Raft, the GroveKV system also follows the Primary Backup architecture.
+
+Based on the paper, upon receiving an operation, the primary executes it locally, and then replicates it to all backup servers before considering it committed and sending a reply to the client, as shown in Figure 2.
+
+Also, paper mentioned that it GroveKV requres primary to replicate the operation to all backups before replying to the client.
+
+This safely avoided the situation mentioned in the question, since the Put("x", "10") operation will already be blocked. Then no linearizability violation will happen if client decide to do a read on X.

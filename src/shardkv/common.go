@@ -48,3 +48,12 @@ type GetReply struct {
 	Err   Err
 	Value string
 }
+
+type MigrationArgs struct {
+	ShardIndex int
+	ShardState ShardState
+}
+
+type MigrationReply struct {
+	Err Err
+}

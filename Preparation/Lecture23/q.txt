@@ -1,0 +1,1 @@
+Are there other popular formal proofs of the distributed system that do not use leases?

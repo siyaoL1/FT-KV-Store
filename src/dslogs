@@ -31,6 +31,12 @@ RAFTTOPICS = {
     "TRCE": "#fe2626",    
 }
 
+SHARDKVTOPICS = {
+    # shardkv
+    "KSND": "#F2F79E",
+    "KRCV": "#B49A67",
+}
+
 KVTOPICS = {
     # kvraft
     "CLRK": "#B8D8D8",
@@ -61,7 +67,7 @@ SHARDCTLTOPICS = {
 
 # fmt: on
 
-TOPICS = {**RAFTTOPICS, **KVTOPICS, **SHARDCTLTOPICS}
+TOPICS = {**RAFTTOPICS, **KVTOPICS, **SHARDCTLTOPICS, **SHARDKVTOPICS}
 
 def list_topics(value: Optional[str]):
     if value is None:

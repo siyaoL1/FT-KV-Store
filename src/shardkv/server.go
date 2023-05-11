@@ -4,6 +4,8 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"strconv"
+	"strings"
 	"sync"
 	"sync/atomic"
 	"time"
@@ -23,6 +25,7 @@ type Op struct {
 	Value  string
 	OpNum  int
 	Client int64
+	Config shardctrler.Config
 }
 
 type Result struct {
@@ -46,15 +49,204 @@ type ShardKV struct {
 	shardCtrler *shardctrler.Clerk  // shardctrler clerk
 	indexToCh   map[int]chan Result // maps op index to channel
 
-	shardState map[int]ShardState // stores the state of each shard
-	validShard map[int]bool       // stores whether a shard is valid, i.e not migrating
-	config     shardctrler.Config // current config
+	shardState   map[int]ShardState // stores the state of each shard
+	shardsToSend []bool             // stores whether a shard needs to send to other groups
+	shardsToRecv []bool             // stores whether a shard needs to receive from other groups
+	config       shardctrler.Config // current config
 }
 
 type ShardState struct {
-	ShardIndex  int
+	ConfigNum   int
 	DataDict    map[string]string
 	LastCommand map[int64]int // stores OpNum of the last
+}
+
+// ***************************************
+// ************    Config    *************
+// ***************************************
+// Check if the current config is the same as the previous config
+func (kv *ShardKV) checkConfig() {
+	for !kv.killed() {
+
+		kv.mu.Lock()
+		prevConfig := kv.config
+		prevConfigNum := prevConfig.Num
+		_, isLeader := kv.rf.GetState()
+		kv.mu.Unlock()
+		if !isLeader {
+			continue
+		}
+		currConfig := kv.shardCtrler.Query(-1) // query the latest config
+		currConfigNum := currConfig.Num
+		if currConfigNum == prevConfigNum+1 && kv.finishedMigration() {
+			Debug(dKvConfig, "KV%v | Config | Previous config: %+v, Current config: %+v, prevConfigNum: %v, currConfigNum: %v\n", kv.me, String(prevConfig), String(currConfig), prevConfigNum, currConfigNum)
+			// send the config to raft
+			op := Op{OpType: "Config", Config: currConfig}
+			kv.rf.Start(op)
+		}
+
+		time.Sleep(100 * time.Millisecond)
+	}
+}
+
+// Update the shards based on the new config
+func (kv *ShardKV) updateShardsStatusL(prevConfig shardctrler.Config, currConfig shardctrler.Config) {
+	Debug(dKvConfig, "KV%v | UpdateShardsStatus | Previous config: %+v, Current config: %+v\n", kv.me, String(prevConfig), String(currConfig))
+	// Shards that are no longer in charge of
+	for shard, prevGid := range prevConfig.Shards {
+		currGid := currConfig.Shards[shard]
+		// if the shard is in the previous config, but not in the current config, then it needs to be sent
+		if prevGid == kv.gid && prevGid != currGid {
+			kv.shardsToSend[shard] = true
+		}
+	}
+
+	// Shards that need to be received
+	for shard, currGid := range currConfig.Shards {
+		prevGid := prevConfig.Shards[shard]
+		// if the shard is in the current config, but not in the previous config, then it needs to be received
+		if currGid == kv.gid && prevGid != currGid {
+			kv.shardsToRecv[shard] = true
+		}
+	}
+	Debug(dKvConfig, "KV%v | UpdateShardsStatus | shardsToSend: %v, shardsToRecv: %v\n", kv.me, String(kv.shardsToSend), String(kv.shardsToRecv))
+}
+
+// ***************************************
+// *********** Helper Function  **********
+// ***************************************
+// return the string representation of the data based on the type
+func String(data interface{}) string {
+	switch value := data.(type) {
+	case shardctrler.Config:
+		config := value
+		result := ""
+		result += fmt.Sprintf("{ Config Num: %v ", config.Num)
+		result += fmt.Sprintf(", Shards: %+v", config.Shards)
+		groups, _ := json.Marshal(config.Groups)
+		result += fmt.Sprintf(", Groups: %v }", string(groups))
+		return result
+	case []bool:
+		arr := value
+		strArr := make([]string, len(arr))
+		for i, v := range arr {
+			strArr[i] = strconv.FormatBool(v)
+		}
+		return fmt.Sprintf("{%v}", strings.Join(strArr, ", "))
+	default:
+		return ""
+	}
+}
+
+func copyShardState(shardState ShardState) ShardState {
+	copy := ShardState{
+		ConfigNum:   shardState.ConfigNum,
+		DataDict:    make(map[string]string),
+		LastCommand: make(map[int64]int),
+	}
+	for k, v := range shardState.DataDict {
+		copy.DataDict[k] = v
+	}
+	for k, v := range shardState.LastCommand {
+		copy.LastCommand[k] = v
+	}
+
+	return copy
+}
+
+// Check if a shard is currently valid for querying
+func (kv *ShardKV) isValid(key string) bool {
+	shard := key2shard(key)
+	// group is in charge of the shard && shard is not waiting to receive
+	return kv.config.Shards[shard] == kv.gid && !kv.shardsToRecv[shard]
+}
+
+// func (kv *ShardKV) inCharge(key string) bool {
+// 	shard := key2shard(key)
+// 	return kv.config.Shards[shard] == kv.gid
+// }
+
+func (kv *ShardKV) finishedMigration() bool {
+	for i := 0; i < shardctrler.NShards; i++ {
+		if kv.shardsToSend[i] || kv.shardsToRecv[i] {
+			return false
+		}
+	}
+
+	return true
+}
+
+// ***************************************
+// ********** Shards  Migration  *********
+// ***************************************
+func (kv *ShardKV) sendShards() {
+	for !kv.killed() {
+		kv.mu.Lock()
+		_, isLeader := kv.rf.GetState()
+		kv.mu.Unlock()
+		if !isLeader {
+			continue
+		}
+
+		// send shards to other groups
+		for shard, send := range kv.shardsToSend {
+			if send {
+				go kv.sendShard(shard)
+			}
+		}
+
+		time.Sleep(100 * time.Millisecond)
+	}
+}
+
+func (kv *ShardKV) sendShard(shard int) {
+	gid := kv.config.Shards[shard]
+
+	kv.mu.Lock()
+	shardState := kv.shardState[shard]
+	kv.mu.Unlock()
+
+	// Construct args and reply
+	args := &MigrationArgs{
+		ShardIndex: shard,
+		ShardState: copyShardState(shardState),
+	}
+	var reply MigrationReply
+
+	Debug(dKvSendShard, "KV%v | SendShard | Shard: %v, to: %v\n", kv.me, shard, gid)
+	for _, serverName := range kv.config.Groups[gid] {
+		// send shard to one server in the group
+		end := kv.make_end(serverName)
+		ok := end.Call("ShardKV.ReceiveShard", args, &reply)
+		// mark the shard as sent if the shard is successfully sent
+		if ok && reply.Err == OK {
+			kv.mu.Lock()
+			kv.shardsToSend[shard] = false
+			kv.mu.Unlock()
+		}
+
+	}
+
+}
+
+func (kv *ShardKV) ReceiveShard(args *MigrationArgs, reply *MigrationReply) {
+	if kv.killed() {
+		return
+	}
+
+	// check if the shard is valid
+	if args.ShardState.ConfigNum != kv.config.Num || kv.config.Shards[args.ShardIndex] != kv.gid {
+		*reply = MigrationReply{Err: ErrWrongGroup}
+		return
+	}
+
+	// update the shard state
+	kv.mu.Lock()
+	kv.shardState[args.ShardIndex] = args.ShardState
+	kv.shardsToRecv[args.ShardIndex] = false
+	kv.mu.Unlock()
+
+	*reply = MigrationReply{Err: OK}
 }
 
 // ***************************************
@@ -64,6 +256,12 @@ type ShardState struct {
 func (kv *ShardKV) Get(args *GetArgs, reply *GetReply) {
 	// Your code here.
 	if kv.killed() {
+		return
+	}
+
+	// config number is not updated or the shard is not valid for the group
+	if args.ConfigNum != kv.config.Num || !kv.isValid(args.Key) {
+		*reply = GetReply{Err: ErrWrongGroup}
 		return
 	}
 
@@ -123,8 +321,13 @@ func (kv *ShardKV) Get(args *GetArgs, reply *GetReply) {
 func (kv *ShardKV) PutAppend(args *PutAppendArgs, reply *PutAppendReply) {
 	// Debug(,"KV%v | PutAppend | Received RPC with args: %+v\n", kv.me, args)
 	// Your code here.
-
 	if kv.killed() {
+		return
+	}
+
+	// config number is not updated or the shard is not valid for the group
+	if args.ConfigNum != kv.config.Num || !kv.isValid(args.Key) {
+		*reply = PutAppendReply{Err: ErrWrongGroup}
 		return
 	}
 
@@ -242,7 +445,8 @@ func (kv *ShardKV) checkSnapshot(index int) {
 		w := new(bytes.Buffer)
 		e := labgob.NewEncoder(w)
 		e.Encode(kv.shardState)
-		e.Encode(kv.validShard)
+		e.Encode(kv.shardsToSend)
+		e.Encode(kv.shardsToRecv)
 		data := w.Bytes()
 		go kv.rf.Snapshot(index, data)
 		Debug(dKvSnap, "KV%v | Snapshot | Snapshoted, current Raft state size: %v\n", kv.me, index, data, kv.rf.GetStateSize())
@@ -257,7 +461,8 @@ func (kv *ShardKV) installSnapshot(snapshot []byte) {
 	r := bytes.NewBuffer(snapshot)
 	d := labgob.NewDecoder(r)
 	d.Decode(&kv.shardState)
-	d.Decode(&kv.validShard)
+	d.Decode(&kv.shardsToSend)
+	d.Decode(&kv.shardsToRecv)
 }
 
 // ***************************************
@@ -293,47 +498,6 @@ func (kv *ShardKV) applier() {
 		}
 	}
 }
-
-// ***************************************
-// ************    Config    *************
-// ***************************************
-func configString(config shardctrler.Config) string {
-	result := ""
-	result += fmt.Sprintf("{ Config Num: %v ", config.Num)
-	result += fmt.Sprintf(", Shards: %+v", config.Shards)
-	groups, _ := json.Marshal(config.Groups)
-	result += fmt.Sprintf(", Groups: %v }", string(groups))
-	return result
-}
-
-func (kv *ShardKV) checkConfig() {
-	for !kv.killed() {
-
-		kv.mu.Lock()
-		prevConfig := kv.config
-		prevConfigNum := prevConfig.Num
-		_, isLeader := kv.rf.GetState()
-		kv.mu.Unlock()
-		if !isLeader {
-			continue
-		}
-		currConfig := kv.shardCtrler.Query(-1) // query the latest config
-		currConfigNum := currConfig.Num
-		if currConfigNum > prevConfigNum {
-			Debug(dKvConfig, "KV%v | Config | Previous config: %+v, Current config: %+v, prevConfigNum: %v, currConfigNum: %v\n", kv.me, configString(prevConfig), configString(currConfig), prevConfigNum, currConfigNum)
-			kv.mu.Lock()
-			kv.config = currConfig
-			kv.mu.Unlock()
-			// kv.updateShards(currConfig)
-		}
-
-		time.Sleep(100 * time.Millisecond)
-	}
-}
-
-// func (kv *ShardKV) updateShards(currConfig shardctrler.Config) {
-
-// }
 
 // ***************************************
 // ************     Kill    *************
@@ -384,32 +548,41 @@ func StartServer(servers []*labrpc.ClientEnd, me int, persister *raft.Persister,
 	// call labgob.Register on structures you want
 	// Go's RPC library to marshall/unmarshall.
 	labgob.Register(Op{})
-
-	kv := new(ShardKV)
-	kv.me = me
-	kv.maxraftstate = maxraftstate
-	kv.make_end = make_end
-	kv.gid = gid
-	kv.ctrlers = ctrlers
-	kv.applyCh = make(chan raft.ApplyMsg)
-	kv.rf = raft.Make(servers, me, persister, kv.applyCh)
-
-	// Your initialization code here.
-	labgob.Register(Op{})
 	labgob.Register(Result{})
 	labgob.Register(PutAppendArgs{})
 	labgob.Register(PutAppendReply{})
 	labgob.Register(GetArgs{})
 	labgob.Register(GetReply{})
 
-	kv.dead = 0
-	kv.indexToCh = make(map[int]chan Result)
+	kv := new(ShardKV)
+	kv.mu = sync.Mutex{}
+	kv.me = me
+	kv.applyCh = make(chan raft.ApplyMsg)
+	kv.rf = raft.Make(servers, me, persister, kv.applyCh) //  order swapped due to dependency
+	kv.make_end = make_end
+	kv.gid = gid
+	kv.ctrlers = ctrlers
+	kv.maxraftstate = maxraftstate
 
-	// Use something like this to talk to the shardctrler:
+	// Your initialization code here.
+	kv.dead = 0
 	kv.shardCtrler = shardctrler.MakeClerk(kv.ctrlers)
+	kv.indexToCh = make(map[int]chan Result)
+	// init empty shard states
+	kv.shardState = make(map[int]ShardState)
+	for i := 0; i < shardctrler.NShards; i++ {
+		kv.shardState[i] = ShardState{ConfigNum: 0, DataDict: make(map[string]string), LastCommand: make(map[int64]int)}
+	}
+	// init empty migrating shards
+	kv.shardsToSend = make([]bool, shardctrler.NShards)
+	kv.shardsToRecv = make([]bool, shardctrler.NShards)
+	// init empty config
+	kv.config = shardctrler.Config{Num: 0, Shards: [shardctrler.NShards]int{}, Groups: map[int][]string{}}
+
 	kv.installSnapshot(persister.ReadSnapshot())
 	go kv.applier()
 	go kv.checkConfig()
+	go kv.sendShards()
 
 	return kv
 }
