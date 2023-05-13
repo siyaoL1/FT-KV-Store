@@ -16,6 +16,10 @@
      1. Reject all the queries when not all shards are sent and received.
 
 
+- Send raft the move shard op
+- Once received reply from raft saying the command is replicated,
+  - update shard data
+  - and also unset shardToRecv flag for the shard
 
 
 ## Question

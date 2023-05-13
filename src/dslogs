@@ -33,21 +33,25 @@ RAFTTOPICS = {
 
 SHARDKVTOPICS = {
     # shardkv
-    "KSND": "#F2F79E",
+    "KCFG": "#F2F79E",
+    "KSND": "#FD971F",
     "KRCV": "#B49A67",
-}
-
-KVTOPICS = {
-    # kvraft
-    "CLRK": "#B8D8D8",
+    "KAPC": "#70c43f",
+    "KUPD": "#d0b343",
+    "KAUP": "#00813c",
     "KGET": "#D8AA96",
     "KP&A": "#C7D3BF",
     "KAPL": "#F7B1AB",
     "KAPG": "#935FA7",
-    "KAPP": "#B49A67",
     "KAPA": "#8E8DBE",
     "KSNP": "#005E7C",
-    "KCFG": "#F2F79E",
+    "CLRK": "#B8D8D8",
+
+}
+
+KVTOPICS = {
+    # kvraft
+    # "KAPP": "#B49A67",
 }
 
 SHARDCTLTOPICS = {
@@ -108,7 +112,7 @@ def main(
             if topic not in topics:
                 continue
 
-            msg = " ".join(msg)
+            msg = " ".join(msg) + "\n"
 
             # Debug calls from the test suite aren't associated with
             # any particular peer. Otherwise we can treat second column
@@ -116,8 +120,11 @@ def main(
             if topic not in ["TEST", "CLRK"]:
                 if topic in RAFTTOPICS:
                     i = int(msg[1])
-                if topic in KVTOPICS or topic in SHARDCTLTOPICS:
+                if topic in SHARDCTLTOPICS:
                     i = int(msg[2])
+                if topic in SHARDKVTOPICS:
+                    i = int(msg[4]) * 3 + int(msg[6])
+
 
             # Colorize output by using rich syntax when needed
             if colorize and topic in TOPICS:

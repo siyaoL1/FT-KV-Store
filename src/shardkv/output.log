@@ -1,26 +1,688 @@
 Test: static shards ...
-000019 KAPL KV0 | applier | Waiting for message on applych: 0xc0000225a0
-000036 KAPL KV1 | applier | Waiting for message on applych: 0xc000022840
-000245 KAPL KV2 | applier | Waiting for message on applych: 0xc000022780
-000245 KAPL KV2 | applier | Waiting for message on applych: 0xc0000228a0
-000247 KAPL KV1 | applier | Waiting for message on applych: 0xc000022600
-000856 KAPL KV2 | applier | Waiting for message on applych: 0xc000022660
-000974 KAPL KV0 | applier | Waiting for message on applych: 0xc0000227e0
-001350 KAPL KV0 | applier | Waiting for message on applych: 0xc0000226c0
-001943 KAPL KV1 | applier | Waiting for message on applych: 0xc000022720
-008120 CLRK C41 | PutAppend | key:0 | value:cueT6u2-O4E7yH2qiu0h | op:Put
-008364 KCFG KV1 | Config | Previous config: { Config Num: 0 , Shards: [0 0 0 0 0 0 0 0 0 0], Groups: {} }, Current config: { Config Num: 1 , Shards: [100 100 100 100 100 100 100 100 100 100], Groups: {"100":["server-100-0","server-100-1","server-100-2"]} }, prevConfigNum: 0, currConfigNum: 1
-010315 KCFG KV1 | Config | Previous config: { Config Num: 1 , Shards: [100 100 100 100 100 100 100 100 100 100], Groups: {"100":["server-100-0","server-100-1","server-100-2"]} }, Current config: { Config Num: 2 , Shards: [101 101 101 101 101 100 100 100 100 100], Groups: {"100":["server-100-0","server-100-1","server-100-2"],"101":["server-101-0","server-101-1","server-101-2"]} }, prevConfigNum: 1, currConfigNum: 2
-010316 KCFG KV1 | UpdateShardsStatus | Previous config: { Config Num: 1 , Shards: [100 100 100 100 100 100 100 100 100 100], Groups: {"100":["server-100-0","server-100-1","server-100-2"]} }, Current config: { Config Num: 2 , Shards: [101 101 101 101 101 100 100 100 100 100], Groups: {"100":["server-100-0","server-100-1","server-100-2"],"101":["server-101-0","server-101-1","server-101-2"]} }
-010316 KCFG KV1 | UpdateShardsStatus | shardsToSend: {true, true, true, true, true, false, false, false, false, false}, shardsToRecv: {false, false, false, false, false, false, false, false, false, false}
-011301 KSND KV1 | SendShard | Shard: 4, to: 101
-011302 INFO KV1 | SendShard | len(ctrlers): 3
-panic: runtime error: index out of range [101] with length 3
-
-goroutine 433 [running]:
-6.5840/shardkv.(*ShardKV).sendShard(0xc000138600, 0x4)
-	/Users/siyaoli/Workspace/Harvard/MIT6.5840/src/shardkv/server.go:219 +0x4d1
-created by 6.5840/shardkv.(*ShardKV).sendShards
-	/Users/siyaoli/Workspace/Harvard/MIT6.5840/src/shardkv/server.go:196 +0x119
-exit status 2
-FAIL	6.5840/shardkv	1.399s
+007064 CLRK C33 | PutAppend | Request key:0, value:VAuklCRtuMeqd-jFU7OC, op:Put, opNum: 1, shard:8
+007342 KCFG KV101-1 | Config | Config Outdated. Previous config: {ConfigNum: 0 , Shards: [0 0 0 0 0 0 0 0 0 0], Groups: map[]}, Current config: {ConfigNum: 1 , Shards: [100 100 100 100 100 100 100 100 100 100], Groups: map[100:[server-100-0 server-100-1 server-100-2]]}, prevConfigNum: 0, currConfigNum: 1
+007344 KCFG KV101-1 | Config | Receieved raft start() result, index: 1
+007344 KCFG KV101-1 | Config | Waiting for raft apply result from resultCh: 0xc00008c8a0
+007396 KAPL KV101-1 | applier | Received message from applyCh: { OpType: Config, Config: {ConfigNum: 1 , Shards: [100 100 100 100 100 100 100 100 100 100], Groups: map[100:[server-100-0 server-100-1 server-100-2]]} }
+007396 KAPC KV101-1 | Apply Config | config, old: {ConfigNum: 0 , Shards: [0 0 0 0 0 0 0 0 0 0], Groups: map[]}, new: {ConfigNum: 1 , Shards: [100 100 100 100 100 100 100 100 100 100], Groups: map[100:[server-100-0 server-100-1 server-100-2]]}
+007399 KCFG KV101-1 | Config | Updated config from {ConfigNum: 0 , Shards: [0 0 0 0 0 0 0 0 0 0], Groups: map[]} to {ConfigNum: 1 , Shards: [100 100 100 100 100 100 100 100 100 100], Groups: map[100:[server-100-0 server-100-1 server-100-2]]}, shardsToRecv: {false, false, false, false, false, false, false, false, false, false}
+007478 KCFG KV101-1 | Config | Config Outdated. Previous config: {ConfigNum: 1 , Shards: [100 100 100 100 100 100 100 100 100 100], Groups: map[100:[server-100-0 server-100-1 server-100-2]]}, Current config: {ConfigNum: 2 , Shards: [101 101 101 101 101 100 100 100 100 100], Groups: map[100:[server-100-0 server-100-1 server-100-2] 101:[server-101-0 server-101-1 server-101-2]]}, prevConfigNum: 1, currConfigNum: 2
+007481 KCFG KV101-1 | Config | Receieved raft start() result, index: 2
+007481 KCFG KV101-1 | Config | Waiting for raft apply result from resultCh: 0xc00008cba0
+007495 KAPL KV101-1 | applier | Received message from applyCh: { OpType: Config, Config: {ConfigNum: 2 , Shards: [101 101 101 101 101 100 100 100 100 100], Groups: map[100:[server-100-0 server-100-1 server-100-2] 101:[server-101-0 server-101-1 server-101-2]]} }
+007495 KAPC KV101-1 | Apply Config | config, old: {ConfigNum: 1 , Shards: [100 100 100 100 100 100 100 100 100 100], Groups: map[100:[server-100-0 server-100-1 server-100-2]]}, new: {ConfigNum: 2 , Shards: [101 101 101 101 101 100 100 100 100 100], Groups: map[100:[server-100-0 server-100-1 server-100-2] 101:[server-101-0 server-101-1 server-101-2]]}
+007496 KCFG KV101-1 | UpdateShardsStatus | shardsToRecv: {true, true, true, true, true, false, false, false, false, false}
+007496 KCFG KV101-1 | Config | Updated config from {ConfigNum: 1 , Shards: [100 100 100 100 100 100 100 100 100 100], Groups: map[100:[server-100-0 server-100-1 server-100-2]]} to {ConfigNum: 2 , Shards: [101 101 101 101 101 100 100 100 100 100], Groups: map[100:[server-100-0 server-100-1 server-100-2] 101:[server-101-0 server-101-1 server-101-2]]}, shardsToRecv: {true, true, true, true, true, false, false, false, false, false}
+007576 KAPL KV101-2 | applier | Received message from applyCh: { OpType: Config, Config: {ConfigNum: 1 , Shards: [100 100 100 100 100 100 100 100 100 100], Groups: map[100:[server-100-0 server-100-1 server-100-2]]} }
+007578 KAPC KV101-2 | Apply Config | config, old: {ConfigNum: 0 , Shards: [0 0 0 0 0 0 0 0 0 0], Groups: map[]}, new: {ConfigNum: 1 , Shards: [100 100 100 100 100 100 100 100 100 100], Groups: map[100:[server-100-0 server-100-1 server-100-2]]}
+007577 KAPL KV101-0 | applier | Received message from applyCh: { OpType: Config, Config: {ConfigNum: 1 , Shards: [100 100 100 100 100 100 100 100 100 100], Groups: map[100:[server-100-0 server-100-1 server-100-2]]} }
+007582 KAPC KV101-0 | Apply Config | config, old: {ConfigNum: 0 , Shards: [0 0 0 0 0 0 0 0 0 0], Groups: map[]}, new: {ConfigNum: 1 , Shards: [100 100 100 100 100 100 100 100 100 100], Groups: map[100:[server-100-0 server-100-1 server-100-2]]}
+007679 KAPL KV101-0 | applier | Received message from applyCh: { OpType: Config, Config: {ConfigNum: 2 , Shards: [101 101 101 101 101 100 100 100 100 100], Groups: map[100:[server-100-0 server-100-1 server-100-2] 101:[server-101-0 server-101-1 server-101-2]]} }
+007683 KAPC KV101-0 | Apply Config | config, old: {ConfigNum: 1 , Shards: [100 100 100 100 100 100 100 100 100 100], Groups: map[100:[server-100-0 server-100-1 server-100-2]]}, new: {ConfigNum: 2 , Shards: [101 101 101 101 101 100 100 100 100 100], Groups: map[100:[server-100-0 server-100-1 server-100-2] 101:[server-101-0 server-101-1 server-101-2]]}
+007683 KCFG KV101-0 | UpdateShardsStatus | shardsToRecv: {true, true, true, true, true, false, false, false, false, false}
+007685 KAPL KV101-2 | applier | Received message from applyCh: { OpType: Config, Config: {ConfigNum: 2 , Shards: [101 101 101 101 101 100 100 100 100 100], Groups: map[100:[server-100-0 server-100-1 server-100-2] 101:[server-101-0 server-101-1 server-101-2]]} }
+007686 KAPC KV101-2 | Apply Config | config, old: {ConfigNum: 1 , Shards: [100 100 100 100 100 100 100 100 100 100], Groups: map[100:[server-100-0 server-100-1 server-100-2]]}, new: {ConfigNum: 2 , Shards: [101 101 101 101 101 100 100 100 100 100], Groups: map[100:[server-100-0 server-100-1 server-100-2] 101:[server-101-0 server-101-1 server-101-2]]}
+007686 KCFG KV101-2 | UpdateShardsStatus | shardsToRecv: {true, true, true, true, true, false, false, false, false, false}
+008115 KP&A KV100-0 | PutAppend | Replying ErrWrongGroup, args: {Key:0 Value:VAuklCRtuMeqd-jFU7OC Op:Put Client:1919568453260478433 OpNum:1}, shard: 8
+009178 KP&A KV100-0 | PutAppend | Replying ErrWrongGroup, args: {Key:0 Value:VAuklCRtuMeqd-jFU7OC Op:Put Client:1919568453260478433 OpNum:1}, shard: 8
+010247 KP&A KV100-0 | PutAppend | Replying ErrWrongGroup, args: {Key:0 Value:VAuklCRtuMeqd-jFU7OC Op:Put Client:1919568453260478433 OpNum:1}, shard: 8
+011418 KP&A KV100-0 | PutAppend | Replying ErrWrongGroup, args: {Key:0 Value:VAuklCRtuMeqd-jFU7OC Op:Put Client:1919568453260478433 OpNum:1}, shard: 8
+011748 KCFG KV102-0 | Config | Config Outdated. Previous config: {ConfigNum: 0 , Shards: [0 0 0 0 0 0 0 0 0 0], Groups: map[]}, Current config: {ConfigNum: 1 , Shards: [100 100 100 100 100 100 100 100 100 100], Groups: map[100:[server-100-0 server-100-1 server-100-2]]}, prevConfigNum: 0, currConfigNum: 1
+011749 KCFG KV102-0 | Config | Receieved raft start() result, index: 1
+011750 KCFG KV102-0 | Config | Waiting for raft apply result from resultCh: 0xc000022e40
+011840 KAPL KV102-0 | applier | Received message from applyCh: { OpType: Config, Config: {ConfigNum: 1 , Shards: [100 100 100 100 100 100 100 100 100 100], Groups: map[100:[server-100-0 server-100-1 server-100-2]]} }
+011842 KAPC KV102-0 | Apply Config | config, old: {ConfigNum: 0 , Shards: [0 0 0 0 0 0 0 0 0 0], Groups: map[]}, new: {ConfigNum: 1 , Shards: [100 100 100 100 100 100 100 100 100 100], Groups: map[100:[server-100-0 server-100-1 server-100-2]]}
+011843 KCFG KV102-0 | Config | Updated config from {ConfigNum: 0 , Shards: [0 0 0 0 0 0 0 0 0 0], Groups: map[]} to {ConfigNum: 1 , Shards: [100 100 100 100 100 100 100 100 100 100], Groups: map[100:[server-100-0 server-100-1 server-100-2]]}, shardsToRecv: {false, false, false, false, false, false, false, false, false, false}
+011942 KCFG KV102-0 | Config | Config Outdated. Previous config: {ConfigNum: 1 , Shards: [100 100 100 100 100 100 100 100 100 100], Groups: map[100:[server-100-0 server-100-1 server-100-2]]}, Current config: {ConfigNum: 2 , Shards: [101 101 101 101 101 100 100 100 100 100], Groups: map[100:[server-100-0 server-100-1 server-100-2] 101:[server-101-0 server-101-1 server-101-2]]}, prevConfigNum: 1, currConfigNum: 2
+011944 KCFG KV102-0 | Config | Receieved raft start() result, index: 2
+011944 KCFG KV102-0 | Config | Waiting for raft apply result from resultCh: 0xc0002cb080
+012065 KAPL KV102-1 | applier | Received message from applyCh: { OpType: Config, Config: {ConfigNum: 1 , Shards: [100 100 100 100 100 100 100 100 100 100], Groups: map[100:[server-100-0 server-100-1 server-100-2]]} }
+012066 KAPC KV102-1 | Apply Config | config, old: {ConfigNum: 0 , Shards: [0 0 0 0 0 0 0 0 0 0], Groups: map[]}, new: {ConfigNum: 1 , Shards: [100 100 100 100 100 100 100 100 100 100], Groups: map[100:[server-100-0 server-100-1 server-100-2]]}
+012068 KAPL KV102-0 | applier | Received message from applyCh: { OpType: Config, Config: {ConfigNum: 2 , Shards: [101 101 101 101 101 100 100 100 100 100], Groups: map[100:[server-100-0 server-100-1 server-100-2] 101:[server-101-0 server-101-1 server-101-2]]} }
+012069 KAPC KV102-0 | Apply Config | config, old: {ConfigNum: 1 , Shards: [100 100 100 100 100 100 100 100 100 100], Groups: map[100:[server-100-0 server-100-1 server-100-2]]}, new: {ConfigNum: 2 , Shards: [101 101 101 101 101 100 100 100 100 100], Groups: map[100:[server-100-0 server-100-1 server-100-2] 101:[server-101-0 server-101-1 server-101-2]]}
+012069 KCFG KV102-0 | UpdateShardsStatus | shardsToRecv: {false, false, false, false, false, false, false, false, false, false}
+012069 KSND KV101-1 | RequestShard | Requesting Shard: 3, from: 100
+012070 KAPL KV102-2 | applier | Received message from applyCh: { OpType: Config, Config: {ConfigNum: 1 , Shards: [100 100 100 100 100 100 100 100 100 100], Groups: map[100:[server-100-0 server-100-1 server-100-2]]} }
+012070 KAPC KV102-2 | Apply Config | config, old: {ConfigNum: 0 , Shards: [0 0 0 0 0 0 0 0 0 0], Groups: map[]}, new: {ConfigNum: 1 , Shards: [100 100 100 100 100 100 100 100 100 100], Groups: map[100:[server-100-0 server-100-1 server-100-2]]}
+012064 KSND KV101-1 | RequestShard | Requesting Shard: 4, from: 100
+012072 KSND KV101-1 | RequestShard | Sending request for shard: 3 to 100-server-100-0
+012072 KCFG KV102-0 | Config | Updated config from {ConfigNum: 1 , Shards: [100 100 100 100 100 100 100 100 100 100], Groups: map[100:[server-100-0 server-100-1 server-100-2]]} to {ConfigNum: 2 , Shards: [101 101 101 101 101 100 100 100 100 100], Groups: map[100:[server-100-0 server-100-1 server-100-2] 101:[server-101-0 server-101-1 server-101-2]]}, shardsToRecv: {false, false, false, false, false, false, false, false, false, false}
+012068 KSND KV101-1 | RequestShard | Requesting Shard: 2, from: 100
+012075 KSND KV101-1 | RequestShard | Sending request for shard: 2 to 100-server-100-0
+012067 KSND KV101-1 | RequestShard | Requesting Shard: 1, from: 100
+012077 KSND KV101-1 | RequestShard | Sending request for shard: 1 to 100-server-100-0
+012079 KSND KV101-1 | RequestShard | Sending request for shard: 3 to 100-server-100-1
+012080 KSND KV101-1 | RequestShard | Sending request for shard: 1 to 100-server-100-1
+012080 KSND KV100-1 | RequestShard | ConfigNum: 2 is not valid, current ConfigNum: 0
+labgob warning: Decoding into a non-default variable/field Err may not work
+012081 KSND KV100-1 | RequestShard | ConfigNum: 2 is not valid, current ConfigNum: 0
+012085 KSND KV101-1 | RequestShard | Sending request for shard: 1 to 100-server-100-2
+012085 KSND KV101-1 | RequestShard | Sending request for shard: 4 to 100-server-100-0
+012082 KSND KV101-1 | RequestShard | Sending request for shard: 3 to 100-server-100-2
+012088 KSND KV101-1 | RequestShard | Sending request for shard: 4 to 100-server-100-1
+012089 KSND KV100-1 | RequestShard | ConfigNum: 2 is not valid, current ConfigNum: 0
+012083 KSND KV101-1 | RequestShard | Sending request for shard: 2 to 100-server-100-1
+012090 KSND KV101-1 | RequestShard | Sending request for shard: 4 to 100-server-100-2
+012090 KSND KV100-1 | RequestShard | ConfigNum: 2 is not valid, current ConfigNum: 0
+012091 KSND KV101-1 | RequestShard | Sending request for shard: 2 to 100-server-100-2
+012083 KSND KV101-1 | RequestShard | Requesting Shard: 0, from: 100
+012093 KSND KV101-1 | RequestShard | Sending request for shard: 0 to 100-server-100-0
+012095 KSND KV101-1 | RequestShard | Sending request for shard: 0 to 100-server-100-1
+012096 KSND KV100-1 | RequestShard | ConfigNum: 2 is not valid, current ConfigNum: 0
+012097 KSND KV101-1 | RequestShard | Sending request for shard: 0 to 100-server-100-2
+012160 KCFG KV100-1 | Config | Config Outdated. Previous config: {ConfigNum: 0 , Shards: [0 0 0 0 0 0 0 0 0 0], Groups: map[]}, Current config: {ConfigNum: 1 , Shards: [100 100 100 100 100 100 100 100 100 100], Groups: map[100:[server-100-0 server-100-1 server-100-2]]}, prevConfigNum: 0, currConfigNum: 1
+012165 KCFG KV100-1 | Config | Receieved raft start() result, index: 1
+012165 KCFG KV100-1 | Config | Waiting for raft apply result from resultCh: 0xc00048df20
+012165 KAPL KV102-1 | applier | Received message from applyCh: { OpType: Config, Config: {ConfigNum: 2 , Shards: [101 101 101 101 101 100 100 100 100 100], Groups: map[100:[server-100-0 server-100-1 server-100-2] 101:[server-101-0 server-101-1 server-101-2]]} }
+012166 KAPC KV102-1 | Apply Config | config, old: {ConfigNum: 1 , Shards: [100 100 100 100 100 100 100 100 100 100], Groups: map[100:[server-100-0 server-100-1 server-100-2]]}, new: {ConfigNum: 2 , Shards: [101 101 101 101 101 100 100 100 100 100], Groups: map[100:[server-100-0 server-100-1 server-100-2] 101:[server-101-0 server-101-1 server-101-2]]}
+012166 KCFG KV102-1 | UpdateShardsStatus | shardsToRecv: {false, false, false, false, false, false, false, false, false, false}
+012170 KAPL KV102-2 | applier | Received message from applyCh: { OpType: Config, Config: {ConfigNum: 2 , Shards: [101 101 101 101 101 100 100 100 100 100], Groups: map[100:[server-100-0 server-100-1 server-100-2] 101:[server-101-0 server-101-1 server-101-2]]} }
+012170 KAPC KV102-2 | Apply Config | config, old: {ConfigNum: 1 , Shards: [100 100 100 100 100 100 100 100 100 100], Groups: map[100:[server-100-0 server-100-1 server-100-2]]}, new: {ConfigNum: 2 , Shards: [101 101 101 101 101 100 100 100 100 100], Groups: map[100:[server-100-0 server-100-1 server-100-2] 101:[server-101-0 server-101-1 server-101-2]]}
+012171 KCFG KV102-2 | UpdateShardsStatus | shardsToRecv: {false, false, false, false, false, false, false, false, false, false}
+012175 KAPL KV100-2 | applier | Received message from applyCh: { OpType: Config, Config: {ConfigNum: 1 , Shards: [100 100 100 100 100 100 100 100 100 100], Groups: map[100:[server-100-0 server-100-1 server-100-2]]} }
+012176 KAPC KV100-2 | Apply Config | config, old: {ConfigNum: 0 , Shards: [0 0 0 0 0 0 0 0 0 0], Groups: map[]}, new: {ConfigNum: 1 , Shards: [100 100 100 100 100 100 100 100 100 100], Groups: map[100:[server-100-0 server-100-1 server-100-2]]}
+012176 KAPL KV100-1 | applier | Received message from applyCh: { OpType: Config, Config: {ConfigNum: 1 , Shards: [100 100 100 100 100 100 100 100 100 100], Groups: map[100:[server-100-0 server-100-1 server-100-2]]} }
+012176 KAPC KV100-1 | Apply Config | config, old: {ConfigNum: 0 , Shards: [0 0 0 0 0 0 0 0 0 0], Groups: map[]}, new: {ConfigNum: 1 , Shards: [100 100 100 100 100 100 100 100 100 100], Groups: map[100:[server-100-0 server-100-1 server-100-2]]}
+012177 KCFG KV100-1 | Config | Updated config from {ConfigNum: 0 , Shards: [0 0 0 0 0 0 0 0 0 0], Groups: map[]} to {ConfigNum: 1 , Shards: [100 100 100 100 100 100 100 100 100 100], Groups: map[100:[server-100-0 server-100-1 server-100-2]]}, shardsToRecv: {false, false, false, false, false, false, false, false, false, false}
+012278 KAPL KV100-0 | applier | Received message from applyCh: { OpType: Config, Config: {ConfigNum: 1 , Shards: [100 100 100 100 100 100 100 100 100 100], Groups: map[100:[server-100-0 server-100-1 server-100-2]]} }
+012280 KAPC KV100-0 | Apply Config | config, old: {ConfigNum: 0 , Shards: [0 0 0 0 0 0 0 0 0 0], Groups: map[]}, new: {ConfigNum: 1 , Shards: [100 100 100 100 100 100 100 100 100 100], Groups: map[100:[server-100-0 server-100-1 server-100-2]]}
+012470 KCFG KV100-1 | Config | Config Outdated. Previous config: {ConfigNum: 1 , Shards: [100 100 100 100 100 100 100 100 100 100], Groups: map[100:[server-100-0 server-100-1 server-100-2]]}, Current config: {ConfigNum: 2 , Shards: [101 101 101 101 101 100 100 100 100 100], Groups: map[100:[server-100-0 server-100-1 server-100-2] 101:[server-101-0 server-101-1 server-101-2]]}, prevConfigNum: 1, currConfigNum: 2
+012472 KCFG KV100-1 | Config | Receieved raft start() result, index: 2
+012472 KCFG KV100-1 | Config | Waiting for raft apply result from resultCh: 0xc00026e900
+012481 KAPL KV100-1 | applier | Received message from applyCh: { OpType: Config, Config: {ConfigNum: 2 , Shards: [101 101 101 101 101 100 100 100 100 100], Groups: map[100:[server-100-0 server-100-1 server-100-2] 101:[server-101-0 server-101-1 server-101-2]]} }
+012482 KAPC KV100-1 | Apply Config | config, old: {ConfigNum: 1 , Shards: [100 100 100 100 100 100 100 100 100 100], Groups: map[100:[server-100-0 server-100-1 server-100-2]]}, new: {ConfigNum: 2 , Shards: [101 101 101 101 101 100 100 100 100 100], Groups: map[100:[server-100-0 server-100-1 server-100-2] 101:[server-101-0 server-101-1 server-101-2]]}
+012483 KCFG KV100-1 | UpdateShardsStatus | shardsToRecv: {false, false, false, false, false, false, false, false, false, false}
+012483 KCFG KV100-1 | Config | Updated config from {ConfigNum: 1 , Shards: [100 100 100 100 100 100 100 100 100 100], Groups: map[100:[server-100-0 server-100-1 server-100-2]]} to {ConfigNum: 2 , Shards: [101 101 101 101 101 100 100 100 100 100], Groups: map[100:[server-100-0 server-100-1 server-100-2] 101:[server-101-0 server-101-1 server-101-2]]}, shardsToRecv: {false, false, false, false, false, false, false, false, false, false}
+012576 KP&A KV100-1 | PutAppend | Receieved start result from raft leader, index: 3
+012588 KAPL KV100-2 | applier | Received message from applyCh: { OpType: Config, Config: {ConfigNum: 2 , Shards: [101 101 101 101 101 100 100 100 100 100], Groups: map[100:[server-100-0 server-100-1 server-100-2] 101:[server-101-0 server-101-1 server-101-2]]} }
+012588 KAPC KV100-2 | Apply Config | config, old: {ConfigNum: 1 , Shards: [100 100 100 100 100 100 100 100 100 100], Groups: map[100:[server-100-0 server-100-1 server-100-2]]}, new: {ConfigNum: 2 , Shards: [101 101 101 101 101 100 100 100 100 100], Groups: map[100:[server-100-0 server-100-1 server-100-2] 101:[server-101-0 server-101-1 server-101-2]]}
+012588 KCFG KV100-2 | UpdateShardsStatus | shardsToRecv: {false, false, false, false, false, false, false, false, false, false}
+012588 KAPL KV100-0 | applier | Received message from applyCh: { OpType: Config, Config: {ConfigNum: 2 , Shards: [101 101 101 101 101 100 100 100 100 100], Groups: map[100:[server-100-0 server-100-1 server-100-2] 101:[server-101-0 server-101-1 server-101-2]]} }
+012589 KAPC KV100-0 | Apply Config | config, old: {ConfigNum: 1 , Shards: [100 100 100 100 100 100 100 100 100 100], Groups: map[100:[server-100-0 server-100-1 server-100-2]]}, new: {ConfigNum: 2 , Shards: [101 101 101 101 101 100 100 100 100 100], Groups: map[100:[server-100-0 server-100-1 server-100-2] 101:[server-101-0 server-101-1 server-101-2]]}
+012589 KCFG KV100-0 | UpdateShardsStatus | shardsToRecv: {false, false, false, false, false, false, false, false, false, false}
+012688 KAPL KV100-2 | applier | Received message from applyCh: { OpType: Put, Key: 0, Value: VAuklCRtuMeqd-jFU7OC, OpNum: 1, Client: 1919568453260478433 }
+012689 KAPA KV100-2 | Apply Put/Append | key: 0, value: VAuklCRtuMeqd-jFU7OC dataDict: map[0:VAuklCRtuMeqd-jFU7OC]
+012690 KAPL KV100-0 | applier | Received message from applyCh: { OpType: Put, Key: 0, Value: VAuklCRtuMeqd-jFU7OC, OpNum: 1, Client: 1919568453260478433 }
+012690 KAPA KV100-0 | Apply Put/Append | key: 0, value: VAuklCRtuMeqd-jFU7OC dataDict: map[0:VAuklCRtuMeqd-jFU7OC]
+012697 KAPL KV100-1 | applier | Received message from applyCh: { OpType: Put, Key: 0, Value: VAuklCRtuMeqd-jFU7OC, OpNum: 1, Client: 1919568453260478433 }
+012697 KAPA KV100-1 | Apply Put/Append | key: 0, value: VAuklCRtuMeqd-jFU7OC dataDict: map[0:VAuklCRtuMeqd-jFU7OC]
+012703 KP&A KV100-1 | PutAppend | Sending result to Clerk, key: 0, shard data: map[0:VAuklCRtuMeqd-jFU7OC], Err: OK, index: 3
+012704 CLRK C33 | PutAppend | Received reply from 100-1: op: Put, key:0, value:VAuklCRtuMeqd-jFU7OC, opNum: 1, shard: 8
+012705 CLRK C33 | PutAppend | Request key:1, value:3ESZOHV2wxpWAh4d4zfP, op:Put, opNum: 2, shard:9
+012709 KP&A KV100-1 | PutAppend | Receieved start result from raft leader, index: 4
+012798 KAPL KV100-1 | applier | Received message from applyCh: { OpType: Put, Key: 1, Value: 3ESZOHV2wxpWAh4d4zfP, OpNum: 2, Client: 1919568453260478433 }
+012800 KAPA KV100-1 | Apply Put/Append | key: 1, value: 3ESZOHV2wxpWAh4d4zfP dataDict: map[1:3ESZOHV2wxpWAh4d4zfP]
+012801 KP&A KV100-1 | PutAppend | Sending result to Clerk, key: 1, shard data: map[1:3ESZOHV2wxpWAh4d4zfP], Err: OK, index: 4
+012802 CLRK C33 | PutAppend | Received reply from 100-1: op: Put, key:1, value:3ESZOHV2wxpWAh4d4zfP, opNum: 2, shard: 9
+012803 CLRK C33 | PutAppend | Request key:2, value:kWS1DgLmfZs-kUNAV9zM, op:Put, opNum: 3, shard:0
+012804 KP&A KV101-0 | PutAppend | Replying ErrWrongGroup, args: {Key:2 Value:kWS1DgLmfZs-kUNAV9zM Op:Put Client:1919568453260478433 OpNum:3}, shard: 0
+013192 KAPL KV100-2 | applier | Received message from applyCh: { OpType: Put, Key: 1, Value: 3ESZOHV2wxpWAh4d4zfP, OpNum: 2, Client: 1919568453260478433 }
+013194 KAPA KV100-2 | Apply Put/Append | key: 1, value: 3ESZOHV2wxpWAh4d4zfP dataDict: map[1:3ESZOHV2wxpWAh4d4zfP]
+013192 KAPL KV100-0 | applier | Received message from applyCh: { OpType: Put, Key: 1, Value: 3ESZOHV2wxpWAh4d4zfP, OpNum: 2, Client: 1919568453260478433 }
+013194 KAPA KV100-0 | Apply Put/Append | key: 1, value: 3ESZOHV2wxpWAh4d4zfP dataDict: map[1:3ESZOHV2wxpWAh4d4zfP]
+013924 KP&A KV101-0 | PutAppend | Replying ErrWrongGroup, args: {Key:2 Value:kWS1DgLmfZs-kUNAV9zM Op:Put Client:1919568453260478433 OpNum:3}, shard: 0
+015015 KP&A KV101-0 | PutAppend | Replying ErrWrongGroup, args: {Key:2 Value:kWS1DgLmfZs-kUNAV9zM Op:Put Client:1919568453260478433 OpNum:3}, shard: 0
+016082 KP&A KV101-0 | PutAppend | Replying ErrWrongGroup, args: {Key:2 Value:kWS1DgLmfZs-kUNAV9zM Op:Put Client:1919568453260478433 OpNum:3}, shard: 0
+017067 KSND KV101-1 | RequestShard | Requesting Shard: 4, from: 100
+017067 KSND KV101-1 | RequestShard | Requesting Shard: 1, from: 100
+017069 KSND KV101-1 | RequestShard | Sending request for shard: 4 to 100-server-100-0
+017067 KSND KV101-1 | RequestShard | Requesting Shard: 0, from: 100
+017070 KSND KV101-1 | RequestShard | Sending request for shard: 0 to 100-server-100-0
+017068 KSND KV101-1 | RequestShard | Requesting Shard: 2, from: 100
+017069 KSND KV101-1 | RequestShard | Sending request for shard: 1 to 100-server-100-0
+017070 KSND KV101-1 | RequestShard | Sending request for shard: 2 to 100-server-100-0
+017068 KSND KV101-1 | RequestShard | Requesting Shard: 3, from: 100
+017071 KSND KV101-1 | RequestShard | Sending request for shard: 3 to 100-server-100-0
+017074 KSND KV101-1 | RequestShard | Sending request for shard: 3 to 100-server-100-1
+017075 KSND KV101-1 | RequestShard | Sending request for shard: 4 to 100-server-100-1
+017075 KSND KV100-1 | RequestShard | Sending Shard: 3, request's ConfigNum: 2
+017076 KSND KV100-1 | RequestShard | Sending Shard: 4, request's ConfigNum: 2
+017076 KSND KV101-1 | RequestShard | Received Shard: 3, from: 100
+017076 KUPD KV101-1 | UpdateShard | Shard: 3, from: 3
+017077 KSND KV101-1 | RequestShard | Received Shard: 4, from: 100
+017077 KUPD KV101-1 | UpdateShard | Shard: 4, from: 4
+017078 KUPD KV101-1 | UpdateShard | Receieved start result from raft, index: 3
+017079 KSND KV101-1 | RequestShard | Sending request for shard: 0 to 100-server-100-1
+017080 KSND KV100-1 | RequestShard | Sending Shard: 0, request's ConfigNum: 2
+017081 KSND KV101-1 | RequestShard | Received Shard: 0, from: 100
+017081 KUPD KV101-1 | UpdateShard | Shard: 0, from: 0
+017082 KUPD KV101-1 | UpdateShard | Receieved start result from raft, index: 4
+017082 KUPD KV101-1 | UpdateShard | Receieved start result from raft, index: 5
+017094 KSND KV101-1 | RequestShard | Sending request for shard: 1 to 100-server-100-1
+017096 KSND KV100-1 | RequestShard | Sending Shard: 1, request's ConfigNum: 2
+017097 KSND KV101-1 | RequestShard | Received Shard: 1, from: 100
+017097 KUPD KV101-1 | UpdateShard | Shard: 1, from: 1
+017097 KUPD KV101-1 | UpdateShard | Receieved start result from raft, index: 6
+017105 KSND KV101-1 | RequestShard | Sending request for shard: 2 to 100-server-100-1
+017106 KSND KV100-1 | RequestShard | Sending Shard: 2, request's ConfigNum: 2
+017107 KSND KV101-1 | RequestShard | Received Shard: 2, from: 100
+017108 KUPD KV101-1 | UpdateShard | Shard: 2, from: 2
+017109 KUPD KV101-1 | UpdateShard | Receieved start result from raft, index: 7
+017123 KAPL KV101-2 | applier | Received message from applyCh: { OpType: UpdateShard, Shard: 3, Config: {ConfigNum: 0 , Shards: [0 0 0 0 0 0 0 0 0 0], Groups: map[]} }
+017124 KAPL KV101-0 | applier | Received message from applyCh: { OpType: UpdateShard, Shard: 3, Config: {ConfigNum: 0 , Shards: [0 0 0 0 0 0 0 0 0 0], Groups: map[]} }
+017124 KAUP KV101-0 | Apply UpdateShard | ShardNum: 3, ShardState: {DataDict:map[] LastCommand:map[]}
+017124 KP&A KV101-0 | PutAppend | Replying ErrWrongGroup, args: {Key:2 Value:kWS1DgLmfZs-kUNAV9zM Op:Put Client:1919568453260478433 OpNum:3}, shard: 0
+017124 KAUP KV101-2 | Apply UpdateShard | ShardNum: 3, ShardState: {DataDict:map[] LastCommand:map[]}
+017123 KAPL KV101-1 | applier | Received message from applyCh: { OpType: UpdateShard, Shard: 3, Config: {ConfigNum: 0 , Shards: [0 0 0 0 0 0 0 0 0 0], Groups: map[]} }
+017126 KAUP KV101-1 | Apply UpdateShard | ShardNum: 3, ShardState: {DataDict:map[] LastCommand:map[]}
+017127 KGET KV101-1 | UpdateShard | UpdateShard result, ok: true, Err: OK, result: {Err:OK Value: Op:{OpType:UpdateShard Key: Value: OpNum:0 Client:0 Config:{Num:0 Shards:[0 0 0 0 0 0 0 0 0 0] Groups:map[]} ShardNum:3 ShardState:{DataDict:map[] LastCommand:map[]} ConfigNum:2}}
+017127 KSND KV101-1 | RequestShard | Sending request for shard: 3 to 100-server-100-2
+017226 KAPL KV101-0 | applier | Received message from applyCh: { OpType: UpdateShard, Shard: 4, Config: {ConfigNum: 0 , Shards: [0 0 0 0 0 0 0 0 0 0], Groups: map[]} }
+017227 KAUP KV101-0 | Apply UpdateShard | ShardNum: 4, ShardState: {DataDict:map[] LastCommand:map[]}
+017227 KAPL KV101-1 | applier | Received message from applyCh: { OpType: UpdateShard, Shard: 4, Config: {ConfigNum: 0 , Shards: [0 0 0 0 0 0 0 0 0 0], Groups: map[]} }
+017227 KAUP KV101-1 | Apply UpdateShard | ShardNum: 4, ShardState: {DataDict:map[] LastCommand:map[]}
+017228 KGET KV101-1 | UpdateShard | UpdateShard result, ok: true, Err: OK, result: {Err:OK Value: Op:{OpType:UpdateShard Key: Value: OpNum:0 Client:0 Config:{Num:0 Shards:[0 0 0 0 0 0 0 0 0 0] Groups:map[]} ShardNum:4 ShardState:{DataDict:map[] LastCommand:map[]} ConfigNum:2}}
+017229 KSND KV101-1 | RequestShard | Sending request for shard: 4 to 100-server-100-2
+017232 KAPL KV101-2 | applier | Received message from applyCh: { OpType: UpdateShard, Shard: 4, Config: {ConfigNum: 0 , Shards: [0 0 0 0 0 0 0 0 0 0], Groups: map[]} }
+017232 KAUP KV101-2 | Apply UpdateShard | ShardNum: 4, ShardState: {DataDict:map[] LastCommand:map[]}
+017327 KAPL KV101-0 | applier | Received message from applyCh: { OpType: UpdateShard, Shard: 0, Config: {ConfigNum: 0 , Shards: [0 0 0 0 0 0 0 0 0 0], Groups: map[]} }
+017328 KAUP KV101-0 | Apply UpdateShard | ShardNum: 0, ShardState: {DataDict:map[] LastCommand:map[]}
+017328 KAPL KV101-1 | applier | Received message from applyCh: { OpType: UpdateShard, Shard: 0, Config: {ConfigNum: 0 , Shards: [0 0 0 0 0 0 0 0 0 0], Groups: map[]} }
+017329 KAUP KV101-1 | Apply UpdateShard | ShardNum: 0, ShardState: {DataDict:map[] LastCommand:map[]}
+017330 KGET KV101-1 | UpdateShard | UpdateShard result, ok: true, Err: OK, result: {Err:OK Value: Op:{OpType:UpdateShard Key: Value: OpNum:0 Client:0 Config:{Num:0 Shards:[0 0 0 0 0 0 0 0 0 0] Groups:map[]} ShardNum:0 ShardState:{DataDict:map[] LastCommand:map[]} ConfigNum:2}}
+017331 KSND KV101-1 | RequestShard | Sending request for shard: 0 to 100-server-100-2
+017332 KAPL KV101-2 | applier | Received message from applyCh: { OpType: UpdateShard, Shard: 0, Config: {ConfigNum: 0 , Shards: [0 0 0 0 0 0 0 0 0 0], Groups: map[]} }
+017332 KAUP KV101-2 | Apply UpdateShard | ShardNum: 0, ShardState: {DataDict:map[] LastCommand:map[]}
+017435 KAPL KV101-1 | applier | Received message from applyCh: { OpType: UpdateShard, Shard: 1, Config: {ConfigNum: 0 , Shards: [0 0 0 0 0 0 0 0 0 0], Groups: map[]} }
+017437 KAUP KV101-1 | Apply UpdateShard | ShardNum: 1, ShardState: {DataDict:map[] LastCommand:map[]}
+017436 KAPL KV101-2 | applier | Received message from applyCh: { OpType: UpdateShard, Shard: 1, Config: {ConfigNum: 0 , Shards: [0 0 0 0 0 0 0 0 0 0], Groups: map[]} }
+017438 KAUP KV101-2 | Apply UpdateShard | ShardNum: 1, ShardState: {DataDict:map[] LastCommand:map[]}
+017438 KGET KV101-1 | UpdateShard | UpdateShard result, ok: true, Err: OK, result: {Err:OK Value: Op:{OpType:UpdateShard Key: Value: OpNum:0 Client:0 Config:{Num:0 Shards:[0 0 0 0 0 0 0 0 0 0] Groups:map[]} ShardNum:1 ShardState:{DataDict:map[] LastCommand:map[]} ConfigNum:2}}
+017438 KSND KV101-1 | RequestShard | Sending request for shard: 1 to 100-server-100-2
+017436 KAPL KV101-0 | applier | Received message from applyCh: { OpType: UpdateShard, Shard: 1, Config: {ConfigNum: 0 , Shards: [0 0 0 0 0 0 0 0 0 0], Groups: map[]} }
+017439 KAUP KV101-0 | Apply UpdateShard | ShardNum: 1, ShardState: {DataDict:map[] LastCommand:map[]}
+017538 KAPL KV101-0 | applier | Received message from applyCh: { OpType: UpdateShard, Shard: 2, Config: {ConfigNum: 0 , Shards: [0 0 0 0 0 0 0 0 0 0], Groups: map[]} }
+017538 KAUP KV101-0 | Apply UpdateShard | ShardNum: 2, ShardState: {DataDict:map[] LastCommand:map[]}
+017539 KAPL KV101-2 | applier | Received message from applyCh: { OpType: UpdateShard, Shard: 2, Config: {ConfigNum: 0 , Shards: [0 0 0 0 0 0 0 0 0 0], Groups: map[]} }
+017539 KAUP KV101-2 | Apply UpdateShard | ShardNum: 2, ShardState: {DataDict:map[] LastCommand:map[]}
+017540 KAPL KV101-1 | applier | Received message from applyCh: { OpType: UpdateShard, Shard: 2, Config: {ConfigNum: 0 , Shards: [0 0 0 0 0 0 0 0 0 0], Groups: map[]} }
+017540 KAUP KV101-1 | Apply UpdateShard | ShardNum: 2, ShardState: {DataDict:map[] LastCommand:map[]}
+017541 KGET KV101-1 | UpdateShard | UpdateShard result, ok: true, Err: OK, result: {Err:OK Value: Op:{OpType:UpdateShard Key: Value: OpNum:0 Client:0 Config:{Num:0 Shards:[0 0 0 0 0 0 0 0 0 0] Groups:map[]} ShardNum:2 ShardState:{DataDict:map[] LastCommand:map[]} ConfigNum:2}}
+017541 KSND KV101-1 | RequestShard | Sending request for shard: 2 to 100-server-100-2
+018185 KP&A KV101-1 | PutAppend | Receieved start result from raft leader, index: 8
+018277 KAPL KV101-1 | applier | Received message from applyCh: { OpType: Put, Key: 2, Value: kWS1DgLmfZs-kUNAV9zM, OpNum: 3, Client: 1919568453260478433 }
+018277 KAPA KV101-1 | Apply Put/Append | key: 2, value: kWS1DgLmfZs-kUNAV9zM dataDict: map[2:kWS1DgLmfZs-kUNAV9zM]
+018278 KP&A KV101-1 | PutAppend | Sending result to Clerk, key: 2, shard data: map[2:kWS1DgLmfZs-kUNAV9zM], Err: OK, index: 8
+018279 CLRK C33 | PutAppend | Received reply from 101-1: op: Put, key:2, value:kWS1DgLmfZs-kUNAV9zM, opNum: 3, shard: 0
+018280 CLRK C33 | PutAppend | Request key:3, value:ZLrIEfyL7urhZkwEYW0B, op:Put, opNum: 4, shard:1
+018284 KP&A KV101-1 | PutAppend | Receieved start result from raft leader, index: 9
+018377 KAPL KV101-2 | applier | Received message from applyCh: { OpType: Put, Key: 2, Value: kWS1DgLmfZs-kUNAV9zM, OpNum: 3, Client: 1919568453260478433 }
+018378 KAPA KV101-2 | Apply Put/Append | key: 2, value: kWS1DgLmfZs-kUNAV9zM dataDict: map[2:kWS1DgLmfZs-kUNAV9zM]
+018377 KAPL KV101-0 | applier | Received message from applyCh: { OpType: Put, Key: 2, Value: kWS1DgLmfZs-kUNAV9zM, OpNum: 3, Client: 1919568453260478433 }
+018379 KAPA KV101-0 | Apply Put/Append | key: 2, value: kWS1DgLmfZs-kUNAV9zM dataDict: map[2:kWS1DgLmfZs-kUNAV9zM]
+018377 KAPL KV101-1 | applier | Received message from applyCh: { OpType: Put, Key: 3, Value: ZLrIEfyL7urhZkwEYW0B, OpNum: 4, Client: 1919568453260478433 }
+018380 KAPA KV101-1 | Apply Put/Append | key: 3, value: ZLrIEfyL7urhZkwEYW0B dataDict: map[3:ZLrIEfyL7urhZkwEYW0B]
+018380 KP&A KV101-1 | PutAppend | Sending result to Clerk, key: 3, shard data: map[3:ZLrIEfyL7urhZkwEYW0B], Err: OK, index: 9
+018384 CLRK C33 | PutAppend | Received reply from 101-1: op: Put, key:3, value:ZLrIEfyL7urhZkwEYW0B, opNum: 4, shard: 1
+018385 CLRK C33 | PutAppend | Request key:4, value:vRSCR5sbs-ZE1MvtiEk1, op:Put, opNum: 5, shard:2
+018392 KP&A KV101-1 | PutAppend | Receieved start result from raft leader, index: 10
+018478 KAPL KV101-1 | applier | Received message from applyCh: { OpType: Put, Key: 4, Value: vRSCR5sbs-ZE1MvtiEk1, OpNum: 5, Client: 1919568453260478433 }
+018479 KAPA KV101-1 | Apply Put/Append | key: 4, value: vRSCR5sbs-ZE1MvtiEk1 dataDict: map[4:vRSCR5sbs-ZE1MvtiEk1]
+018478 KAPL KV101-2 | applier | Received message from applyCh: { OpType: Put, Key: 3, Value: ZLrIEfyL7urhZkwEYW0B, OpNum: 4, Client: 1919568453260478433 }
+018480 KAPA KV101-2 | Apply Put/Append | key: 3, value: ZLrIEfyL7urhZkwEYW0B dataDict: map[3:ZLrIEfyL7urhZkwEYW0B]
+018479 KAPL KV101-0 | applier | Received message from applyCh: { OpType: Put, Key: 3, Value: ZLrIEfyL7urhZkwEYW0B, OpNum: 4, Client: 1919568453260478433 }
+018481 KAPA KV101-0 | Apply Put/Append | key: 3, value: ZLrIEfyL7urhZkwEYW0B dataDict: map[3:ZLrIEfyL7urhZkwEYW0B]
+018480 KP&A KV101-1 | PutAppend | Sending result to Clerk, key: 4, shard data: map[4:vRSCR5sbs-ZE1MvtiEk1], Err: OK, index: 10
+018485 CLRK C33 | PutAppend | Received reply from 101-1: op: Put, key:4, value:vRSCR5sbs-ZE1MvtiEk1, opNum: 5, shard: 2
+018486 CLRK C33 | PutAppend | Request key:5, value:jyB9bpnt-Vhkum6vVGtY, op:Put, opNum: 6, shard:3
+018494 KP&A KV101-1 | PutAppend | Receieved start result from raft leader, index: 11
+018581 KAPL KV101-2 | applier | Received message from applyCh: { OpType: Put, Key: 4, Value: vRSCR5sbs-ZE1MvtiEk1, OpNum: 5, Client: 1919568453260478433 }
+018581 KAPL KV101-1 | applier | Received message from applyCh: { OpType: Put, Key: 5, Value: jyB9bpnt-Vhkum6vVGtY, OpNum: 6, Client: 1919568453260478433 }
+018583 KAPA KV101-1 | Apply Put/Append | key: 5, value: jyB9bpnt-Vhkum6vVGtY dataDict: map[5:jyB9bpnt-Vhkum6vVGtY]
+018581 KAPL KV101-0 | applier | Received message from applyCh: { OpType: Put, Key: 4, Value: vRSCR5sbs-ZE1MvtiEk1, OpNum: 5, Client: 1919568453260478433 }
+018584 KAPA KV101-0 | Apply Put/Append | key: 4, value: vRSCR5sbs-ZE1MvtiEk1 dataDict: map[4:vRSCR5sbs-ZE1MvtiEk1]
+018584 KP&A KV101-1 | PutAppend | Sending result to Clerk, key: 5, shard data: map[5:jyB9bpnt-Vhkum6vVGtY], Err: OK, index: 11
+018583 KAPA KV101-2 | Apply Put/Append | key: 4, value: vRSCR5sbs-ZE1MvtiEk1 dataDict: map[4:vRSCR5sbs-ZE1MvtiEk1]
+018586 CLRK C33 | PutAppend | Received reply from 101-1: op: Put, key:5, value:jyB9bpnt-Vhkum6vVGtY, opNum: 6, shard: 3
+018586 CLRK C33 | PutAppend | Request key:6, value:D37Y3rLGfKjO4Oy_7xl1, op:Put, opNum: 7, shard:4
+018590 KP&A KV101-1 | PutAppend | Receieved start result from raft leader, index: 12
+018681 KAPL KV101-1 | applier | Received message from applyCh: { OpType: Put, Key: 6, Value: D37Y3rLGfKjO4Oy_7xl1, OpNum: 7, Client: 1919568453260478433 }
+018701 KAPA KV101-1 | Apply Put/Append | key: 6, value: D37Y3rLGfKjO4Oy_7xl1 dataDict: map[6:D37Y3rLGfKjO4Oy_7xl1]
+018681 KAPL KV101-2 | applier | Received message from applyCh: { OpType: Put, Key: 5, Value: jyB9bpnt-Vhkum6vVGtY, OpNum: 6, Client: 1919568453260478433 }
+018682 KAPL KV101-0 | applier | Received message from applyCh: { OpType: Put, Key: 5, Value: jyB9bpnt-Vhkum6vVGtY, OpNum: 6, Client: 1919568453260478433 }
+018705 KAPA KV101-0 | Apply Put/Append | key: 5, value: jyB9bpnt-Vhkum6vVGtY dataDict: map[5:jyB9bpnt-Vhkum6vVGtY]
+018704 KP&A KV101-1 | PutAppend | Sending result to Clerk, key: 6, shard data: map[6:D37Y3rLGfKjO4Oy_7xl1], Err: OK, index: 12
+018704 KAPA KV101-2 | Apply Put/Append | key: 5, value: jyB9bpnt-Vhkum6vVGtY dataDict: map[5:jyB9bpnt-Vhkum6vVGtY]
+018706 CLRK C33 | PutAppend | Received reply from 101-1: op: Put, key:6, value:D37Y3rLGfKjO4Oy_7xl1, opNum: 7, shard: 4
+018706 CLRK C33 | PutAppend | Request key:7, value:DWFJ1yhzNI26CJ12KH0t, op:Put, opNum: 8, shard:5
+018709 KP&A KV100-1 | PutAppend | Receieved start result from raft leader, index: 5
+018792 KAPL KV101-0 | applier | Received message from applyCh: { OpType: Put, Key: 6, Value: D37Y3rLGfKjO4Oy_7xl1, OpNum: 7, Client: 1919568453260478433 }
+018793 KAPA KV101-0 | Apply Put/Append | key: 6, value: D37Y3rLGfKjO4Oy_7xl1 dataDict: map[6:D37Y3rLGfKjO4Oy_7xl1]
+018793 KAPL KV101-2 | applier | Received message from applyCh: { OpType: Put, Key: 6, Value: D37Y3rLGfKjO4Oy_7xl1, OpNum: 7, Client: 1919568453260478433 }
+018794 KAPA KV101-2 | Apply Put/Append | key: 6, value: D37Y3rLGfKjO4Oy_7xl1 dataDict: map[6:D37Y3rLGfKjO4Oy_7xl1]
+018795 KAPL KV100-1 | applier | Received message from applyCh: { OpType: Put, Key: 7, Value: DWFJ1yhzNI26CJ12KH0t, OpNum: 8, Client: 1919568453260478433 }
+018796 KAPA KV100-1 | Apply Put/Append | key: 7, value: DWFJ1yhzNI26CJ12KH0t dataDict: map[7:DWFJ1yhzNI26CJ12KH0t]
+018796 KP&A KV100-1 | PutAppend | Sending result to Clerk, key: 7, shard data: map[7:DWFJ1yhzNI26CJ12KH0t], Err: OK, index: 5
+018799 CLRK C33 | PutAppend | Received reply from 100-1: op: Put, key:7, value:DWFJ1yhzNI26CJ12KH0t, opNum: 8, shard: 5
+018800 CLRK C33 | PutAppend | Request key:8, value:N41xM47h2jDtUQEjb9F2, op:Put, opNum: 9, shard:6
+018808 KP&A KV100-1 | PutAppend | Receieved start result from raft leader, index: 6
+018898 KAPL KV100-1 | applier | Received message from applyCh: { OpType: Put, Key: 8, Value: N41xM47h2jDtUQEjb9F2, OpNum: 9, Client: 1919568453260478433 }
+018899 KAPL KV100-2 | applier | Received message from applyCh: { OpType: Put, Key: 7, Value: DWFJ1yhzNI26CJ12KH0t, OpNum: 8, Client: 1919568453260478433 }
+018899 KAPA KV100-2 | Apply Put/Append | key: 7, value: DWFJ1yhzNI26CJ12KH0t dataDict: map[7:DWFJ1yhzNI26CJ12KH0t]
+018899 KAPA KV100-1 | Apply Put/Append | key: 8, value: N41xM47h2jDtUQEjb9F2 dataDict: map[8:N41xM47h2jDtUQEjb9F2]
+018898 KAPL KV100-0 | applier | Received message from applyCh: { OpType: Put, Key: 7, Value: DWFJ1yhzNI26CJ12KH0t, OpNum: 8, Client: 1919568453260478433 }
+018900 KAPA KV100-0 | Apply Put/Append | key: 7, value: DWFJ1yhzNI26CJ12KH0t dataDict: map[7:DWFJ1yhzNI26CJ12KH0t]
+018900 KP&A KV100-1 | PutAppend | Sending result to Clerk, key: 8, shard data: map[8:N41xM47h2jDtUQEjb9F2], Err: OK, index: 6
+018902 CLRK C33 | PutAppend | Received reply from 100-1: op: Put, key:8, value:N41xM47h2jDtUQEjb9F2, opNum: 9, shard: 6
+018903 CLRK C33 | PutAppend | Request key:9, value:g1vbsKQWoQxCr7J6r6rN, op:Put, opNum: 10, shard:7
+018910 KP&A KV100-1 | PutAppend | Receieved start result from raft leader, index: 7
+019008 KAPL KV100-1 | applier | Received message from applyCh: { OpType: Put, Key: 9, Value: g1vbsKQWoQxCr7J6r6rN, OpNum: 10, Client: 1919568453260478433 }
+019009 KAPA KV100-1 | Apply Put/Append | key: 9, value: g1vbsKQWoQxCr7J6r6rN dataDict: map[9:g1vbsKQWoQxCr7J6r6rN]
+019008 KAPL KV100-2 | applier | Received message from applyCh: { OpType: Put, Key: 8, Value: N41xM47h2jDtUQEjb9F2, OpNum: 9, Client: 1919568453260478433 }
+019010 KAPA KV100-2 | Apply Put/Append | key: 8, value: N41xM47h2jDtUQEjb9F2 dataDict: map[8:N41xM47h2jDtUQEjb9F2]
+019009 KAPL KV100-0 | applier | Received message from applyCh: { OpType: Put, Key: 8, Value: N41xM47h2jDtUQEjb9F2, OpNum: 9, Client: 1919568453260478433 }
+019011 KAPA KV100-0 | Apply Put/Append | key: 8, value: N41xM47h2jDtUQEjb9F2 dataDict: map[8:N41xM47h2jDtUQEjb9F2]
+019010 KP&A KV100-1 | PutAppend | Sending result to Clerk, key: 9, shard data: map[9:g1vbsKQWoQxCr7J6r6rN], Err: OK, index: 7
+019013 CLRK C33 | PutAppend | Received reply from 100-1: op: Put, key:9, value:g1vbsKQWoQxCr7J6r6rN, opNum: 10, shard: 7
+019013 CLRK C33 | Get | Request key:0, opNum: 11, shard:8
+019031 KGET KV100-1 | Get | Receieved start result from raft, index: 8
+019119 KAPL KV100-2 | applier | Received message from applyCh: { OpType: Put, Key: 9, Value: g1vbsKQWoQxCr7J6r6rN, OpNum: 10, Client: 1919568453260478433 }
+019120 KAPA KV100-2 | Apply Put/Append | key: 9, value: g1vbsKQWoQxCr7J6r6rN dataDict: map[9:g1vbsKQWoQxCr7J6r6rN]
+019121 KAPL KV100-0 | applier | Received message from applyCh: { OpType: Put, Key: 9, Value: g1vbsKQWoQxCr7J6r6rN, OpNum: 10, Client: 1919568453260478433 }
+019121 KAPA KV100-0 | Apply Put/Append | key: 9, value: g1vbsKQWoQxCr7J6r6rN dataDict: map[9:g1vbsKQWoQxCr7J6r6rN]
+019122 KAPL KV100-1 | applier | Received message from applyCh: { OpType: Get, Key: 0, Value: , OpNum: 11, Client: 1919568453260478433 }
+019122 KAPG KV100-1 | Apply Get | key: 0, value:  dataDict: map[0:VAuklCRtuMeqd-jFU7OC]
+019128 KGET KV100-1 | Get | Sending result to Clerk, key: 0, shard data: map[0:VAuklCRtuMeqd-jFU7OC], err: OK, index: 8
+019131 CLRK C33 | Get | Received reply from 100-1: key:0, value: VAuklCRtuMeqd-jFU7OC, opNum: 11, shard: 8
+019133 CLRK C33 | Get | Request key:1, opNum: 12, shard:9
+019156 KGET KV100-1 | Get | Receieved start result from raft, index: 9
+019222 KAPL KV100-0 | applier | Received message from applyCh: { OpType: Get, Key: 0, Value: , OpNum: 11, Client: 1919568453260478433 }
+019223 KAPG KV100-0 | Apply Get | key: 0, value:  dataDict: map[0:VAuklCRtuMeqd-jFU7OC]
+019222 KAPL KV100-2 | applier | Received message from applyCh: { OpType: Get, Key: 0, Value: , OpNum: 11, Client: 1919568453260478433 }
+019223 KAPG KV100-2 | Apply Get | key: 0, value:  dataDict: map[0:VAuklCRtuMeqd-jFU7OC]
+019222 KAPL KV100-1 | applier | Received message from applyCh: { OpType: Get, Key: 1, Value: , OpNum: 12, Client: 1919568453260478433 }
+019223 KAPG KV100-1 | Apply Get | key: 1, value:  dataDict: map[1:3ESZOHV2wxpWAh4d4zfP]
+019224 KGET KV100-1 | Get | Sending result to Clerk, key: 1, shard data: map[1:3ESZOHV2wxpWAh4d4zfP], err: OK, index: 9
+019224 CLRK C33 | Get | Received reply from 100-1: key:1, value: 3ESZOHV2wxpWAh4d4zfP, opNum: 12, shard: 9
+019225 CLRK C33 | Get | Request key:2, opNum: 13, shard:0
+019227 KGET KV101-1 | Get | Receieved start result from raft, index: 13
+019327 KAPL KV100-0 | applier | Received message from applyCh: { OpType: Get, Key: 1, Value: , OpNum: 12, Client: 1919568453260478433 }
+019328 KAPG KV100-0 | Apply Get | key: 1, value:  dataDict: map[1:3ESZOHV2wxpWAh4d4zfP]
+019328 KAPL KV100-2 | applier | Received message from applyCh: { OpType: Get, Key: 1, Value: , OpNum: 12, Client: 1919568453260478433 }
+019332 KAPG KV100-2 | Apply Get | key: 1, value:  dataDict: map[1:3ESZOHV2wxpWAh4d4zfP]
+019333 KAPL KV101-1 | applier | Received message from applyCh: { OpType: Get, Key: 2, Value: , OpNum: 13, Client: 1919568453260478433 }
+019333 KAPG KV101-1 | Apply Get | key: 2, value:  dataDict: map[2:kWS1DgLmfZs-kUNAV9zM]
+019334 KGET KV101-1 | Get | Sending result to Clerk, key: 2, shard data: map[2:kWS1DgLmfZs-kUNAV9zM], err: OK, index: 13
+019336 CLRK C33 | Get | Received reply from 101-1: key:2, value: kWS1DgLmfZs-kUNAV9zM, opNum: 13, shard: 0
+019336 CLRK C33 | Get | Request key:3, opNum: 14, shard:1
+019343 KGET KV101-1 | Get | Receieved start result from raft, index: 14
+019429 KAPL KV101-2 | applier | Received message from applyCh: { OpType: Get, Key: 2, Value: , OpNum: 13, Client: 1919568453260478433 }
+019430 KAPG KV101-2 | Apply Get | key: 2, value:  dataDict: map[2:kWS1DgLmfZs-kUNAV9zM]
+019430 KAPL KV101-0 | applier | Received message from applyCh: { OpType: Get, Key: 2, Value: , OpNum: 13, Client: 1919568453260478433 }
+019430 KAPG KV101-0 | Apply Get | key: 2, value:  dataDict: map[2:kWS1DgLmfZs-kUNAV9zM]
+019433 KAPL KV101-1 | applier | Received message from applyCh: { OpType: Get, Key: 3, Value: , OpNum: 14, Client: 1919568453260478433 }
+019434 KAPG KV101-1 | Apply Get | key: 3, value:  dataDict: map[3:ZLrIEfyL7urhZkwEYW0B]
+019434 KGET KV101-1 | Get | Sending result to Clerk, key: 3, shard data: map[3:ZLrIEfyL7urhZkwEYW0B], err: OK, index: 14
+019435 CLRK C33 | Get | Received reply from 101-1: key:3, value: ZLrIEfyL7urhZkwEYW0B, opNum: 14, shard: 1
+019435 CLRK C33 | Get | Request key:4, opNum: 15, shard:2
+019441 KGET KV101-1 | Get | Receieved start result from raft, index: 15
+019533 KAPL KV101-0 | applier | Received message from applyCh: { OpType: Get, Key: 3, Value: , OpNum: 14, Client: 1919568453260478433 }
+019534 KAPL KV101-1 | applier | Received message from applyCh: { OpType: Get, Key: 4, Value: , OpNum: 15, Client: 1919568453260478433 }
+019534 KAPG KV101-1 | Apply Get | key: 4, value:  dataDict: map[4:vRSCR5sbs-ZE1MvtiEk1]
+019534 KAPG KV101-0 | Apply Get | key: 3, value:  dataDict: map[3:ZLrIEfyL7urhZkwEYW0B]
+019534 KAPL KV101-2 | applier | Received message from applyCh: { OpType: Get, Key: 3, Value: , OpNum: 14, Client: 1919568453260478433 }
+019534 KAPG KV101-2 | Apply Get | key: 3, value:  dataDict: map[3:ZLrIEfyL7urhZkwEYW0B]
+019534 KGET KV101-1 | Get | Sending result to Clerk, key: 4, shard data: map[4:vRSCR5sbs-ZE1MvtiEk1], err: OK, index: 15
+019537 CLRK C33 | Get | Received reply from 101-1: key:4, value: vRSCR5sbs-ZE1MvtiEk1, opNum: 15, shard: 2
+019537 CLRK C33 | Get | Request key:5, opNum: 16, shard:3
+019541 KGET KV101-1 | Get | Receieved start result from raft, index: 16
+019640 KAPL KV101-1 | applier | Received message from applyCh: { OpType: Get, Key: 5, Value: , OpNum: 16, Client: 1919568453260478433 }
+019640 KAPG KV101-1 | Apply Get | key: 5, value:  dataDict: map[5:jyB9bpnt-Vhkum6vVGtY]
+019640 KAPL KV101-2 | applier | Received message from applyCh: { OpType: Get, Key: 4, Value: , OpNum: 15, Client: 1919568453260478433 }
+019641 KAPL KV101-0 | applier | Received message from applyCh: { OpType: Get, Key: 4, Value: , OpNum: 15, Client: 1919568453260478433 }
+019641 KAPG KV101-0 | Apply Get | key: 4, value:  dataDict: map[4:vRSCR5sbs-ZE1MvtiEk1]
+019641 KAPG KV101-2 | Apply Get | key: 4, value:  dataDict: map[4:vRSCR5sbs-ZE1MvtiEk1]
+019640 KGET KV101-1 | Get | Sending result to Clerk, key: 5, shard data: map[5:jyB9bpnt-Vhkum6vVGtY], err: OK, index: 16
+019643 CLRK C33 | Get | Received reply from 101-1: key:5, value: jyB9bpnt-Vhkum6vVGtY, opNum: 16, shard: 3
+019643 CLRK C33 | Get | Request key:6, opNum: 17, shard:4
+019651 KGET KV101-1 | Get | Receieved start result from raft, index: 17
+019744 KAPL KV101-0 | applier | Received message from applyCh: { OpType: Get, Key: 5, Value: , OpNum: 16, Client: 1919568453260478433 }
+019745 KAPG KV101-0 | Apply Get | key: 5, value:  dataDict: map[5:jyB9bpnt-Vhkum6vVGtY]
+019744 KAPL KV101-1 | applier | Received message from applyCh: { OpType: Get, Key: 6, Value: , OpNum: 17, Client: 1919568453260478433 }
+019745 KAPG KV101-1 | Apply Get | key: 6, value:  dataDict: map[6:D37Y3rLGfKjO4Oy_7xl1]
+019744 KAPL KV101-2 | applier | Received message from applyCh: { OpType: Get, Key: 5, Value: , OpNum: 16, Client: 1919568453260478433 }
+019746 KAPG KV101-2 | Apply Get | key: 5, value:  dataDict: map[5:jyB9bpnt-Vhkum6vVGtY]
+019746 KGET KV101-1 | Get | Sending result to Clerk, key: 6, shard data: map[6:D37Y3rLGfKjO4Oy_7xl1], err: OK, index: 17
+019747 CLRK C33 | Get | Received reply from 101-1: key:6, value: D37Y3rLGfKjO4Oy_7xl1, opNum: 17, shard: 4
+019747 CLRK C33 | Get | Request key:7, opNum: 18, shard:5
+019752 KGET KV100-1 | Get | Receieved start result from raft, index: 10
+019848 KAPL KV101-0 | applier | Received message from applyCh: { OpType: Get, Key: 6, Value: , OpNum: 17, Client: 1919568453260478433 }
+019848 KAPG KV101-0 | Apply Get | key: 6, value:  dataDict: map[6:D37Y3rLGfKjO4Oy_7xl1]
+019848 KAPL KV100-1 | applier | Received message from applyCh: { OpType: Get, Key: 7, Value: , OpNum: 18, Client: 1919568453260478433 }
+019849 KAPG KV100-1 | Apply Get | key: 7, value:  dataDict: map[7:DWFJ1yhzNI26CJ12KH0t]
+019848 KAPL KV101-2 | applier | Received message from applyCh: { OpType: Get, Key: 6, Value: , OpNum: 17, Client: 1919568453260478433 }
+019849 KAPG KV101-2 | Apply Get | key: 6, value:  dataDict: map[6:D37Y3rLGfKjO4Oy_7xl1]
+019849 KGET KV100-1 | Get | Sending result to Clerk, key: 7, shard data: map[7:DWFJ1yhzNI26CJ12KH0t], err: OK, index: 10
+019850 CLRK C33 | Get | Received reply from 100-1: key:7, value: DWFJ1yhzNI26CJ12KH0t, opNum: 18, shard: 5
+019850 CLRK C33 | Get | Request key:8, opNum: 19, shard:6
+019855 KGET KV100-1 | Get | Receieved start result from raft, index: 11
+019953 KAPL KV100-2 | applier | Received message from applyCh: { OpType: Get, Key: 7, Value: , OpNum: 18, Client: 1919568453260478433 }
+019955 KAPG KV100-2 | Apply Get | key: 7, value:  dataDict: map[7:DWFJ1yhzNI26CJ12KH0t]
+019953 KAPL KV100-0 | applier | Received message from applyCh: { OpType: Get, Key: 7, Value: , OpNum: 18, Client: 1919568453260478433 }
+019955 KAPG KV100-0 | Apply Get | key: 7, value:  dataDict: map[7:DWFJ1yhzNI26CJ12KH0t]
+019953 KAPL KV100-1 | applier | Received message from applyCh: { OpType: Get, Key: 8, Value: , OpNum: 19, Client: 1919568453260478433 }
+019956 KAPG KV100-1 | Apply Get | key: 8, value:  dataDict: map[8:N41xM47h2jDtUQEjb9F2]
+019957 KGET KV100-1 | Get | Sending result to Clerk, key: 8, shard data: map[8:N41xM47h2jDtUQEjb9F2], err: OK, index: 11
+019959 CLRK C33 | Get | Received reply from 100-1: key:8, value: N41xM47h2jDtUQEjb9F2, opNum: 19, shard: 6
+019959 CLRK C33 | Get | Request key:9, opNum: 20, shard:7
+019967 KGET KV100-1 | Get | Receieved start result from raft, index: 12
+020054 KAPL KV100-0 | applier | Received message from applyCh: { OpType: Get, Key: 8, Value: , OpNum: 19, Client: 1919568453260478433 }
+020055 KAPG KV100-0 | Apply Get | key: 8, value:  dataDict: map[8:N41xM47h2jDtUQEjb9F2]
+020054 KAPL KV100-2 | applier | Received message from applyCh: { OpType: Get, Key: 8, Value: , OpNum: 19, Client: 1919568453260478433 }
+020056 KAPG KV100-2 | Apply Get | key: 8, value:  dataDict: map[8:N41xM47h2jDtUQEjb9F2]
+020055 KAPL KV100-1 | applier | Received message from applyCh: { OpType: Get, Key: 9, Value: , OpNum: 20, Client: 1919568453260478433 }
+020056 KAPG KV100-1 | Apply Get | key: 9, value:  dataDict: map[9:g1vbsKQWoQxCr7J6r6rN]
+020057 KGET KV100-1 | Get | Sending result to Clerk, key: 9, shard data: map[9:g1vbsKQWoQxCr7J6r6rN], err: OK, index: 12
+020059 CLRK C33 | Get | Received reply from 100-1: key:9, value: g1vbsKQWoQxCr7J6r6rN, opNum: 20, shard: 7
+020059 INFO Test: shutdowned down server server-101-0
+020060 INFO Test: shutdowned down server server-101-1
+020060 INFO Test: shutdowned down server server-101-2
+020061 CLRK C7 | Get | Request key:0, opNum: 1, shard:8
+020065 CLRK C3 | Get | Request key:9, opNum: 1, shard:7
+020062 CLRK C41 | Get | Request key:1, opNum: 1, shard:9
+020084 CLRK C57 | Get | Request key:7, opNum: 1, shard:5
+020086 CLRK C82 | Get | Request key:8, opNum: 1, shard:6
+020086 CLRK C67 | Get | Request key:3, opNum: 1, shard:1
+020086 CLRK C37 | Get | Request key:2, opNum: 1, shard:0
+020086 CLRK C55 | Get | Request key:4, opNum: 1, shard:2
+020089 CLRK C74 | Get | Request key:6, opNum: 1, shard:4
+020066 CLRK C62 | Get | Request key:5, opNum: 1, shard:3
+020259 KAPL KV100-0 | applier | Received message from applyCh: { OpType: Get, Key: 9, Value: , OpNum: 20, Client: 1919568453260478433 }
+020260 KAPG KV100-0 | Apply Get | key: 9, value:  dataDict: map[9:g1vbsKQWoQxCr7J6r6rN]
+020259 KAPL KV100-2 | applier | Received message from applyCh: { OpType: Get, Key: 9, Value: , OpNum: 20, Client: 1919568453260478433 }
+020261 KAPG KV100-2 | Apply Get | key: 9, value:  dataDict: map[9:g1vbsKQWoQxCr7J6r6rN]
+021187 KGET KV100-1 | Get | Receieved start result from raft, index: 13
+021290 KAPL KV100-1 | applier | Received message from applyCh: { OpType: Get, Key: 7, Value: , OpNum: 1, Client: 2008693774754381857 }
+021291 KAPG KV100-1 | Apply Get | key: 7, value:  dataDict: map[7:DWFJ1yhzNI26CJ12KH0t]
+021290 KAPL KV100-0 | applier | Received message from applyCh: { OpType: Get, Key: 7, Value: , OpNum: 1, Client: 2008693774754381857 }
+021291 KAPG KV100-0 | Apply Get | key: 7, value:  dataDict: map[7:DWFJ1yhzNI26CJ12KH0t]
+021291 KAPL KV100-2 | applier | Received message from applyCh: { OpType: Get, Key: 7, Value: , OpNum: 1, Client: 2008693774754381857 }
+021291 KAPG KV100-2 | Apply Get | key: 7, value:  dataDict: map[7:DWFJ1yhzNI26CJ12KH0t]
+021291 KGET KV100-1 | Get | Sending result to Clerk, key: 7, shard data: map[7:DWFJ1yhzNI26CJ12KH0t], err: OK, index: 13
+021292 CLRK C57 | Get | Received reply from 100-1: key:7, value: DWFJ1yhzNI26CJ12KH0t, opNum: 1, shard: 5
+021295 KGET KV100-1 | Get | Receieved start result from raft, index: 14
+021407 KAPL KV100-1 | applier | Received message from applyCh: { OpType: Get, Key: 1, Value: , OpNum: 1, Client: 4311424563700665941 }
+021409 KAPG KV100-1 | Apply Get | key: 1, value:  dataDict: map[1:3ESZOHV2wxpWAh4d4zfP]
+021410 KGET KV100-1 | Get | Sending result to Clerk, key: 1, shard data: map[1:3ESZOHV2wxpWAh4d4zfP], err: OK, index: 14
+021411 CLRK C41 | Get | Received reply from 100-1: key:1, value: 3ESZOHV2wxpWAh4d4zfP, opNum: 1, shard: 9
+021520 KGET KV100-1 | Get | Receieved start result from raft, index: 15
+021618 KAPL KV100-1 | applier | Received message from applyCh: { OpType: Get, Key: 0, Value: , OpNum: 1, Client: 116875301778371507 }
+021620 KAPG KV100-1 | Apply Get | key: 0, value:  dataDict: map[0:VAuklCRtuMeqd-jFU7OC]
+021620 KGET KV100-1 | Get | Sending result to Clerk, key: 0, shard data: map[0:VAuklCRtuMeqd-jFU7OC], err: OK, index: 15
+021621 CLRK C7 | Get | Received reply from 100-1: key:0, value: VAuklCRtuMeqd-jFU7OC, opNum: 1, shard: 8
+021622 KAPL KV100-2 | applier | Received message from applyCh: { OpType: Get, Key: 1, Value: , OpNum: 1, Client: 4311424563700665941 }
+021622 KAPG KV100-2 | Apply Get | key: 1, value:  dataDict: map[1:3ESZOHV2wxpWAh4d4zfP]
+021627 KAPL KV100-0 | applier | Received message from applyCh: { OpType: Get, Key: 1, Value: , OpNum: 1, Client: 4311424563700665941 }
+021627 KAPG KV100-0 | Apply Get | key: 1, value:  dataDict: map[1:3ESZOHV2wxpWAh4d4zfP]
+021723 KAPL KV100-2 | applier | Received message from applyCh: { OpType: Get, Key: 0, Value: , OpNum: 1, Client: 116875301778371507 }
+021725 KAPG KV100-2 | Apply Get | key: 0, value:  dataDict: map[0:VAuklCRtuMeqd-jFU7OC]
+021729 KAPL KV100-0 | applier | Received message from applyCh: { OpType: Get, Key: 0, Value: , OpNum: 1, Client: 116875301778371507 }
+021730 KAPG KV100-0 | Apply Get | key: 0, value:  dataDict: map[0:VAuklCRtuMeqd-jFU7OC]
+021836 KGET KV100-1 | Get | Receieved start result from raft, index: 16
+021933 KAPL KV100-1 | applier | Received message from applyCh: { OpType: Get, Key: 9, Value: , OpNum: 1, Client: 4394919879501315703 }
+021935 KAPG KV100-1 | Apply Get | key: 9, value:  dataDict: map[9:g1vbsKQWoQxCr7J6r6rN]
+021936 KGET KV100-1 | Get | Sending result to Clerk, key: 9, shard data: map[9:g1vbsKQWoQxCr7J6r6rN], err: OK, index: 16
+021938 CLRK C3 | Get | Received reply from 100-1: key:9, value: g1vbsKQWoQxCr7J6r6rN, opNum: 1, shard: 7
+022043 KGET KV100-1 | Get | Receieved start result from raft, index: 17
+022134 KAPL KV100-1 | applier | Received message from applyCh: { OpType: Get, Key: 8, Value: , OpNum: 1, Client: 667170581452144882 }
+022138 KAPL KV100-2 | applier | Received message from applyCh: { OpType: Get, Key: 9, Value: , OpNum: 1, Client: 4394919879501315703 }
+022138 KAPG KV100-2 | Apply Get | key: 9, value:  dataDict: map[9:g1vbsKQWoQxCr7J6r6rN]
+022139 KAPL KV100-0 | applier | Received message from applyCh: { OpType: Get, Key: 9, Value: , OpNum: 1, Client: 4394919879501315703 }
+022139 KAPG KV100-0 | Apply Get | key: 9, value:  dataDict: map[9:g1vbsKQWoQxCr7J6r6rN]
+022137 KAPG KV100-1 | Apply Get | key: 8, value:  dataDict: map[8:N41xM47h2jDtUQEjb9F2]
+022139 KGET KV100-1 | Get | Sending result to Clerk, key: 8, shard data: map[8:N41xM47h2jDtUQEjb9F2], err: OK, index: 17
+022141 CLRK C82 | Get | Received reply from 100-1: key:8, value: N41xM47h2jDtUQEjb9F2, opNum: 1, shard: 6
+022237 KAPL KV100-2 | applier | Received message from applyCh: { OpType: Get, Key: 8, Value: , OpNum: 1, Client: 667170581452144882 }
+022239 KAPG KV100-2 | Apply Get | key: 8, value:  dataDict: map[8:N41xM47h2jDtUQEjb9F2]
+022239 KAPL KV100-0 | applier | Received message from applyCh: { OpType: Get, Key: 8, Value: , OpNum: 1, Client: 667170581452144882 }
+022240 KAPG KV100-0 | Apply Get | key: 8, value:  dataDict: map[8:N41xM47h2jDtUQEjb9F2]
+042178 CLRK C33 | Get | Request key:0, opNum: 21, shard:8
+042185 KGET KV100-1 | Get | Receieved start result from raft, index: 18
+042201 KAPL KV100-1 | applier | Received message from applyCh: { OpType: Get, Key: 0, Value: , OpNum: 21, Client: 1919568453260478433 }
+042202 KAPG KV100-1 | Apply Get | key: 0, value:  dataDict: map[0:VAuklCRtuMeqd-jFU7OC]
+042204 KGET KV100-1 | Get | Sending result to Clerk, key: 0, shard data: map[0:VAuklCRtuMeqd-jFU7OC], err: OK, index: 18
+042204 CLRK C33 | Get | Received reply from 100-1: key:0, value: VAuklCRtuMeqd-jFU7OC, opNum: 21, shard: 8
+042205 CLRK C33 | Get | Request key:1, opNum: 22, shard:9
+042208 KGET KV100-1 | Get | Receieved start result from raft, index: 19
+042302 KAPL KV100-1 | applier | Received message from applyCh: { OpType: Get, Key: 1, Value: , OpNum: 22, Client: 1919568453260478433 }
+042302 KAPG KV100-1 | Apply Get | key: 1, value:  dataDict: map[1:3ESZOHV2wxpWAh4d4zfP]
+042303 KGET KV100-1 | Get | Sending result to Clerk, key: 1, shard data: map[1:3ESZOHV2wxpWAh4d4zfP], err: OK, index: 19
+042304 CLRK C33 | Get | Received reply from 100-1: key:1, value: 3ESZOHV2wxpWAh4d4zfP, opNum: 22, shard: 9
+042304 CLRK C33 | Get | Request key:2, opNum: 23, shard:0
+042307 KAPL KV100-2 | applier | Received message from applyCh: { OpType: Get, Key: 0, Value: , OpNum: 21, Client: 1919568453260478433 }
+042308 KAPG KV100-2 | Apply Get | key: 0, value:  dataDict: map[0:VAuklCRtuMeqd-jFU7OC]
+042308 KAPL KV100-0 | applier | Received message from applyCh: { OpType: Get, Key: 0, Value: , OpNum: 21, Client: 1919568453260478433 }
+042308 KAPG KV100-0 | Apply Get | key: 0, value:  dataDict: map[0:VAuklCRtuMeqd-jFU7OC]
+042408 KAPL KV100-0 | applier | Received message from applyCh: { OpType: Get, Key: 1, Value: , OpNum: 22, Client: 1919568453260478433 }
+042410 KAPG KV100-0 | Apply Get | key: 1, value:  dataDict: map[1:3ESZOHV2wxpWAh4d4zfP]
+042408 KAPL KV100-2 | applier | Received message from applyCh: { OpType: Get, Key: 1, Value: , OpNum: 22, Client: 1919568453260478433 }
+042410 KAPG KV100-2 | Apply Get | key: 1, value:  dataDict: map[1:3ESZOHV2wxpWAh4d4zfP]
+052614 KCFG KV101-1 | Config | Config Outdated. Previous config: {ConfigNum: 0 , Shards: [0 0 0 0 0 0 0 0 0 0], Groups: map[]}, Current config: {ConfigNum: 1 , Shards: [100 100 100 100 100 100 100 100 100 100], Groups: map[100:[server-100-0 server-100-1 server-100-2]]}, prevConfigNum: 0, currConfigNum: 1
+052615 KCFG KV101-1 | Config | Receieved raft start() result, index: 18
+052615 KCFG KV101-1 | Config | Waiting for raft apply result from resultCh: 0xc0002ca060
+052711 KAPL KV101-1 | applier | Received message from applyCh: { OpType: Config, Config: {ConfigNum: 1 , Shards: [100 100 100 100 100 100 100 100 100 100], Groups: map[100:[server-100-0 server-100-1 server-100-2]]} }
+052712 KAPC KV101-1 | Apply Config | config, old: {ConfigNum: 0 , Shards: [0 0 0 0 0 0 0 0 0 0], Groups: map[]}, new: {ConfigNum: 1 , Shards: [100 100 100 100 100 100 100 100 100 100], Groups: map[100:[server-100-0 server-100-1 server-100-2]]}
+052815 KAPL KV101-1 | applier | Received message from applyCh: { OpType: Config, Config: {ConfigNum: 2 , Shards: [101 101 101 101 101 100 100 100 100 100], Groups: map[100:[server-100-0 server-100-1 server-100-2] 101:[server-101-0 server-101-1 server-101-2]]} }
+052816 KAPC KV101-1 | Apply Config | config, old: {ConfigNum: 1 , Shards: [100 100 100 100 100 100 100 100 100 100], Groups: map[100:[server-100-0 server-100-1 server-100-2]]}, new: {ConfigNum: 2 , Shards: [101 101 101 101 101 100 100 100 100 100], Groups: map[100:[server-100-0 server-100-1 server-100-2] 101:[server-101-0 server-101-1 server-101-2]]}
+052816 KCFG KV101-1 | UpdateShardsStatus | shardsToRecv: {true, true, true, true, true, false, false, false, false, false}
+052817 KAPL KV101-0 | applier | Received message from applyCh: { OpType: Config, Config: {ConfigNum: 1 , Shards: [100 100 100 100 100 100 100 100 100 100], Groups: map[100:[server-100-0 server-100-1 server-100-2]]} }
+052817 KAPC KV101-0 | Apply Config | config, old: {ConfigNum: 0 , Shards: [0 0 0 0 0 0 0 0 0 0], Groups: map[]}, new: {ConfigNum: 1 , Shards: [100 100 100 100 100 100 100 100 100 100], Groups: map[100:[server-100-0 server-100-1 server-100-2]]}
+052818 KAPL KV101-2 | applier | Received message from applyCh: { OpType: Config, Config: {ConfigNum: 1 , Shards: [100 100 100 100 100 100 100 100 100 100], Groups: map[100:[server-100-0 server-100-1 server-100-2]]} }
+052818 KAPC KV101-2 | Apply Config | config, old: {ConfigNum: 0 , Shards: [0 0 0 0 0 0 0 0 0 0], Groups: map[]}, new: {ConfigNum: 1 , Shards: [100 100 100 100 100 100 100 100 100 100], Groups: map[100:[server-100-0 server-100-1 server-100-2]]}
+052917 KAPL KV101-0 | applier | Received message from applyCh: { OpType: Config, Config: {ConfigNum: 2 , Shards: [101 101 101 101 101 100 100 100 100 100], Groups: map[100:[server-100-0 server-100-1 server-100-2] 101:[server-101-0 server-101-1 server-101-2]]} }
+052918 KAPC KV101-0 | Apply Config | config, old: {ConfigNum: 1 , Shards: [100 100 100 100 100 100 100 100 100 100], Groups: map[100:[server-100-0 server-100-1 server-100-2]]}, new: {ConfigNum: 2 , Shards: [101 101 101 101 101 100 100 100 100 100], Groups: map[100:[server-100-0 server-100-1 server-100-2] 101:[server-101-0 server-101-1 server-101-2]]}
+052919 KCFG KV101-0 | UpdateShardsStatus | shardsToRecv: {true, true, true, true, true, false, false, false, false, false}
+052920 KAPL KV101-1 | applier | Received message from applyCh: { OpType: UpdateShard, Shard: 3, Config: {ConfigNum: 0 , Shards: [0 0 0 0 0 0 0 0 0 0], Groups: map[]} }
+052920 KAUP KV101-1 | Apply UpdateShard | ShardNum: 3, ShardState: {DataDict:map[5:jyB9bpnt-Vhkum6vVGtY] LastCommand:map[1919568453260478433:6]}
+052936 KAPL KV101-2 | applier | Received message from applyCh: { OpType: Config, Config: {ConfigNum: 2 , Shards: [101 101 101 101 101 100 100 100 100 100], Groups: map[100:[server-100-0 server-100-1 server-100-2] 101:[server-101-0 server-101-1 server-101-2]]} }
+052940 KAPC KV101-2 | Apply Config | config, old: {ConfigNum: 1 , Shards: [100 100 100 100 100 100 100 100 100 100], Groups: map[100:[server-100-0 server-100-1 server-100-2]]}, new: {ConfigNum: 2 , Shards: [101 101 101 101 101 100 100 100 100 100], Groups: map[100:[server-100-0 server-100-1 server-100-2] 101:[server-101-0 server-101-1 server-101-2]]}
+052940 KCFG KV101-2 | UpdateShardsStatus | shardsToRecv: {true, true, true, true, true, false, false, false, false, false}
+053024 KAPL KV101-0 | applier | Received message from applyCh: { OpType: UpdateShard, Shard: 3, Config: {ConfigNum: 0 , Shards: [0 0 0 0 0 0 0 0 0 0], Groups: map[]} }
+053025 KAUP KV101-0 | Apply UpdateShard | ShardNum: 3, ShardState: {DataDict:map[5:jyB9bpnt-Vhkum6vVGtY] LastCommand:map[1919568453260478433:6]}
+053025 KAPL KV101-1 | applier | Received message from applyCh: { OpType: UpdateShard, Shard: 4, Config: {ConfigNum: 0 , Shards: [0 0 0 0 0 0 0 0 0 0], Groups: map[]} }
+053026 KAUP KV101-1 | Apply UpdateShard | ShardNum: 4, ShardState: {DataDict:map[6:D37Y3rLGfKjO4Oy_7xl1] LastCommand:map[1919568453260478433:7]}
+053037 KAPL KV101-2 | applier | Received message from applyCh: { OpType: UpdateShard, Shard: 3, Config: {ConfigNum: 0 , Shards: [0 0 0 0 0 0 0 0 0 0], Groups: map[]} }
+053046 KAUP KV101-2 | Apply UpdateShard | ShardNum: 3, ShardState: {DataDict:map[5:jyB9bpnt-Vhkum6vVGtY] LastCommand:map[1919568453260478433:6]}
+053130 KAPL KV101-0 | applier | Received message from applyCh: { OpType: UpdateShard, Shard: 4, Config: {ConfigNum: 0 , Shards: [0 0 0 0 0 0 0 0 0 0], Groups: map[]} }
+053132 KAUP KV101-0 | Apply UpdateShard | ShardNum: 4, ShardState: {DataDict:map[6:D37Y3rLGfKjO4Oy_7xl1] LastCommand:map[1919568453260478433:7]}
+053133 KAPL KV101-1 | applier | Received message from applyCh: { OpType: UpdateShard, Shard: 0, Config: {ConfigNum: 0 , Shards: [0 0 0 0 0 0 0 0 0 0], Groups: map[]} }
+053136 KAUP KV101-1 | Apply UpdateShard | ShardNum: 0, ShardState: {DataDict:map[2:kWS1DgLmfZs-kUNAV9zM] LastCommand:map[1919568453260478433:3]}
+053140 KAPL KV101-2 | applier | Received message from applyCh: { OpType: UpdateShard, Shard: 4, Config: {ConfigNum: 0 , Shards: [0 0 0 0 0 0 0 0 0 0], Groups: map[]} }
+053140 KAUP KV101-2 | Apply UpdateShard | ShardNum: 4, ShardState: {DataDict:map[6:D37Y3rLGfKjO4Oy_7xl1] LastCommand:map[1919568453260478433:7]}
+053266 KAPL KV101-1 | applier | Received message from applyCh: { OpType: UpdateShard, Shard: 1, Config: {ConfigNum: 0 , Shards: [0 0 0 0 0 0 0 0 0 0], Groups: map[]} }
+053267 KAUP KV101-1 | Apply UpdateShard | ShardNum: 1, ShardState: {DataDict:map[3:ZLrIEfyL7urhZkwEYW0B] LastCommand:map[1919568453260478433:4]}
+053268 KAPL KV101-0 | applier | Received message from applyCh: { OpType: UpdateShard, Shard: 0, Config: {ConfigNum: 0 , Shards: [0 0 0 0 0 0 0 0 0 0], Groups: map[]} }
+053268 KAUP KV101-0 | Apply UpdateShard | ShardNum: 0, ShardState: {DataDict:map[2:kWS1DgLmfZs-kUNAV9zM] LastCommand:map[1919568453260478433:3]}
+053268 KAPL KV101-2 | applier | Received message from applyCh: { OpType: UpdateShard, Shard: 0, Config: {ConfigNum: 0 , Shards: [0 0 0 0 0 0 0 0 0 0], Groups: map[]} }
+053269 KAUP KV101-2 | Apply UpdateShard | ShardNum: 0, ShardState: {DataDict:map[2:kWS1DgLmfZs-kUNAV9zM] LastCommand:map[1919568453260478433:3]}
+053366 KAPL KV101-1 | applier | Received message from applyCh: { OpType: UpdateShard, Shard: 2, Config: {ConfigNum: 0 , Shards: [0 0 0 0 0 0 0 0 0 0], Groups: map[]} }
+053366 KAUP KV101-1 | Apply UpdateShard | ShardNum: 2, ShardState: {DataDict:map[4:vRSCR5sbs-ZE1MvtiEk1] LastCommand:map[1919568453260478433:5]}
+053368 KAPL KV101-0 | applier | Received message from applyCh: { OpType: UpdateShard, Shard: 1, Config: {ConfigNum: 0 , Shards: [0 0 0 0 0 0 0 0 0 0], Groups: map[]} }
+053368 KAPL KV101-2 | applier | Received message from applyCh: { OpType: UpdateShard, Shard: 1, Config: {ConfigNum: 0 , Shards: [0 0 0 0 0 0 0 0 0 0], Groups: map[]} }
+053368 KAUP KV101-2 | Apply UpdateShard | ShardNum: 1, ShardState: {DataDict:map[3:ZLrIEfyL7urhZkwEYW0B] LastCommand:map[1919568453260478433:4]}
+053368 KAUP KV101-0 | Apply UpdateShard | ShardNum: 1, ShardState: {DataDict:map[3:ZLrIEfyL7urhZkwEYW0B] LastCommand:map[1919568453260478433:4]}
+053396 KGET KV101-1 | Get | Receieved start result from raft, index: 19
+053467 KAPL KV101-1 | applier | Received message from applyCh: { OpType: Put, Key: 2, Value: kWS1DgLmfZs-kUNAV9zM, OpNum: 3, Client: 1919568453260478433 }
+053469 KAPL KV101-2 | applier | Received message from applyCh: { OpType: UpdateShard, Shard: 2, Config: {ConfigNum: 0 , Shards: [0 0 0 0 0 0 0 0 0 0], Groups: map[]} }
+053469 KAUP KV101-2 | Apply UpdateShard | ShardNum: 2, ShardState: {DataDict:map[4:vRSCR5sbs-ZE1MvtiEk1] LastCommand:map[1919568453260478433:5]}
+053471 KAPL KV101-0 | applier | Received message from applyCh: { OpType: UpdateShard, Shard: 2, Config: {ConfigNum: 0 , Shards: [0 0 0 0 0 0 0 0 0 0], Groups: map[]} }
+053471 KAUP KV101-0 | Apply UpdateShard | ShardNum: 2, ShardState: {DataDict:map[4:vRSCR5sbs-ZE1MvtiEk1] LastCommand:map[1919568453260478433:5]}
+053499 KGET KV101-1 | Get | Receieved start result from raft, index: 20
+053568 KAPL KV101-1 | applier | Received message from applyCh: { OpType: Put, Key: 3, Value: ZLrIEfyL7urhZkwEYW0B, OpNum: 4, Client: 1919568453260478433 }
+053569 KAPL KV101-2 | applier | Received message from applyCh: { OpType: Put, Key: 2, Value: kWS1DgLmfZs-kUNAV9zM, OpNum: 3, Client: 1919568453260478433 }
+053571 KAPL KV101-0 | applier | Received message from applyCh: { OpType: Put, Key: 2, Value: kWS1DgLmfZs-kUNAV9zM, OpNum: 3, Client: 1919568453260478433 }
+053670 KAPL KV101-2 | applier | Received message from applyCh: { OpType: Put, Key: 3, Value: ZLrIEfyL7urhZkwEYW0B, OpNum: 4, Client: 1919568453260478433 }
+053673 KAPL KV101-0 | applier | Received message from applyCh: { OpType: Put, Key: 3, Value: ZLrIEfyL7urhZkwEYW0B, OpNum: 4, Client: 1919568453260478433 }
+053673 KAPL KV101-1 | applier | Received message from applyCh: { OpType: Put, Key: 4, Value: vRSCR5sbs-ZE1MvtiEk1, OpNum: 5, Client: 1919568453260478433 }
+053792 KAPL KV101-2 | applier | Received message from applyCh: { OpType: Put, Key: 4, Value: vRSCR5sbs-ZE1MvtiEk1, OpNum: 5, Client: 1919568453260478433 }
+053805 KAPL KV101-0 | applier | Received message from applyCh: { OpType: Put, Key: 4, Value: vRSCR5sbs-ZE1MvtiEk1, OpNum: 5, Client: 1919568453260478433 }
+053805 KAPL KV101-1 | applier | Received message from applyCh: { OpType: Put, Key: 5, Value: jyB9bpnt-Vhkum6vVGtY, OpNum: 6, Client: 1919568453260478433 }
+053809 KGET KV101-1 | Get | Receieved start result from raft, index: 21
+053893 KAPL KV101-2 | applier | Received message from applyCh: { OpType: Put, Key: 5, Value: jyB9bpnt-Vhkum6vVGtY, OpNum: 6, Client: 1919568453260478433 }
+053905 KAPL KV101-0 | applier | Received message from applyCh: { OpType: Put, Key: 5, Value: jyB9bpnt-Vhkum6vVGtY, OpNum: 6, Client: 1919568453260478433 }
+053906 KAPL KV101-1 | applier | Received message from applyCh: { OpType: Put, Key: 6, Value: D37Y3rLGfKjO4Oy_7xl1, OpNum: 7, Client: 1919568453260478433 }
+053993 KAPL KV101-2 | applier | Received message from applyCh: { OpType: Put, Key: 6, Value: D37Y3rLGfKjO4Oy_7xl1, OpNum: 7, Client: 1919568453260478433 }
+054003 KGET KV101-1 | Get | Receieved start result from raft, index: 22
+054006 KAPL KV101-1 | applier | Received message from applyCh: { OpType: Get, Key: 2, Value: , OpNum: 13, Client: 1919568453260478433 }
+054006 KAPG KV101-1 | Apply Get | key: 2, value:  dataDict: map[2:kWS1DgLmfZs-kUNAV9zM]
+054007 KAPL KV101-0 | applier | Received message from applyCh: { OpType: Put, Key: 6, Value: D37Y3rLGfKjO4Oy_7xl1, OpNum: 7, Client: 1919568453260478433 }
+054094 KAPL KV101-2 | applier | Received message from applyCh: { OpType: Get, Key: 2, Value: , OpNum: 13, Client: 1919568453260478433 }
+054096 KAPG KV101-2 | Apply Get | key: 2, value:  dataDict: map[2:kWS1DgLmfZs-kUNAV9zM]
+054107 KAPL KV101-1 | applier | Received message from applyCh: { OpType: Get, Key: 3, Value: , OpNum: 14, Client: 1919568453260478433 }
+054107 KAPG KV101-1 | Apply Get | key: 3, value:  dataDict: map[3:ZLrIEfyL7urhZkwEYW0B]
+054107 KAPL KV101-0 | applier | Received message from applyCh: { OpType: Get, Key: 2, Value: , OpNum: 13, Client: 1919568453260478433 }
+054108 KAPG KV101-0 | Apply Get | key: 2, value:  dataDict: map[2:kWS1DgLmfZs-kUNAV9zM]
+054199 KAPL KV101-2 | applier | Received message from applyCh: { OpType: Get, Key: 3, Value: , OpNum: 14, Client: 1919568453260478433 }
+054201 KAPG KV101-2 | Apply Get | key: 3, value:  dataDict: map[3:ZLrIEfyL7urhZkwEYW0B]
+054208 KGET KV101-1 | Get | Receieved start result from raft, index: 23
+054212 KAPL KV101-1 | applier | Received message from applyCh: { OpType: Get, Key: 4, Value: , OpNum: 15, Client: 1919568453260478433 }
+054213 KAPG KV101-1 | Apply Get | key: 4, value:  dataDict: map[4:vRSCR5sbs-ZE1MvtiEk1]
+054217 KAPL KV101-0 | applier | Received message from applyCh: { OpType: Get, Key: 3, Value: , OpNum: 14, Client: 1919568453260478433 }
+054217 KAPG KV101-0 | Apply Get | key: 3, value:  dataDict: map[3:ZLrIEfyL7urhZkwEYW0B]
+054305 KAPL KV101-2 | applier | Received message from applyCh: { OpType: Get, Key: 4, Value: , OpNum: 15, Client: 1919568453260478433 }
+054307 KAPG KV101-2 | Apply Get | key: 4, value:  dataDict: map[4:vRSCR5sbs-ZE1MvtiEk1]
+054309 KGET KV101-1 | Get | Receieved start result from raft, index: 24
+054317 KAPL KV101-0 | applier | Received message from applyCh: { OpType: Get, Key: 4, Value: , OpNum: 15, Client: 1919568453260478433 }
+054317 KAPG KV101-0 | Apply Get | key: 4, value:  dataDict: map[4:vRSCR5sbs-ZE1MvtiEk1]
+054320 KAPL KV101-1 | applier | Received message from applyCh: { OpType: Get, Key: 5, Value: , OpNum: 16, Client: 1919568453260478433 }
+054320 KAPG KV101-1 | Apply Get | key: 5, value:  dataDict: map[5:jyB9bpnt-Vhkum6vVGtY]
+054499 KAPL KV101-2 | applier | Received message from applyCh: { OpType: Get, Key: 5, Value: , OpNum: 16, Client: 1919568453260478433 }
+054501 KAPG KV101-2 | Apply Get | key: 5, value:  dataDict: map[5:jyB9bpnt-Vhkum6vVGtY]
+054501 KAPL KV101-1 | applier | Received message from applyCh: { OpType: Get, Key: 6, Value: , OpNum: 17, Client: 1919568453260478433 }
+054501 KAPG KV101-1 | Apply Get | key: 6, value:  dataDict: map[6:D37Y3rLGfKjO4Oy_7xl1]
+054510 KAPL KV101-0 | applier | Received message from applyCh: { OpType: Get, Key: 5, Value: , OpNum: 16, Client: 1919568453260478433 }
+054510 KAPG KV101-0 | Apply Get | key: 5, value:  dataDict: map[5:jyB9bpnt-Vhkum6vVGtY]
+054607 KAPL KV101-2 | applier | Received message from applyCh: { OpType: Get, Key: 6, Value: , OpNum: 17, Client: 1919568453260478433 }
+054607 KAPG KV101-2 | Apply Get | key: 6, value:  dataDict: map[6:D37Y3rLGfKjO4Oy_7xl1]
+054607 KAPL KV101-1 | applier | Received message from applyCh: { OpType: Config, Config: {ConfigNum: 1 , Shards: [100 100 100 100 100 100 100 100 100 100], Groups: map[100:[server-100-0 server-100-1 server-100-2]]} }
+054610 KAPL KV101-0 | applier | Received message from applyCh: { OpType: Get, Key: 6, Value: , OpNum: 17, Client: 1919568453260478433 }
+054610 KAPG KV101-0 | Apply Get | key: 6, value:  dataDict: map[6:D37Y3rLGfKjO4Oy_7xl1]
+054610 KCFG KV101-1 | Config | Received wrong result from resultCh: { Op: {Config   0 0 {1 [100 100 100 100 100 100 100 100 100 100] map[100:[server-100-0 server-100-1 server-100-2]]} 0 {map[] map[]} 0}, Err: ErrWrongGroup, Config: {ConfigNum: 1 , Shards: [100 100 100 100 100 100 100 100 100 100], Groups: map[100:[server-100-0 server-100-1 server-100-2]]} }
+054710 KAPL KV101-1 | applier | Received message from applyCh: { OpType: Get, Key: 2, Value: , OpNum: 23, Client: 1919568453260478433 }
+054711 KAPG KV101-1 | Apply Get | key: 2, value:  dataDict: map[2:kWS1DgLmfZs-kUNAV9zM]
+054710 KAPL KV101-2 | applier | Received message from applyCh: { OpType: Config, Config: {ConfigNum: 1 , Shards: [100 100 100 100 100 100 100 100 100 100], Groups: map[100:[server-100-0 server-100-1 server-100-2]]} }
+054711 KGET KV101-1 | Get | Sending result to Clerk, key: 2, shard data: map[2:kWS1DgLmfZs-kUNAV9zM], err: OK, index: 19
+054711 KAPL KV101-0 | applier | Received message from applyCh: { OpType: Config, Config: {ConfigNum: 1 , Shards: [100 100 100 100 100 100 100 100 100 100], Groups: map[100:[server-100-0 server-100-1 server-100-2]]} }
+054713 CLRK C33 | Get | Received reply from 101-1: key:2, value: kWS1DgLmfZs-kUNAV9zM, opNum: 23, shard: 0
+054713 CLRK C33 | Get | Request key:3, opNum: 24, shard:1
+054717 KGET KV101-1 | Get | Receieved start result from raft, index: 25
+054810 KAPL KV101-1 | applier | Received message from applyCh: { OpType: Get, Key: 5, Value: , OpNum: 1, Client: 1039548274110762362 }
+054811 KAPL KV101-2 | applier | Received message from applyCh: { OpType: Get, Key: 2, Value: , OpNum: 23, Client: 1919568453260478433 }
+054811 KAPL KV101-0 | applier | Received message from applyCh: { OpType: Get, Key: 2, Value: , OpNum: 23, Client: 1919568453260478433 }
+054811 KAPG KV101-0 | Apply Get | key: 2, value:  dataDict: map[2:kWS1DgLmfZs-kUNAV9zM]
+054811 KAPG KV101-2 | Apply Get | key: 2, value:  dataDict: map[2:kWS1DgLmfZs-kUNAV9zM]
+054811 KAPG KV101-1 | Apply Get | key: 5, value:  dataDict: map[5:jyB9bpnt-Vhkum6vVGtY]
+054812 KGET KV101-1 | Get | Sending result to Clerk, key: 5, shard data: map[5:jyB9bpnt-Vhkum6vVGtY], err: OK, index: 20
+054813 CLRK C62 | Get | Received reply from 101-1: key:5, value: jyB9bpnt-Vhkum6vVGtY, opNum: 1, shard: 3
+054912 KAPL KV101-0 | applier | Received message from applyCh: { OpType: Get, Key: 5, Value: , OpNum: 1, Client: 1039548274110762362 }
+054912 KAPG KV101-0 | Apply Get | key: 5, value:  dataDict: map[5:jyB9bpnt-Vhkum6vVGtY]
+054912 KAPL KV101-2 | applier | Received message from applyCh: { OpType: Get, Key: 5, Value: , OpNum: 1, Client: 1039548274110762362 }
+054912 KAPG KV101-2 | Apply Get | key: 5, value:  dataDict: map[5:jyB9bpnt-Vhkum6vVGtY]
+054912 KAPL KV101-1 | applier | Received message from applyCh: { OpType: Get, Key: 2, Value: , OpNum: 1, Client: 648425412184355137 }
+054912 KAPG KV101-1 | Apply Get | key: 2, value:  dataDict: map[2:kWS1DgLmfZs-kUNAV9zM]
+054912 KGET KV101-1 | Get | Sending result to Clerk, key: 2, shard data: map[2:kWS1DgLmfZs-kUNAV9zM], err: OK, index: 21
+054913 CLRK C37 | Get | Received reply from 101-1: key:2, value: kWS1DgLmfZs-kUNAV9zM, opNum: 1, shard: 0
+055012 KAPL KV101-1 | applier | Received message from applyCh: { OpType: Get, Key: 3, Value: , OpNum: 1, Client: 3273133878367422167 }
+055012 KAPG KV101-1 | Apply Get | key: 3, value:  dataDict: map[3:ZLrIEfyL7urhZkwEYW0B]
+055012 KAPL KV101-2 | applier | Received message from applyCh: { OpType: Get, Key: 2, Value: , OpNum: 1, Client: 648425412184355137 }
+055012 KAPG KV101-2 | Apply Get | key: 2, value:  dataDict: map[2:kWS1DgLmfZs-kUNAV9zM]
+055012 KAPL KV101-0 | applier | Received message from applyCh: { OpType: Get, Key: 2, Value: , OpNum: 1, Client: 648425412184355137 }
+055013 KAPG KV101-0 | Apply Get | key: 2, value:  dataDict: map[2:kWS1DgLmfZs-kUNAV9zM]
+055012 KGET KV101-1 | Get | Sending result to Clerk, key: 3, shard data: map[3:ZLrIEfyL7urhZkwEYW0B], err: OK, index: 22
+055014 CLRK C67 | Get | Received reply from 101-1: key:3, value: ZLrIEfyL7urhZkwEYW0B, opNum: 1, shard: 1
+055122 KAPL KV101-0 | applier | Received message from applyCh: { OpType: Get, Key: 3, Value: , OpNum: 1, Client: 3273133878367422167 }
+055122 KAPL KV101-2 | applier | Received message from applyCh: { OpType: Get, Key: 3, Value: , OpNum: 1, Client: 3273133878367422167 }
+055123 KAPG KV101-2 | Apply Get | key: 3, value:  dataDict: map[3:ZLrIEfyL7urhZkwEYW0B]
+055122 KAPG KV101-0 | Apply Get | key: 3, value:  dataDict: map[3:ZLrIEfyL7urhZkwEYW0B]
+055122 KAPL KV101-1 | applier | Received message from applyCh: { OpType: Get, Key: 6, Value: , OpNum: 1, Client: 4534979329517326274 }
+055123 KAPG KV101-1 | Apply Get | key: 6, value:  dataDict: map[6:D37Y3rLGfKjO4Oy_7xl1]
+055123 KGET KV101-1 | Get | Sending result to Clerk, key: 6, shard data: map[6:D37Y3rLGfKjO4Oy_7xl1], err: OK, index: 23
+055124 CLRK C74 | Get | Received reply from 101-1: key:6, value: D37Y3rLGfKjO4Oy_7xl1, opNum: 1, shard: 4
+055223 KAPL KV101-0 | applier | Received message from applyCh: { OpType: Get, Key: 6, Value: , OpNum: 1, Client: 4534979329517326274 }
+055223 KAPL KV101-2 | applier | Received message from applyCh: { OpType: Get, Key: 6, Value: , OpNum: 1, Client: 4534979329517326274 }
+055223 KAPL KV101-1 | applier | Received message from applyCh: { OpType: Get, Key: 4, Value: , OpNum: 1, Client: 2734336156364778955 }
+055223 KAPG KV101-1 | Apply Get | key: 4, value:  dataDict: map[4:vRSCR5sbs-ZE1MvtiEk1]
+055223 KAPG KV101-2 | Apply Get | key: 6, value:  dataDict: map[6:D37Y3rLGfKjO4Oy_7xl1]
+055224 KGET KV101-1 | Get | Sending result to Clerk, key: 4, shard data: map[4:vRSCR5sbs-ZE1MvtiEk1], err: OK, index: 24
+055223 KAPG KV101-0 | Apply Get | key: 6, value:  dataDict: map[6:D37Y3rLGfKjO4Oy_7xl1]
+055225 CLRK C55 | Get | Received reply from 101-1: key:4, value: vRSCR5sbs-ZE1MvtiEk1, opNum: 1, shard: 2
+055324 KAPL KV101-2 | applier | Received message from applyCh: { OpType: Get, Key: 4, Value: , OpNum: 1, Client: 2734336156364778955 }
+055325 KAPG KV101-2 | Apply Get | key: 4, value:  dataDict: map[4:vRSCR5sbs-ZE1MvtiEk1]
+055325 KAPL KV101-0 | applier | Received message from applyCh: { OpType: Get, Key: 4, Value: , OpNum: 1, Client: 2734336156364778955 }
+055326 KAPG KV101-0 | Apply Get | key: 4, value:  dataDict: map[4:vRSCR5sbs-ZE1MvtiEk1]
+055328 KAPL KV101-1 | applier | Received message from applyCh: { OpType: Get, Key: 3, Value: , OpNum: 24, Client: 1919568453260478433 }
+055328 KAPG KV101-1 | Apply Get | key: 3, value:  dataDict: map[3:ZLrIEfyL7urhZkwEYW0B]
+055328 KGET KV101-1 | Get | Sending result to Clerk, key: 3, shard data: map[3:ZLrIEfyL7urhZkwEYW0B], err: OK, index: 25
+055330 CLRK C33 | Get | Received reply from 101-1: key:3, value: ZLrIEfyL7urhZkwEYW0B, opNum: 24, shard: 1
+055330 CLRK C33 | Get | Request key:4, opNum: 25, shard:2
+055337 KGET KV101-1 | Get | Receieved start result from raft, index: 26
+055426 KAPL KV101-1 | applier | Received message from applyCh: { OpType: Get, Key: 4, Value: , OpNum: 25, Client: 1919568453260478433 }
+055427 KAPG KV101-1 | Apply Get | key: 4, value:  dataDict: map[4:vRSCR5sbs-ZE1MvtiEk1]
+055428 KGET KV101-1 | Get | Sending result to Clerk, key: 4, shard data: map[4:vRSCR5sbs-ZE1MvtiEk1], err: OK, index: 26
+055429 CLRK C33 | Get | Received reply from 101-1: key:4, value: vRSCR5sbs-ZE1MvtiEk1, opNum: 25, shard: 2
+055430 CLRK C33 | Get | Request key:5, opNum: 26, shard:3
+055433 KAPL KV101-2 | applier | Received message from applyCh: { OpType: Get, Key: 3, Value: , OpNum: 24, Client: 1919568453260478433 }
+055433 KAPG KV101-2 | Apply Get | key: 3, value:  dataDict: map[3:ZLrIEfyL7urhZkwEYW0B]
+055434 KAPL KV101-0 | applier | Received message from applyCh: { OpType: Get, Key: 3, Value: , OpNum: 24, Client: 1919568453260478433 }
+055434 KAPG KV101-0 | Apply Get | key: 3, value:  dataDict: map[3:ZLrIEfyL7urhZkwEYW0B]
+055445 KGET KV101-1 | Get | Receieved start result from raft, index: 27
+055529 KAPL KV101-1 | applier | Received message from applyCh: { OpType: Get, Key: 5, Value: , OpNum: 26, Client: 1919568453260478433 }
+055529 KAPG KV101-1 | Apply Get | key: 5, value:  dataDict: map[5:jyB9bpnt-Vhkum6vVGtY]
+055530 KGET KV101-1 | Get | Sending result to Clerk, key: 5, shard data: map[5:jyB9bpnt-Vhkum6vVGtY], err: OK, index: 27
+055533 CLRK C33 | Get | Received reply from 101-1: key:5, value: jyB9bpnt-Vhkum6vVGtY, opNum: 26, shard: 3
+055533 CLRK C33 | Get | Request key:6, opNum: 27, shard:4
+055533 KAPL KV101-2 | applier | Received message from applyCh: { OpType: Get, Key: 4, Value: , OpNum: 25, Client: 1919568453260478433 }
+055534 KAPG KV101-2 | Apply Get | key: 4, value:  dataDict: map[4:vRSCR5sbs-ZE1MvtiEk1]
+055534 KAPL KV101-0 | applier | Received message from applyCh: { OpType: Get, Key: 4, Value: , OpNum: 25, Client: 1919568453260478433 }
+055534 KAPG KV101-0 | Apply Get | key: 4, value:  dataDict: map[4:vRSCR5sbs-ZE1MvtiEk1]
+055539 KGET KV101-1 | Get | Receieved start result from raft, index: 28
+055630 KAPL KV101-1 | applier | Received message from applyCh: { OpType: Get, Key: 6, Value: , OpNum: 27, Client: 1919568453260478433 }
+055631 KAPG KV101-1 | Apply Get | key: 6, value:  dataDict: map[6:D37Y3rLGfKjO4Oy_7xl1]
+055632 KGET KV101-1 | Get | Sending result to Clerk, key: 6, shard data: map[6:D37Y3rLGfKjO4Oy_7xl1], err: OK, index: 28
+055634 CLRK C33 | Get | Received reply from 101-1: key:6, value: D37Y3rLGfKjO4Oy_7xl1, opNum: 27, shard: 4
+055634 CLRK C33 | Get | Request key:7, opNum: 28, shard:5
+055634 KAPL KV101-2 | applier | Received message from applyCh: { OpType: Get, Key: 5, Value: , OpNum: 26, Client: 1919568453260478433 }
+055635 KAPG KV101-2 | Apply Get | key: 5, value:  dataDict: map[5:jyB9bpnt-Vhkum6vVGtY]
+055634 KAPL KV101-0 | applier | Received message from applyCh: { OpType: Get, Key: 5, Value: , OpNum: 26, Client: 1919568453260478433 }
+055635 KAPG KV101-0 | Apply Get | key: 5, value:  dataDict: map[5:jyB9bpnt-Vhkum6vVGtY]
+055646 KGET KV100-1 | Get | Receieved start result from raft, index: 20
+055739 KAPL KV100-1 | applier | Received message from applyCh: { OpType: Get, Key: 7, Value: , OpNum: 28, Client: 1919568453260478433 }
+055740 KAPG KV100-1 | Apply Get | key: 7, value:  dataDict: map[7:DWFJ1yhzNI26CJ12KH0t]
+055741 KGET KV100-1 | Get | Sending result to Clerk, key: 7, shard data: map[7:DWFJ1yhzNI26CJ12KH0t], err: OK, index: 20
+055744 CLRK C33 | Get | Received reply from 100-1: key:7, value: DWFJ1yhzNI26CJ12KH0t, opNum: 28, shard: 5
+055744 CLRK C33 | Get | Request key:8, opNum: 29, shard:6
+055753 KGET KV100-1 | Get | Receieved start result from raft, index: 21
+055837 KAPL KV100-0 | applier | Received message from applyCh: { OpType: Get, Key: 7, Value: , OpNum: 28, Client: 1919568453260478433 }
+055837 KAPG KV100-0 | Apply Get | key: 7, value:  dataDict: map[7:DWFJ1yhzNI26CJ12KH0t]
+055837 KAPL KV101-2 | applier | Received message from applyCh: { OpType: Get, Key: 6, Value: , OpNum: 27, Client: 1919568453260478433 }
+055838 KAPG KV101-2 | Apply Get | key: 6, value:  dataDict: map[6:D37Y3rLGfKjO4Oy_7xl1]
+055838 KAPL KV100-2 | applier | Received message from applyCh: { OpType: Get, Key: 7, Value: , OpNum: 28, Client: 1919568453260478433 }
+055841 KAPG KV100-2 | Apply Get | key: 7, value:  dataDict: map[7:DWFJ1yhzNI26CJ12KH0t]
+055841 KAPL KV101-0 | applier | Received message from applyCh: { OpType: Get, Key: 6, Value: , OpNum: 27, Client: 1919568453260478433 }
+055841 KAPG KV101-0 | Apply Get | key: 6, value:  dataDict: map[6:D37Y3rLGfKjO4Oy_7xl1]
+055843 KAPL KV100-1 | applier | Received message from applyCh: { OpType: Get, Key: 8, Value: , OpNum: 29, Client: 1919568453260478433 }
+055843 KAPG KV100-1 | Apply Get | key: 8, value:  dataDict: map[8:N41xM47h2jDtUQEjb9F2]
+055843 KGET KV100-1 | Get | Sending result to Clerk, key: 8, shard data: map[8:N41xM47h2jDtUQEjb9F2], err: OK, index: 21
+055845 CLRK C33 | Get | Received reply from 100-1: key:8, value: N41xM47h2jDtUQEjb9F2, opNum: 29, shard: 6
+055845 CLRK C33 | Get | Request key:9, opNum: 30, shard:7
+055859 KGET KV100-1 | Get | Receieved start result from raft, index: 22
+055936 KAPL KV100-0 | applier | Received message from applyCh: { OpType: Get, Key: 8, Value: , OpNum: 29, Client: 1919568453260478433 }
+055939 KAPG KV100-0 | Apply Get | key: 8, value:  dataDict: map[8:N41xM47h2jDtUQEjb9F2]
+055939 KAPL KV100-2 | applier | Received message from applyCh: { OpType: Get, Key: 8, Value: , OpNum: 29, Client: 1919568453260478433 }
+055940 KAPG KV100-2 | Apply Get | key: 8, value:  dataDict: map[8:N41xM47h2jDtUQEjb9F2]
+055957 KAPL KV100-1 | applier | Received message from applyCh: { OpType: Get, Key: 9, Value: , OpNum: 30, Client: 1919568453260478433 }
+055958 KAPG KV100-1 | Apply Get | key: 9, value:  dataDict: map[9:g1vbsKQWoQxCr7J6r6rN]
+055958 KGET KV100-1 | Get | Sending result to Clerk, key: 9, shard data: map[9:g1vbsKQWoQxCr7J6r6rN], err: OK, index: 22
+055960 CLRK C33 | Get | Received reply from 100-1: key:9, value: g1vbsKQWoQxCr7J6r6rN, opNum: 30, shard: 7
+  ... Passed
+055961 INFO Test: shutdowned down server server-100-0
+055961 INFO Test: shutdowned down server server-100-1
+055962 INFO Test: shutdowned down server server-100-2
+055962 INFO Test: shutdowned down server server-101-0
+055963 INFO Test: shutdowned down server server-101-1
+055963 INFO Test: shutdowned down server server-101-2
+055964 INFO Test: shutdowned down server server-102-0
+055964 INFO Test: shutdowned down server server-102-1
+055964 INFO Test: shutdowned down server server-102-2
+PASS
+ok  	6.5840/shardkv	5.893s

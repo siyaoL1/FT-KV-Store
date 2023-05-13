@@ -80,17 +80,17 @@ func MakeClerk(ctrlers []*labrpc.ClientEnd, make_end func(string) *labrpc.Client
 // keeps trying forever in the face of all other errors.
 // You will have to modify this function.
 func (ck *Clerk) Get(key string) string {
-	Debug(dClerk, "C%v | Get | key:%v\n", ck.me%100, key)
 	// Construct Args for Get RPC
 	ck.mu.Lock()
 	ck.opNum += 1
 	args := GetArgs{
-		Key:       key,
-		Client:    ck.me,
-		OpNum:     ck.opNum,
-		ConfigNum: ck.config.Num,
+		Key:    key,
+		Client: ck.me,
+		OpNum:  ck.opNum,
 	}
 	ck.mu.Unlock()
+
+	Debug(dClerk, "C%v | Get | Request key:%v, opNum: %v, shard:%v\n", ck.me%100, key, args.OpNum, key2shard(key))
 
 	for {
 		// get the shard number for the data key
@@ -105,7 +105,7 @@ func (ck *Clerk) Get(key string) string {
 				var reply GetReply
 				ok := srv.Call("ShardKV.Get", &args, &reply)
 				if ok && (reply.Err == OK || reply.Err == ErrNoKey) {
-					Debug(dClerk, "C%v | Get | Received OK reply: %+v\n", ck.me%100, reply)
+					Debug(dClerk, "C%v | Get | Received reply from %+v-%v: key:%v, value: %+v, opNum: %v, shard: %v\n", ck.me%100, gid, si, args.Key, reply.Value, args.OpNum, key2shard(key))
 					return reply.Value
 				}
 				if ok && (reply.Err == ErrWrongGroup) {
@@ -123,18 +123,18 @@ func (ck *Clerk) Get(key string) string {
 // shared by Put and Append.
 // You will have to modify this function.
 func (ck *Clerk) PutAppend(key string, value string, op string) {
-	Debug(dClerk, "C%v | PutAppend | key:%v | value:%v | op:%v\n", ck.me%100, key, value, op)
 	ck.mu.Lock()
 	ck.opNum += 1
 	args := PutAppendArgs{
-		Key:       key,
-		Value:     value,
-		Op:        op,
-		Client:    ck.me,
-		OpNum:     ck.opNum,
-		ConfigNum: ck.config.Num,
+		Key:    key,
+		Value:  value,
+		Op:     op,
+		Client: ck.me,
+		OpNum:  ck.opNum,
 	}
 	ck.mu.Unlock()
+
+	Debug(dClerk, "C%v | PutAppend | Request key:%v, value:%v, op:%v, opNum: %v, shard:%v\n", ck.me%100, key, value, op, args.OpNum, key2shard(key))
 
 	for {
 		// get the shard number for the data key
@@ -148,6 +148,7 @@ func (ck *Clerk) PutAppend(key string, value string, op string) {
 				var reply PutAppendReply
 				ok := srv.Call("ShardKV.PutAppend", &args, &reply)
 				if ok && reply.Err == OK {
+					Debug(dClerk, "C%v | PutAppend | Received reply from %+v-%v: op: %v, key:%+v, value:%+v, opNum: %v, shard: %v\n", ck.me%100, gid, si, args.Op, args.Key, args.Value, args.OpNum, key2shard(key))
 					return
 				}
 				if ok && reply.Err == ErrWrongGroup {
